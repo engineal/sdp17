@@ -6,6 +6,7 @@ public:
 	char* buffA;
 	char* buffB;
 	char* buffC;
+	char delay;
 	
 	Microphone();
 	~Microphone();
