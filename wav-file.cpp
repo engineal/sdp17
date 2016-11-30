@@ -53,7 +53,7 @@ void WavFile::displayInformation() {
 	cout << "Byte Rate: " << nAvgBytesPerSec << endl;
 	cout << "Block Align: " << numBlockAlingn << endl;
     cout << "Bits per sample: " << numBitsPerSample << endl;
-    cout << "----------------------------------------------------" << endl;
+    cout << "-----------------------------------------------------" << endl;
 }
 
 /*-----------------------------------------------------------------------------
@@ -62,11 +62,15 @@ void WavFile::displayInformation() {
 
 iWavFile::iWavFile(string fileName) {
 	fIn = new ifstream(fileName, ios::binary);
+	if(!fIn) {
+		cerr << "Cannot open " << fileName << endl;
+		exit(-1);
+	}
 	
 	string str(4, ' ');
 	fIn->read(&str[0], 4);
 	if (str != "RIFF") {
-		cerr << "File is not in RIFF format!" << endl;
+		cerr << "File is not in RIFF format!" << str << endl;
 		exit(-1);
 	}
 	
@@ -74,13 +78,13 @@ iWavFile::iWavFile(string fileName) {
 	
 	fIn->read(&str[0], 4);
 	if (str != "WAVE") {
-		cerr << "File is not in WAVE format!" << endl;
+		cerr << "File is not in WAVE format!" << str << endl;
 		exit(-1);
 	}
 	
 	fIn->read(&str[0], 4);
 	if (str != "fmt ") {
-		cerr << "File does not have fmt sub-chunk!" << endl;
+		cerr << "File does not have fmt sub-chunk!" << str << endl;
 		exit(-1);
 	}
 	
@@ -193,8 +197,8 @@ oWavFile::oWavFile(string fileName) {
 	fOut = new ofstream(fileName, ios::binary);
 	
 	numChannels = 1;
-    nSamplesPerSec = 16000;
-    nAvgBytesPerSec = 32000;
+    nSamplesPerSec = 22050;
+    nAvgBytesPerSec = 44100;
     numBlockAlingn = 2;
     numBitsPerSample = 16;
 

@@ -6,44 +6,33 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
-	string inputFile = "kalia.wav";
-	string outputFile = "test.wav";
+int main(int argc, char *argv[]) {	
+	iWavFile* inWavFile1 = new iWavFile("audiocheck.net_sin_1200Hz_-3dBFS_10s.wav");
+	inWavFile1->displayInformation();
 	
-	iWavFile* inWavFile = new iWavFile(inputFile);
-	inWavFile->displayInformation();
+	iWavFile* inWavFile2 = new iWavFile("audiocheck.net_sin_1200Hz_-3dBFS_10s.wav");
+	inWavFile2->displayInformation();
 	
-	oWavFile* outWavFile = new oWavFile(outputFile);
+	oWavFile* outWavFile = new oWavFile("test.wav");
 	
 	// Generate linear array of equally spaced mics
 	Microphone* mics[NUM_MICS];
 	double x = 0;
 	for (int i = 0; i < NUM_MICS; i++) {
-		mics[i] = new Microphone(x, 0.0);
-		x += .071; // Mics are 7.1 cm apart, at 0 on the y axis
+		mics[i] = new Microphone(inWavFile1->getSampleRateHz(), x, 0.0);
+		x += .171; // Mics are 7.1 cm apart, at 0 on the y axis
 	}
 	double* outputA = new double[BUFFER_LENGTH];
 	double* outputB = new double[BUFFER_LENGTH];
 	
 	// calculate delay for all mics with audio source at specified x, y coordinates
-	calculate_delays(mics, 2, 3);
+	calculate_delays(mics, 0, 3);
 	
 	// Read in two buffers of data before processing begins
-	read_inputs(mics, inWavFile);
+	read_inputs(mics, inWavFile1, inWavFile2);
 	rotate_buffers(mics);
-	read_inputs(mics, inWavFile);
+	read_inputs(mics, inWavFile1, inWavFile2);
 	rotate_buffers(mics);
-	
-	/*
-	for (int i = 0; i < BUFFER_LENGTH; i++) {
-		cout << int(mics[0]->buffA[i]) << ", ";
-	}
-	cout << endl << endl;
-	for (int i = 0; i < BUFFER_LENGTH; i++) {
-		cout << int(mics[0]->buffB[i]) << ", ";
-	}
-	cout << endl << endl;
-	*/
 
 	clock_t timing[200];
 	volatile int timing_index = 0;
@@ -59,7 +48,7 @@ int main(int argc, char *argv[]) {
 		
 		// Read in samples from microphones
 		timing[timing_index++] = clock();
-		read_inputs(mics, inWavFile);
+		read_inputs(mics, inWavFile1, inWavFile2);
 		timing[timing_index++] = clock();
 		
 		// Wait for calculations to be done
@@ -88,7 +77,8 @@ int main(int argc, char *argv[]) {
 	}
 	
 	outWavFile->close();
-	inWavFile->close();
+	inWavFile1->close();
+	inWavFile2->close();
 	
 	return 0;
 }
@@ -97,9 +87,9 @@ int main(int argc, char *argv[]) {
  * Test code to calculate delays for each mic based on one target
  */
 void calculate_delays(Microphone** mics, double x, double y) {
-	int min_delay = 0;
+	int min_delay = BUFFER_LENGTH;
 	for (int i = 0; i < NUM_MICS; i++) {
-		mics[i]->calculate_delay(x, y);
+		mics[i]->delay = mics[i]->calculate_delay_to_point(x, y);
 		if (mics[i]->delay < min_delay) {
 			min_delay = mics[i]->delay;
 		}
@@ -108,6 +98,7 @@ void calculate_delays(Microphone** mics, double x, double y) {
 	// minimize delay on all mics
 	for (int i = 0; i < NUM_MICS; i++) {
 		mics[i]->delay -= min_delay;
+		cout << mics[i]->delay << endl;
 	}
 }
 
@@ -115,10 +106,10 @@ void calculate_delays(Microphone** mics, double x, double y) {
  * Test code to read input from single source
  * Since reading from a single source, cannont use read_sample()
  */
-void read_inputs(Microphone** mics, iWavFile* source) {
-	if (source->dataAvailable()) {
+void read_inputs(Microphone** mics, iWavFile* source1, iWavFile* source2) {
+	if (source1->dataAvailable()) {
 		double data[BUFFER_LENGTH];
-		int n = source->readBuffer(data, BUFFER_LENGTH);
+		int n = source1->readBuffer(data, BUFFER_LENGTH);
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < NUM_MICS; j++) {
 				if (i + mics[j]->delay < BUFFER_LENGTH) {
@@ -173,4 +164,9 @@ void process_segment(Microphone** mics, double* output) {
 		}
 		output[i] /= NUM_MICS;
 	}
+	
+	for (int i = 0; i < 5; i++) {
+		cout << output[i] << "\t";
+	}
+	cout << endl;
 }
