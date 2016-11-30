@@ -1,10 +1,10 @@
 CC = g++
 DEBUG =
-CFLAGS = -pthread -c $(DEBUG)
-LDFLAGS = -pthread $(DEBUG)
-SOURCES = beamforming.cpp microphone.cpp
+CFLAGS = -pthread -std=c++0x -c $(DEBUG)
+LDFLAGS = -pthread -std=c++0x $(DEBUG)
+SOURCES = beamforming.cpp microphone.cpp wav-file.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = benchmark
+EXECUTABLE = run
 
 all: $(EXECUTABLE)
 
