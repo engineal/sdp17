@@ -160,7 +160,7 @@ int iWavFile::readBuffer(double* samples, int n) {
 		}
 		
 		int i;
-		int value;
+		short int value;
 		for (i = 0; i < n; i++) {
 			if (numInSamples >= maxInSamples) {
 				break;
@@ -245,7 +245,7 @@ void oWavFile::close() {
 
 	// Fix the data chunk header to contain the data size
 	fOut->seekp(data_chunk_pos + 4);
-	write_word(*fOut, file_length - data_chunk_pos + 8, 4);
+	write_word(*fOut, file_length - (data_chunk_pos + 8), 4);
 
 	// Fix the file header to contain the proper RIFF chunk size, which is (file size - 8) bytes
 	fOut->seekp(0 + 4);

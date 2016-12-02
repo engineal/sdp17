@@ -8,7 +8,8 @@
 #define NUM_MICS 16
 #define BUFFER_LENGTH 1024
 
-void calculate_delays(Microphone** mic, double x, double y);
+void calculate_source_delays(Microphone** mic, WavFile* source, double x, double y);
+void calculate_target_delays(Microphone** mic, double x, double y);
 void read_inputs(Microphone** mics, iWavFile* source1, iWavFile* source2);
 void rotate_buffers(Microphone** mics);
 
