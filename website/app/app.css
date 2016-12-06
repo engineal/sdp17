@@ -1,0 +1,68 @@
+/* app css stylesheet */
+
+
+
+
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li + li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.container {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+.flex-nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 1em 0;
+}
+
+.flex-nav > .flex-item {
+	flex-grow: 1;
+	text-decoration: none;
+	font-family: 'Open Sans', sans-serif;
+	color: white;
+	font-size: 1.5em;
+}
+
+.flex-nav > .flex-brand {
+	flex-grow: 4;
+}
+
+.footer {
+	color: white;
+	background-color: #3f3f3f;
+	padding: 1.5em 0;
+}
+
+.navbar {
+	background-color: #757575;
+}
+
+
+.profile {
+	font-family: 'Open Sans', sans-serif;
+}
+
+section {
+	border: solid;
+	border-color: #d8d8d8;
+	border-width: 0 0 1px 0;
+}
