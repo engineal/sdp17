@@ -12,8 +12,7 @@
 
 
   <!--Fonts-->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Oswald|Raleway|Roboto|Roboto+Condensed|Roboto+Slab" rel="stylesheet">
 
 
   <link rel="stylesheet" href="app/bower_components/html5-boilerplate/dist/css/normalize.css">
@@ -31,7 +30,7 @@
 <div ng-controller="mainCtrl">
   <nav class="navbar navbar-default navbar-fixed-top">
       <div class="flex-nav container">
-          <a  class="flex-item flex-brand" href="#"> Kitten Mittens</a>
+          <a  class="flex-item flex-brand" href="#"> Earbeamer</a>
           <a class="flex-item" href="#about" offset="60" du-smooth-scroll du-scrollspy>About</a>
           <a class="flex-item" href="#system" offset="60" du-smooth-scroll du-scrollspy>System</a>
           <a class="flex-item" href="#team" offset="60" du-smooth-scroll du-scrollspy>Team</a>
@@ -39,25 +38,30 @@
     </div>
   </nav>
   <div class="jumbotron">
-    <div class="container">
-      <div class="row">
-        <div class="text-center">
-          <h1>Is your cat making too much noise?</h1>
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/5fP4emqw7O4" frameborder="0" allowfullscreen></iframe>
-          <h1>Try Kitten Mittens!</h1>
-        </div>
-      </div>
-    </div>
+              <img width="100%" style="position: relative; z-index: 2;" src="app/res/cropped_sadman.png" >
+              <div width="50%" class="overlay">
+                <span class="banner-message">Missing out on the conversations in life?</span>
+                <span class="banner-message">We can help.</span>
+              </div>
   </div>
 
 <div class="container-fluid">
   <section id="about">
-        <div class="row sectionrow">
-          <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+          <div class="col-md-4 col-md-offset-2">
             <h1>About</h1>
-            <p><div class= test>
-              You'll be smitten.
-            </div></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-md-offset-2">
+            <p>If you are hearing impaired, having a conversation in a noisy room can be tough. Some people talk too loudly, some people talk too softly, and background noise can make everyone unintelligible. Your standard hearing aid amplifies it all the same. </p>
+            <p>Earbeamer offers you precise control over what your hearing aid amplifies, on a person-by-person basis. 
+            <p>Trying to listen to your soft-spoken granddaughter? Turn her up.</p>
+            <p>Is your son-in-law across the room talking too loudly? Turn him down.</p>
+            <p> With Earbeamer, you hear exactly what you want to hear. </p>
+          </div>
+          <div class="col-md-4">
+            <img width=75% src="app/res/listening.png">
           </div>
         </div>
   </section>
@@ -65,12 +69,19 @@
   <section id="system">
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
-          <h1>System Diagram</h1>
+          <h1>How it Works</h1>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-           <img class="img-responsive" src="app/res/kitten_mittens.png">
+        <div class="col-md-8 col-md-offset-2">
+          <p>Earbeamer uses a signal-processing technique known as beamforming to electronically steer a stationary array of microphones to a target. By performing beamforming in parallel, we can isolate audio streams for multiple people in the room.</p>
+
+          <p>We use an XBox Kinect to automatically identify and aim the beamformer for you, so that you can focus on the conversation. You can control the amplification for each target through our iPhone application.</p>
+        </div>
+      </div>
+      <div class="row diagram-display">
+        <div class="col-md-8 col-md-offset-2 sectionrow">
+           <img class="img-responsive" src="app/res/block_diagram.png">
         </div>
       </div>
   </section>
@@ -84,23 +95,23 @@
       <div class="row">
         <div class="col-md-3 profile text-center">
             <img src="app/res/aaron.png" width=75%>
-            <p>Aaron Lucia</p>
-            <p>CSE</p>
+            <p><h3>Aaron Lucia</h3></p>
+            <p>Computer Systems Engineering</p>
         </div>
         <div class="col-md-3 profile text-center">
           <img src="app/res/niket.png" width=75%>
-          <p>Niket Gupta</p>
-          <p>CSE</p>
+          <p><h3>Niket Gupta</h3></p>
+          <p>Computer Systems Engineering</p>
         </div>
         <div class="col-md-3 profile text-center">
           <img src="app/res/matteo.png" width=75%>
-          <p>Matteo Puzella</p>
-          <p>EE</p>
+          <p><h3>Matteo Puzella</h3></p>
+          <p>Electrical Engineering</p>
         </div>
         <div class="col-md-3 profile text-center">
           <img src="app/res/nate.png" width=75%>
-          <p>Nathan Dunn</p>
-          <p>CSE</p>
+          <p><h3>Nathan Dunn</h3></p>
+          <p>Computer Systems Engineering</p>
         </div>
       </div>
     </div>

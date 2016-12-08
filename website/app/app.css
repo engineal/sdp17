@@ -37,7 +37,7 @@
 .flex-nav > .flex-item {
 	flex-grow: 1;
 	text-decoration: none;
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Roboto Condensed', sans-serif;
 	color: white;
 	font-size: 1.5em;
 }
@@ -58,11 +58,64 @@
 
 
 .profile {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Montserrat', sans-serif;
 }
-
 section {
 	border: solid;
 	border-color: #d8d8d8;
 	border-width: 0 0 1px 0;
+	font-family: 'Montserrat', sans-serif;
+
+
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.sectionrow {
+
+}
+
+.diagram-display {
+	margin: 3em 0;
+}
+
+
+
+/*
+ *	Jumbotron
+ *
+ */
+
+.jumbotron {
+	padding: 0;
+	width: 100%;
+	position: relative;
+}
+
+.overlay {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+
+	position: absolute;
+	z-index: 3;
+	background-color: rgba(0,0,0,0.5);
+	left: 50px;
+	top: 0px; 
+	height: 100%;
+	width: 60%;
+	line-height: 200px;
+}
+
+.banner-message {
+	display: inline-block;
+   	line-height: 50px;
+    
+    padding: 50px 10%;
+
+    color: rgb(230,230,230);
+    opacity: 1;
+   	font-size: 45px;
+   	font-family: 'Roboto Condensed', sans-serif;
 }
