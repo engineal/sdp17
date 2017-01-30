@@ -5,7 +5,8 @@
 
 using namespace std;
 
-Microphone::Microphone(double x, double y) {
+Microphone::Microphone(int samples_rate, double x, double y) {
+	samples_sec = samples_rate;
 	x_pos = x;
 	y_pos = y;
 	delay = 0;
@@ -40,12 +41,11 @@ void Microphone::rotate_buffers() {
 /*
  * Calculate a delay for mic based on target's coordinates
  */
-void Microphone::calculate_delay(double x, double y) {
-	double samples_sec = 16000;
+int Microphone::calculate_delay_to_point(double x, double y) {
 	double temp = 20; // in C
 	
 	double distance = sqrt(pow(x - x_pos, 2) + pow(y - y_pos, 2)); // in m
 	double v_sound = 331 + 0.6 * temp; // in m/s
 	double t_sound = distance / v_sound; // in s
-	delay = (int)((t_sound * samples_sec) + 0.5); // in samples
+	return (int)((t_sound * samples_sec) + 0.5); // in samples
 }

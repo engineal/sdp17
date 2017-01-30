@@ -13,6 +13,7 @@ protected:
     short int numBitsPerSample;
 
 public:
+	int delays[16];
 	int getNumChannels();
 	int getBitsPerSample();
 	unsigned int getSampleRateHz();

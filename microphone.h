@@ -3,6 +3,7 @@
 
 class Microphone {
 protected:
+	int samples_sec;
 	double x_pos; // absolute x position in m
 	double y_pos; // absolute y position in m
 
@@ -12,11 +13,11 @@ public:
 	double* buffC;
 	int delay;
 	
-	Microphone(double x, double y);
+	Microphone(int samples_rate, double x, double y);
 	~Microphone();
 	void read_sample();
 	void rotate_buffers();
-	void calculate_delay(double x, double y);
+	int calculate_delay_to_point(double x, double y);
 };
 
 #endif /*MICROPHONE_H*/
