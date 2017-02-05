@@ -1,0 +1,7 @@
+﻿  wav-file.cpp
+c:\users\nathan\source\repos\sdp17\earbeamer\earbeamer\wav-file.cpp(216): warning C4244: '=': conversion from 'std::streamoff' to 'std::size_t', possible loss of data
+c:\users\nathan\source\repos\sdp17\earbeamer\earbeamer\wav-file.cpp(244): warning C4244: 'initializing': conversion from 'std::streamoff' to 'std::size_t', possible loss of data
+  FIRFilter.cpp
+  Generating Code...
+  SoftwareFiltering.vcxproj -> C:\Users\Nathan\Source\Repos\sdp17\Earbeamer\Earbeamer\Debug\SoftwareFiltering.exe
+  SoftwareFiltering.vcxproj -> C:\Users\Nathan\Source\Repos\sdp17\Earbeamer\Earbeamer\Debug\SoftwareFiltering.pdb (Full PDB)

@@ -15,33 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FIRFilter.cpp">
+    <ClCompile Include="src\FIRFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="driver.cpp">
+    <ClCompile Include="src\wav-file.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wav-file.cpp">
+    <ClCompile Include="src\driver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="beamforming.h">
+    <ClInclude Include="arithmetic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FIRFilter.h">
+    <ClInclude Include="include\beamforming.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="microphone.h">
+    <ClInclude Include="include\FIRFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wav-file.h">
+    <ClInclude Include="include\high_coefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="high_coefs.h">
+    <ClInclude Include="include\low_coefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="low_coefs.h">
+    <ClInclude Include="include\microphone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wav-file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
