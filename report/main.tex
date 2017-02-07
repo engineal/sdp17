@@ -1,9 +1,8 @@
-
 %% bare_adv.tex
 %% V1.4b
 %% 2015/08/26
 %% by Michael Shell
-%% See: 
+%% See:
 %% http://www.michaelshell.org/
 %% for current contact information.
 %%
@@ -21,7 +20,7 @@
 %% Legal Notice:
 %% This code is offered as-is without any warranty either expressed or
 %% implied; without even the implied warranty of MERCHANTABILITY or
-%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% FITNESS FOR A PARTICULAR PURPOSE!
 %% User assumes all risk.
 %% In no event shall the IEEE or any contributor to this code be liable for
 %% any damages or losses, including, but not limited to, incidental,
@@ -72,7 +71,7 @@
 % \documentclass[10pt,journal,compsoc]{../sty/IEEEtran}
 
 
-% For Computer Society journals, IEEEtran defaults to the use of 
+% For Computer Society journals, IEEEtran defaults to the use of
 % Palatino/Palladio as is done in IEEE Computer Society journals.
 % To go back to Times Roman, you can use this code:
 %\renewcommand{\rmdefault}{ptm}\selectfont
@@ -114,9 +113,9 @@
 \usepackage[
 backend=biber,
 style=numeric,
-sorting=ynt
+sorting=none
 ]{biblatex}
- 
+
 \addbibresource{sources.bib}
 
 
@@ -305,8 +304,8 @@ sorting=ynt
 % \let\MYoriglatexcaption\caption
 % \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
 %\fi
-% endfloat.sty was written by James Darrell McCauley, Jeff Goldberg and 
-% Axel Sommerfeldt. This package may be useful when used in conjunction with 
+% endfloat.sty was written by James Darrell McCauley, Jeff Goldberg and
+% Axel Sommerfeldt. This package may be useful when used in conjunction with
 % IEEEtran.cls'  captionsoff option. Some IEEE journals/societies require that
 % submissions have lists of figures/tables at the end of the paper and that
 % figures/tables without any captions are placed on a page by themselves at
@@ -335,7 +334,7 @@ sorting=ynt
 % http://www.ctan.org/pkg/endfloat
 %
 % The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
-% later in the document, say, to conditionally put the References on a 
+% later in the document, say, to conditionally put the References on a
 % page by themselves.
 
 
@@ -370,8 +369,8 @@ sorting=ynt
 % utility, the thumbpdf *Perl script* is needed to make these .tpm or .tpt
 % thumbnail files from a .ps or .pdf version of the document (which obviously
 % does not yet contain pdf thumbnails). Thus, one does a:
-% 
-% thumbpdf filename.pdf 
+%
+% thumbpdf filename.pdf
 %
 % to make a filename.tpt, and:
 %
@@ -383,7 +382,7 @@ sorting=ynt
 % .tpm files if the main document changes and then to recompile the
 % document to incorporate the revised thumbnails to ensure that thumbnails
 % match the actual pages. It is easy to forget to do this!
-% 
+%
 % Unix systems come with a Perl interpreter. However, MS Windows users
 % will usually have to install a Perl interpreter so that the thumbpdf
 % script can be run. The Ghostscript PS/PDF interpreter is also required.
@@ -417,7 +416,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 % DVI and PDF output. Perhaps surprisingly, all the other PDF features
 % (PDF bookmarks, thumbnails, etc.) can be preserved in
 % .tex->.dvi->.ps->.pdf workflow if the respective packages/scripts are
-% loaded/invoked with the correct driver options (dvips, etc.). 
+% loaded/invoked with the correct driver options (dvips, etc.).
 % As most IEEE papers use URLs sparingly (mainly in the references), this
 % may not be as big an issue as with other publications.
 %
@@ -491,7 +490,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 % \IEEEcompsocthanksitem becomes a line break with idention. This
 % facilitates dual compilation, although admittedly the differences in the
 % desired content of \author between the different types of papers makes a
-% one-size-fits-all approach a daunting prospect. For instance, compsoc 
+% one-size-fits-all approach a daunting prospect. For instance, compsoc
 % journal papers have the author affiliations above the "Manuscript
 % received ..."  text while in non-compsoc journals this is reversed. Sigh.
 
@@ -501,10 +500,10 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
         and~Matteo~Puzella,~EE% <-this % stops a space
 }
 
-% note the % following the last \IEEEmembership and also \thanks - 
+% note the % following the last \IEEEmembership and also \thanks -
 % these prevent an unwanted space from occurring between the last author name
 % and the end of the author line. i.e., if you had this:
-% 
+%
 % \author{....lastname \thanks{...} \thanks{...} }
 %                     ^------------^------------^----Do not want these spaces!
 %
@@ -526,7 +525,7 @@ pdfkeywords={Computer Society, IEEEtran, journal, LaTeX, paper,
 {Shell \MakeLowercase{\textit{et al.}}: Bare Advanced Demo of IEEEtran.cls for IEEE Computer Society Journals}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
-% 
+%
 % *** Note that you probably will NOT want to include the author's ***
 % *** name in the headers of peer review papers.                   ***
 % You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
@@ -617,51 +616,59 @@ Beamforming, Microphone Arrays, Acoustics, Hearing Loss, Signal Processing
 
 % The very first letter is a 2 line initial drop letter followed
 % by the rest of the first word in caps (small caps for compsoc).
-% 
+%
 % form to use if the first word consists of a single letter:
 % \IEEEPARstart{A}{demo} file is ....
-% 
+%
 % form to use if you need the single drop letter followed by
 % normal text (unknown if ever used by the IEEE):
 % \IEEEPARstart{A}{}demo file is ....
-% 
+%
 % Some journals put the first two words in caps:
 % \IEEEPARstart{T}{his demo} file is ....
-% 
+%
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{H}{earing} loss is a common problem among the senior citizen population. As we get older, parts of the inner ear that are sensitive to sound begin to atrophy – a process that is often exacerbated by many factors that are commonly found among the elderly, such as diabetes, high blood pressure, and even some chemotherapy drugs.  Presbycusis – age related hearing loss – affects about 1 in 3 Americans over the age of 65 \cite{hl_nih}. By age 75, this number increases to about 1 in 2.
+\IEEEPARstart{H}{earing} loss is a common problem among the senior citizen population. As we get older, parts of the inner ear that are sensitive to sound begin to atrophy â€“ a process that is often exacerbated by many factors that are commonly found among the elderly, such as diabetes, high blood pressure, and even some chemotherapy drugs.  Presbycusis â€“ age related hearing loss â€“ affects about 1 in 3 Americans over the age of 65 \cite{hl_nih}. By age 75, this number increases to about 1 in 2.
 
 Its prevalence is concerning, as adequate hearing is a vital requirement for communication. The typical onset of presbycusis coincides with many major social changes in the life of an individual. An individual may be facing retirement, or losing mobility due to age-related ailments.
 
-The loss of these social interactions can compound with hearing loss and have profound effects on cognition. In a study of 2,304 adults with individuals with hearing impairments, those without hearing assistance were 50\% more likely to suffer from depression \cite{myers}. A separate study found that dementia progressed more quickly among the hearing impaired population than a healthy population, with cognitive performance declining 30 – 40\% faster over an equal period of time \cite{lin}.
+The loss of these social interactions can compound with hearing loss and have profound effects on cognition. In a study of 2,304 adults with individuals with hearing impairments, those without hearing assistance were 50\% more likely to suffer from depression \cite{myers}. A separate study found that dementia progressed more quickly among the hearing impaired population than a healthy population, with cognitive performance declining 30 to 40\% faster over an equal period of time \cite{lin}.
 
 
 \subsection{Existing Solutions}
-The current hearing aid market provides hearing aids that use beamforming. The beamforming hearing aid consists of multiple omnidirectional microphones that form a beam signal. It helps attenuate background noise while focusing toward the target sound. The big issue with the beamforming hearing aids is that the sensitivity of the hearing aid drops off at low frequencies (~1000 Hz). In order for the beamforming hearing aid to accommodate this situation, additional gain must be implemented in the hearing aid to hear low frequencies. However, additional gain comes at the cost of internal noise in the hearing aid, which is unwanted. 
+The current hearing aids in todayâ€™s market fall under two categories: analog and digital.
 
-A common polar amplification pattern for a simple beamforming hearing aid is a cardioid. By delaying microphone outputs from the sides and rear of the hearing aid, sounds arriving from the those directions can be attenuated, while sounds arriving from directly in front of the user are amplified.
+Analog hearing aids pick up sound, amplify the sound, and feed it into the userâ€™s ear. Analog hearing aids can have certain settings for certain environments if requested to the audiologist \cite{hearing_aids}. This means that the aid can be adjusted to a specific volume depending on the environment the user is in, whether it be on the highway stuck in traffic or in the house watching television. However, analog hearing aids cannot distinguish between the sounds the user wants to hear and the sounds the user does not want to hear \cite{hearing_aids}.
 
-\begin{figure}
+Analog hearing aids have begun to become obsolete in favor of digital hearing aids. Digital hearing aids contain a microchip that acts as a computer database in order to help the userâ€™s hearing loss \cite{amplifon} . The digital hearing aid picks up the sound, and converts the analog signal into a digital signal. The ability to convert the signal to digital allows the hearing aid to filter out background noise frequencies and amplify frequencies that are desired, like human speech \cite{amplifon}. The audiologist has more control in adjusting the hearing aid for the user because of the digital conversion. A common complaint with the digital hearing aids is the price tag. The average price of a digital hearing aid ranges from $\$1500$ to $\$3500$\cite{audicus} . Also, the digital hearing aid gathers all sound coming from every direction of the user before any signals are filtered. Therefore, even if the hearing aid is customized to filter out background noise and only amplify human speech, the user does not have control over what conversations he or she will hear.
+
+The current hearing aid market also provides hearing aids that use beamforming. The beamforming hearing aid consists of multiple omnidirectional microphones that form a beam signal \cite{Staab} . It helps attenuate background noise while focusing toward the target sound. A common polar amplification pattern for a simple beamforming hearing aid is a cardioid. By delaying microphone outputs from the sides and rear of the hearing aid, sounds arriving from those directions can be attenuated, while sounds arriving from directly in front of the user are amplified.
+
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=2.5in]{cardiod}
     \caption{Cardioid Pattern response for directional hearing aids. $90^o$ represents the area directly in front of the user}
     \label{fig:cardiode}
 \end{figure}
 
-However, these systems have a common flaw: they do not distinguish between sound sources when amplifying sound. When a hearing aid user is attempting to listen to a conversation, anything that is not part of that conversation is background noise, whether that be the television in the room, or a separate conversation across the room. Hearing aids without a form of source isolation will amplify wanted sources, as well as unwanted sources, creating background noise. This is undesirable, as Kochkin \cite{kochkin} found that a quarter of individuals who own hearing aids but do not use them cite poor performance amid background noise as the primary reason. 
 
-Further, as is shown by the polar plot of the directional hearing aid in Figure \ref{fig:cardiode}, many current directional solutions are dependent upon the listener physically looking at a target to obtain maximum amplification. However, this is often not the case in an actual conversation. There are many instances where a participant in a conversation may not be actively looking at other participants, such as when they are looking at a television, or moving through the room. In these scenarios, a listener’s ability to perceive the conversation should not be hindered by head position.
+The issue with the beamforming hearing aids is that the sensitivity of the hearing aid drops off at low frequencies, like 1000 Hz \cite{thompson} . In order for the beamforming hearing aid to accommodate this situation, additional gain must be implemented in the hearing aid to hear low frequencies. However, additional gain comes at the cost of internal noise in the hearing aid, which is unwanted \cite{thompson}.
+
+As mentioned above, all current solutions have a flaw that hampers the userâ€™s use of their respective hearing aid. Kochkin  found that a quarter of individuals who own hearing aids but do not use them cite poor performance amid background noise as the primary reason \cite{kochkin}.
+Further, as is shown by the polar of the directional hearing in Figure \ref{fig:cardiode}, many current directional solutions are dependent upon the listener physically looking at a target to obtain maximum amplification. However, this is often not the case in an actual conversation. There are many instances where a participant in a conversation may not be actively looking at other participants, such as when they are looking at a television, or moving through the room. In these scenarios, a listenerâ€™s ability to perceive the conversation should not be hindered by head position.
+
+
 
 \subsection{Requirements}
 
 Noting the two above scenarios, we have proposed a hearing aid system that allows an elderly user:
 
 \begin{enumerate}
-    \item To selectively attenuate or amplify nearby human targets within an indoor space, -essentially giving the user the ability to “mute” or “turn the volume up” on individuals within the room.
+    \item To selectively attenuate or amplify nearby human targets within an indoor space, -essentially giving the user the ability to â€œmuteâ€ or â€œturn the volume upâ€ on individuals within the room.
     \item To move about the room without negatively affecting the amplification of their conversation
 \end{enumerate}
- 
+
 We achieve both of these goals using beamforming through a stationary array of microphones within the room, a process that we will describe in detail in Section II.
 
 
@@ -680,7 +687,7 @@ The specifications for the hearing aid system are summarized in Table 1: \\
     Angle of Operation & $30^o$ to $150^o$ \\
     Maximum Number of Targets &	$>4$ \\
     Beamwidth &	$<15^o$ \\
-    Bandwidth &	600 – 2400 Hz\\
+    Bandwidth &	600 â€“ 2400 Hz\\
     Delay & $<300$ms \\
     \hline
     \end{tabular}
@@ -690,7 +697,7 @@ The specifications for the hearing aid system are summarized in Table 1: \\
 
 
 
-\textbf{Size and Range of Device:} To formulate our specifications, we made the assumption that the system will be operating within a user’s home in a space reserved for entertaining guests, such as a family or living room. Considering a 20’ x 20’ living room, this assumption provides the maximum distance that the system must identify and listen to targets, as well as the maximum allowed size of the system. 
+\textbf{Size and Range of Device:} To formulate our specifications, we made the assumption that the system will be operating within a userâ€™s home in a space reserved for entertaining guests, such as a family or living room. Considering a 20â€™ x 20â€™ living room, this assumption provides the maximum distance that the system must identify and listen to targets, as well as the maximum allowed size of the system.
 
 Within the relatively small space of a living room, it is important to ensure that any potential device does not disrupt the normal daily life of any occupants. We desire a wall-mounted system to leave as much floor space for the occupant as possible. The system should also not overtly draw attention to itself and dominate the room. To accomplish this, we set a device size limit of 2 meters in length, about the size of a large hanging piece of artwork.
 
@@ -701,7 +708,7 @@ Within the relatively small space of a living room, it is important to ensure th
     \label{fig:beams}
 \end{figure}
 
-\textbf{Beamwidth:} To effectively isolate the output of sound sources, we must be able to encapsulate each target within distinct, non-overlapping beams, as seen in Figure \ref{fig:beams} If each target is centered within a beam, then the 3dB beamwidth of that beam must not intrude into the 3dB beamwidth of another beam. We considered a typical living room couch seat as the minimally spaced placement that any two people will be arranged within the room, as seen in Figure 2. If a typical couch cushion is 25” in width, and the couch is 8’ from the wall, then the  minimum beamwidth is approximately $15^o$
+\textbf{Beamwidth:} To effectively isolate the output of sound sources, we must be able to encapsulate each target within distinct, non-overlapping beams, as seen in Figure \ref{fig:beams} If each target is centered within a beam, then the 3dB beamwidth of that beam must not intrude into the 3dB beamwidth of another beam. We considered a typical living room couch seat as the minimally spaced placement that any two people will be arranged within the room, as seen in Figure 2. If a typical couch cushion is 25â€ in width, and the couch is 8â€™ from the wall, then the  minimum beamwidth is approximately $15^o$
 
 \begin{figure}[!h]
     \centering
@@ -710,13 +717,11 @@ Within the relatively small space of a living room, it is important to ensure th
     \label{fig:find_bw}
 \end{figure}
 
-\textbf{Bandwidth:} In typical telephony applications, the transmitted human speech spectrum range is about 300 – 3300 Hz5. in order to maintain intelligibility. However, Section II will show that beamwidth may be gained by sacrificing bandwidth, so we limit ourselves to 600 – 2400 Hz. This is  similar to the 300 – 2700 Hz bandwidth used for long-distance telephone connections in the 1980s \cite{polycom}.
+\textbf{Bandwidth:} In typical telephony applications, the transmitted human speech spectrum range is about 300 to 3300 Hz, in order to maintain intelligibility  \cite{polycom}. However, Section II will show that beamwidth may be gained by sacrificing bandwidth, so we limit ourselves to 600 â€“ 2400 Hz. This is  similar to the 300 â€“ 2700 Hz bandwidth used for long-distance telephone connections in the 1980s \cite{polycom}.
 
-\textbf{Delay:} To provide seamless conversations, the delay between reception of sound and playback to the user must be minimal. The ITU G-177 specification for VoIP mandates a two-way delay of less than 300 ms, so we used this number to provide an upper bound on delay.
+\textbf{Delay:} To provide seamless conversations, the delay between reception of sound and playback to the user must be minimal. The ITU G-177 specification for VoIP mandates a two-way delay of less than 300 ms \cite{itu}, so we used this number to provide an upper bound on delay.
 
-\textbf{Angle of Operation:}
-
-For a wall mounted system, microphones must be able to target and listen over a wide range of angles to provide adequate coverage for the entire room. For a microphone array parallel to a wall, we would ideally want to isolate and amplify sound over a range of $180^o$. However, the nature of our signal processing method, beamforming, ensures that isolating sound from sources close to the extreme ends of this range is difficult (at $0^o$/$180^o$, ie. when a source is close to the same wall where the system is mounted).
+\textbf{Angle of Operation:} For a wall mounted system, microphones must be able to target and listen over a wide range of angles to provide adequate coverage for the entire room. For a microphone array parallel to a wall, we would ideally want to isolate and amplify sound over a range of $180^o$. However, the nature of our signal processing method, beamforming, ensures that isolating sound from sources close to the extreme ends of this range is difficult (at $0^o$/$180^o$, ie. when a source is close to the same wall where the system is mounted).
 
 \begin{figure}
     \centering
@@ -738,7 +743,9 @@ We desire for the user to have individual control over each possible source of s
 
 Our approach to addressing this problem harnesses the power of audio beam-forming and mates it with an intuitive user interface.  This is enabled by a visual tracking system alongside a mobile app that allows intuitive user interaction for system control.  The beam-forming approach has been used several times before and is well documented.  Furthermore, our processing algorithm gives us a very low latency so that this system viable for real-time communication.
 
-Our aim was to automate the system as much as possible while allowing the user to control only what was relevant, specifically which individuals they would like to isolate and hear.  The Microsoft Kinect plays a key role in allowing this automation with its ability to identify and map unique individuals.  The mobile app displays this data and allows for user selection.  The software program performing the beam-forming processes the audio streams from the beam-forming array and outputs them to the user’s headset.  An overview of this system is shown in Figure 3.
+There is a long history of acoustic beamforming projects in the UMass ECE department \cite{sdp04}\cite{sdp06}\cite{sdp14}\cite{sauron}. Project Sauron from 2016 left behind a significant amount of valuable hardware, from microphones to a 16 channel ADC. To save on costs, we have aimed to utilize these features within our own project.
+
+However, while using past hardware, we seek to improve upon the performance and usability of previous design projects. One of our aims is to automate the system as much as possible while allowing the user to control only what is relevant, specifically which individuals they would like to isolate and hear. The Microsoft Kinect plays a key role in allowing this automation with its ability to identify and map unique individuals. The mobile app displays this data and allows for user selection.  The software program performing the beam-forming processes the audio streams from the beam-forming array and outputs them to the userâ€™s headset.  An overview of this system is shown in Figure 3.
 
 \begin{figure*}[!htb]
     \centering
@@ -751,7 +758,7 @@ Our aim was to automate the system as much as possible while allowing the user t
 
 \subsection{Microphone Array}
 \label{sec:mic_array}
-The microphone array is the method through which sound is sampled spatially from the environment. Through classes such as ECE 313 and ECE 563, we are familiar with how an analog signal may be sampled in time by a set sampling period. An array of elements displaced by a set distance d samples the same signal with a relative phase shift between elements. By adding the output of each element together, signals from certain directions are added constructively, while signals from other directions are added destructively. 
+The microphone array is the method through which sound is sampled spatially from the environment. Through classes such as ECE 313 and ECE 563, we are familiar with how an analog signal may be sampled in time by a set sampling period. An array of elements displaced by a set distance d samples the same signal with a relative phase shift between elements. By adding the output of each element together, signals from certain directions are added constructively, while signals from other directions are added destructively.
 
 An array of elements with identical radiation patterns can be described by a term called the array factor, which for a one-dimensional linear array of n elements can be written as:
 
@@ -762,7 +769,7 @@ A(\phi) = a_0 + a_1e^{jkd\cos(\phi)} + ... + a_ne^{jnkd\cos(\phi)}
     A(\phi) = \Sigma_na_ne^{jnkd\cos(\phi)}
 \end{equation}
 
-Where d  is the distance between sampling elements, k  is the wavenumber of an incoming wave, and $a_o$ … $a_n$ are complex coefficients \cite{sophocles}. This sum of complex exponentials completely describes the geometry of the array, with each term representing the relative phase shift resulting from the time that it takes for a wave to propagate from element to element.
+Where d  is the distance between microphones, k  is the wavenumber of an incoming wave, $phi$ is the direction of propagation for the sound wave,  and $a_o$ â€¦ $a_n$ are complex coefficients \cite{sophocles}. This sum of complex exponentials completely describes the geometry of the array, with each term representing the relative phase shift resulting from the time that it takes for a wave to propagate from element to element.
 
 \begin{figure}[!htb]
     \centering
@@ -788,36 +795,37 @@ By changing the coefficients $a_0 \ldots a_n$  to a set of complex exponentials,
     \label{fig:steered_aliased}
 \end{figure}
 
-From Equation \ref{eq:pattern_mult}, we can see that there are two terms affecting the power gain polar pattern of our linear array:
+From (\ref{eq:pattern_mult}), we can see that there are two terms affecting the power gain polar pattern of our linear array:
 
 \begin{itemize}
-	\item $G(\phi)$ – determined by the microphone selection
-	\item $|A(\phi)|^2$ – determined by the geometry of the microphone elements
+	\item $G(\phi)$ â€“ determined by the microphone selection
+	\item $|A(\phi)|^2$ â€“ determined by the geometry of the microphone elements
 \end{itemize}
 
 By optimizing both of these terms, we can minimize the beamwidth of the array, and meet our specifications
 
 \subsubsection{Microphones}
 
-For microphone selection, we had access to the 16 omnidirectional ADMP510 MEMS microphones used in the SDP 16 beamforming project.  As the SDP 16 team noted, this particular model of microphone has a relatively linear frequency response within the frequency band targeted by our system \cite{sauron}. 
+For microphone selection, we had access to the 16 omnidirectional ADMP510 MEMS microphones used in the SDP 16 beamforming project.  As the SDP 16 team noted, this particular model of microphone has a relatively linear frequency response within the frequency band targeted by our system \cite{sauron}.
 
 \begin{figure}
     \centering
     \includegraphics[width=3.5in]{mic_response}
-    \caption{Frequency response for the ADMP510 microphones. Note the flat response over the targeted band 600 – 2400 Hz}
+    \caption{Frequency response for the ADMP510 microphones. Note the flat response over the targeted band 600 â€“ 2400 Hz}
     \label{fig:mic_response}
 \end{figure}
 
-Given this property of the microphones, we decided to use SDP16’s microphones within our own design, to ensure that all frequencies within the targeted band are amplified equally. However, as we are receiving these microphones used, we will need to complete a verification procedure on each microphone, to ensure that it is still functioning after storage. To accomplish this calibration procedure, we will record low, medium and high frequency tones on each microphone, and then play each tone back. If the playback tone matches the original tone, then we can verify the microphone as functional.
+Given this property of the microphones, we decided to use SDP16â€™s microphones within our own design, to ensure that all frequencies within the targeted band are amplified equally. However, as we are receiving these microphones used, we will need to complete a verification procedure on each microphone, to ensure that it is still functioning after storage. To accomplish this calibration procedure, we will record low, medium and high frequency tones on each microphone, and then play each tone back. If the playback tone matches the original tone, then we can verify the microphone as functional.
 
-Note that these microphones are omnidirectional, so tones are uniformly amplified in terms of direction. Thus, Equation \ref{eq:pattern_mult} simplifies to:
+Note that these microphones are omnidirectional, so tones are uniformly amplified in terms of direction. Thus,  (\ref{eq:pattern_mult}) simplifies to:
 
 \begin{equation}
+\label{eq:gain_simpl}
 G_{tot}(\phi) = |A(\phi)|^2
 \end{equation}
 
 \subsubsection{Array Geometry}
-As Equation 3 shows, the array factor is the only term that determines the directivity of the array. Therefore, in order to optimize the beamwidth, we need to select an optimal microphone geometry.
+As (\ref{eq:gain_simpl}) shows, the array factor is the only term that determines the directivity of the array. Therefore, in order to optimize the beamwidth, we need to select an optimal microphone geometry.
 
 Orfanidis shows that for a uniform linear array, the 3dB beamwidth may be approximated as \cite{sophocles}:
 
@@ -827,11 +835,11 @@ Orfanidis shows that for a uniform linear array, the 3dB beamwidth may be approx
 
 Where $\phi_0$ is the steering angle, $\lambda$ is the wavelength of tone, N is the number of microphones, d is the microphone distance, and b is a factor dependent on the weighting applied to each microphone.
 
-Equation \ref{eq:bw} shows that beamwidth will increase as the beam is steered towards 0 or 180o, and as frequency decreases. This creates an issue for our beamformer, as it means that different frequencies within the human speech spectrum will produce different beamwidths. 
+ (\ref{eq:bw}) shows that beamwidth will increase as the beam is steered towards 0 or $180^o$, and as frequency decreases. This creates an issue for our beamformer, as it means that different frequencies within the human speech spectrum will produce different beamwidths.
 
-Increasing d or N will decrease beamwidth, but the distance between microphones cannot be increased beyond $\lambda$L/2, where $\lambda$L is the largest wavelength within the targeted frequency band. This is the Nyquist criteria for spatial sampling through arrays, analogous to the Nyquist frequency for sampling in time8. If the Nyquist criteria is exceeded, then additional beams will appear that are equal in magnitude to the main beam. This is known as spatial aliasing, and an example may be seen in Figure \ref{fig:steered_aliased}.
+Increasing d or N will decrease beamwidth, but the distance between microphones cannot be increased beyond $\lambda$L/2, where $\lambda$L is the largest wavelength within the targeted frequency band. This is the Nyquist criteria for spatial sampling through arrays, analogous to the Nyquist frequency for sampling in time \cite{sophocles}. If the Nyquist criteria is exceeded, then additional beams will appear that are equal in magnitude to the main beam. This is known as spatial aliasing, and an example may be seen in Figure \ref{fig:steered_aliased}.
 
-With this knowledge in mind, we analyzed SDP16’s array. The SDP16 team used a nested array as pioneered by Smith9, where the targeted frequency band was split into smaller bands, and then subarrays were constructed out of the 16 available microphones. By sharing microphones between subarrays, each subarray could be allocated 8 microphones.
+With this knowledge in mind, we analyzed SDP16â€™s array. The SDP16 team used a nested array as pioneered by \cite{smith}, where the targeted frequency band was split into smaller bands, and then subarrays were constructed out of the 16 available microphones. By sharing microphones between subarrays, each subarray could be allocated 8 microphones.
 
 \begin{table}[!h]
     \centering
@@ -861,7 +869,7 @@ However, for the SDP16 array, within each band, approximately half of the freque
 \hfil
 \subfloat[c]{\includegraphics[width=2.2in]{steered_multi_earbeamer}%
 \label{fig_third_case}}
-\caption{The left plot shows the SDP16 arrays response to a 3500Hz signal when the array is steered to $150^o$, creating an aliased lobe at approximately $60^o$. The center plot shows SDP16’s array response when beamforming is performed in parallel, and aimed at 30, 90, and 150 degrees. The spatial aliasing at 135 and 55 degrees adds a significant amount of unwanted amplification to the field. The far right plot shows the highest frequency for the Earbeamer array, pointed at the same locations, with no spatial aliasing}
+\caption{The left plot shows the SDP16 arrays response to a 3500Hz signal when the array is steered to $150^o$, creating an aliased lobe at approximately $60^o$. The center plot shows SDP16â€™s array response when beamforming is performed in parallel, and aimed at 30, 90, and 150 degrees. The spatial aliasing at 135 and 55 degrees adds a significant amount of unwanted amplification to the field. The far right plot shows the highest frequency for the Earbeamer array, pointed at the same locations, with no spatial aliasing}
 \label{fig:multi_beam}
 \end{figure*}
 
@@ -874,7 +882,7 @@ However, for the SDP16 array, within each band, approximately half of the freque
 
 
 
-Figure \ref{fig_first_case} and \ref{fig_second_case} demonstrate the negative effects of exceeding the Nyquist criteria. As our system implements beamforming in parallel, the spatial aliasing would add even more noise, as the additional beams will each produce an aliased beam. 
+Figure \ref{fig_first_case} and \ref{fig_second_case} demonstrate the negative effects of exceeding the Nyquist criteria. As our system implements beamforming in parallel, the spatial aliasing would add even more noise, as the additional beams will each produce an aliased beam.
 
 To correct this issue, we divided the targeted frequency band into octaves, as Smith originally did. For a frequency band [$f_L$, $f_H$]:
 
@@ -884,7 +892,7 @@ To correct this issue, we divided the targeted frequency band into octaves, as S
 \item	All subarrays were allocated the same number of microphones, to ensure that the array response to each band was identical
 \end{itemize}
 
-With these requirements, we could create three arrays targeting [600, 1200].,[1200, 2400], and [2400, 4800] Hz. By eliminating the highest frequency band, we could increase the number of microphones allocated to the lower bands from 8 to 11 microphones. Internal tests among the team found that speech was still intelligible lacking the higher frequencies. 
+With these requirements, we could create three arrays targeting [600, 1200],[1200, 2400], and [2400, 4800] Hz. By eliminating the highest frequency band, we could increase the number of microphones allocated to the lower bands from 8 to 11 microphones. Internal tests among the team found that speech was still intelligible lacking the higher frequencies.
 
 The array performance is summarized in the table below, for the best and worst cases frequencies:
 
@@ -904,82 +912,140 @@ The array performance is summarized in the table below, for the best and worst c
     \label{tab:earbeamer_performance}
 \end{table}
 
-As shown in Table 3, beamwidth suffers when the steering angle is directed towards its maximum angle of $150^o$. However, beamwidth in the regions directly in front of the array, from 60 – 120 degrees remains relatively close to the specification. This is likely the best performance we can achieve with our current 16 channel Analog to Digital converter. From Equation 4, the only way to narrow beamwidth further is to add more microphones, but that would require purchasing an ADC that is outside the range of our budget.
+As shown in Table 3, beamwidth suffers when the steering angle is directed towards its maximum angle of $150^o$. However, beamwidth in the regions directly in front of the array, from 60 to 120 degrees remains relatively close to the specification. This is likely the best performance we can achieve with our current 16 channel Analog to Digital converter. From Equation 4, the only way to narrow beamwidth further is to add more microphones, but that would require purchasing an ADC that is outside the range of our budget.
 
 \subsection{Beamforming Algorithm}
 
-Our beamforming algorithm uses a delay-sum technique, where a varying delay is applied in software to each microphone before summing each signal together. By choosing the correct delays based on the position of the audio source, we can align the phase of the signals from a certain location causing constructive interference, thus theoretically amplifying only the audio from that location.
+Our beamforming algorithm uses a delay-sum technique, where a different time delay is applied to each microphone in the array before combining the signals together. By calculating the delays using the position we wish to target, we can align the phase of the signals sourced from that location causing constructive interference, thus theoretically amplifying the audio only from that location.
 
 \begin{equation} \label{eq:beamforming}
 y[n] = \Sigma^{M-1}_{m=0}x[n-m\tau]
 \end{equation}
 
-The beamforming algorithm was implemented in C++, using a pipelined approach. The idea behind the pipelined approach is that we can be constantly reading in audio data, which has a I/O cost associated with it, while performing calculations on the previously received audio at the same time. This way, we would be given the sample length to perform all our calculations. Using a sample rate of 16kHz and a sample size of 1024 samples, each buffer would hold 64ms of audio data.
+The beamforming algorithm was implemented using a pipelined approach in C++. The idea behind the pipelined approach is that we can be constantly reading in audio data, which has an I/O cost associated with it, while performing calculations on the previously received audio at the same time. This way, we would be given the sample length to perform all our calculations. We use 3 rotating buffers per microphone, reading from two of them, and writing to the third to minimize memory movements and have a seamless flow through the audio. Using a sample rate of 16kHz and a sample size of 1024 samples, each buffer would hold 64ms of audio data.
 
-One of our concerns was the amount of time the beamforming calculations would take for a single beam. As we are interested in calculating multiple beams, it is important that we can perform the calculations much faster than the time each sample takes. After running tests on our beamforming algorithm, we calculated that on average it takes under 200$\mu$s to perform the beamforming calculations for one beam, well under the 64ms we have.
+One of our concerns was the amount of time the beamforming calculations would take for a single beam. As we are interested in calculating multiple beams, it is important that we can perform the calculations much faster than the time each sample takes. After running tests on our beamforming algorithm, we calculated that on average it takes under 200us to perform the beamforming calculations for one beam, well under the 64ms we have.
+
 
 \subsection{Anti-Aliasing Filter and ADC}
+The purpose of the anti-aliasing filter block is to cutoff sounds after a certain frequency. This filter comes before the Analog to Digital Converter, a device that converts the signal from analog to digital before being sent to the computer.
 
-The purpose of the anti-aliasing filter block is to cutoff sounds after a certain frequency. This filter comes before the Analog to Digital Converter, a device that converts the signal from analog to digital before being sent to the computer. One requirement for the filter is to have a delay response that does not interfere with the beamforming algorithm. The low pass filter will be built on a circuit board using capacitors and inductors using a technique that is used for microwave frequencies.
+We have two main requirements for the filter:  we desire a sharp attenuation drop at the cutoff frequency, and a delay response that does not interfere with the beamforming algorithm. The latter requirement is because the filter does not affect all frequency components equally; some frequency components may be delayed more than others. Since our beamforming algorithm relies on delaying microphone inputs, unintended delays can damage our ability to recover a desired signal when microphone outputs are added together.
 
- Rather than building an RC series filter which gives a 3Db cutoff at the desired cutoff frequency, it is preferred to have a sharper drop off at the cutoff frequency. In order to do that, we can use a method called the Insertion Loss Method. This method is designed to combine capacitors and inductors on a circuit board to achieve a sharper drop off of attenuation. The Butterworth filter, as shown in Figure 9, does not drop off in attenuation until we reach the cutoff frequency. The more capacitors and inductors added together in the circuit, the sharper the drop off, but it comes at the expense of more elements on the circuit, which could lead to more room for error. The issue with achieving a sharper drop off is the greater the group delay. Group delay is the rate of change of transmission phase angle with respect to frequency. The linear phase filter, another circuit using capacitors and inductors, can achieve a very good delay response at the expense of a very slow attenuation drop off at cut off frequency. As mentioned previously, the anti-alias filter should provide a sharp drop-off in order to avoid aliasing. Once the message is sampled, there is no way to undo aliasing. However, we also have to keep in mind the delay response of the filter as well, as it can not interfere with the beamforming algorithm. A suggestion made by Professor Kelly was to design one filter that focuses solely on getting a sharp drop off in attenuation, and another filter followed right after that achieves a good delay response. The cut off frequency we are aiming for is 8 kHz because our sampling frequency is at 16 kHz.
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=6in]{group_delay}
+    \caption{Group Delay of an RC Filter}
+    \label{fig:group_delay}
+\end{figure*}
+\begin{table*}[t]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+        \textbf{Low Pass Filter} & Chebyshev Filter & Butterworth Filter & RC Filter & Linear Phase Filter\\
+    \hline
+            \textbf{Change in Group Delay}, $\mu$s & 793.75 & 173.53 & 33.15 & 0.12\\
+            \hline
+    \end{tabular}
+    \caption{Comparison of Group Delay across Various Filter Configurations}
+    \label{tab:group_delay}
+\end{table*}
 
-The Analog to Digital Converter comes after the filtering process is done. We use Visual Studios to implement sampling at 2 times our bandwidth, or 16kHz. The signal that was once analog is converted to a digital signal.
-
-\begin{figure*}[!h]
+\begin{figure*}[t]
     \centering
     \includegraphics[width=6in]{filter}
     \caption{Butterworth Antialiasing Filter}
     \label{fig:filter}
 \end{figure*}
 
+We can evaluate the effect of the filter on the delay of various frequencies by measuring the group delay.  Group delay â€œâ€¦ is the rate of change of transmission phase angle with respect to frequencyâ€ \cite{group_delay}. Figure \ref{fig:group_delay} gives a helpful visual of the appearance of group delay over the human speech frequency. This is the group delay of the RC filter plotted through PSPICE. Our cut-off frequency was 2.4 kHz because we want to use frequencies 2.4 kHz and below. The goal is to have no change in group delay in the pass band (0-2.4 kHz).
+
+The highest possible sampling rate we can achieve with our ADC is 16000 Hz, or about 1 sample every 62$\mu$s. We cannot allow the group delay to exceed this value, or else the audio may become distorted after beamforming. In this case, the biggest change of delay in the pass band was 33.154us because of the change in group delay from 0 to 2.4 kHz. Other types of filters affect the drop off in attenuation and group delay differently from one another.
+
+Through SPICE, we explored and simulated multiple filters for the microphones that applied to our requirements. Rather than building an RC series filter which gives a 3dB drop off at the desired cutoff frequency, it is preferred to have a sharper drop off at the cutoff frequency. There are well documented filter designs that can achieve sharper cutoffs using capacitors and inductors \cite{pozar}. In order to use these types of filter, we use a method called the Insertion Loss Method. This method is designed to combine capacitors and inductors on a circuit board in order to give the designer more control of filterâ€™s attributes, like attenuation drop off and group delay.
+
+The two filters that use the Insertion Loss method for sharp attenuation drops are the Butterworth filter and the Chebyshev filter. The Butterworth filter, as shown below in the figure, does not drop off in attenuation until we reach the cutoff frequency. The drop off in attenuation is linear after the cutoff frequency. The Chebyshev filter, a filter built in the same fashion as the Butterworth filter, offers a sharper drop off in attenuation at the cutoff frequency \cite{pozar}. However, as mentioned before, the greater the change in group delay in our desired passband, the bigger the interference with the beamforming algorithm. We therefore took a look into the linear phase filter. The linear phase filter, another circuit using the Insertion Loss method, can achieve a very good delay response at the expense of a very slow attenuation drop off at cut off frequency. Table \ref{tab:group_delay} shows the changes in group delay when having a cut off frequency of 2.4 kHz.
+
+ Before MDR, the initial approach to the hardware filter was to have a cut off frequency at 2.4 kHz, because that is the frequency band we need for the project. A suggestion made by Professor Kelly was to design the hardware filter that achieves a drop off in attenuation at 8kHz , because the target frequency band we want to use is from 0 to 2.4kHz. The group delay does not affect frequencies far away from the cut off frequency. Once the filtered signal is sent to the analog to digital converter, the signal would be sampled at 15 kHz. From there, we can use a software filter to extract only the human speech frequency spectrum. Since MDR, we have decided to use the simple RC filter to eliminate aliasing, due to its favorable group delay performance.
+
+
+
 \subsection{Xbox Kinect}
 
 A key component of our hearing aid system is the ability to identify targets within the room, and determine the location of each target relative to an array of microphones. These coordinates are used to dynamically aim our beamforming algorithm as targets move about the room. To accomplish this, we needed a robust computer vision system with a depth sensor that had adequate range to cover a typical living room. The Microsoft Kinect for the Xbox One fulfilled these requirements.
 
-The Kinect uses a Time-Of-Flight system to gauge depth. An infrared emitter emits pulses of infrared light, and an infrared sensor records when the pulse is reflected back. By recording the time required for the reflection to arrive, the relative distance of a point in space may be calculated. Using this system, the Kinect is able to maintain an effective range of 0.5 to 4.5 meters, which more than meets our minimum range specification of 20 feet. Further, the TOF system used in the Kinect for Xbox one has been proven accurate to a depth of 1mm \cite{chen}, which is more than adequate resolution for aiming the beamformer.
-
-To test the skeleton tracking, a program was written to extract coordinates from any target that entered the field of view, calculate the relative angle of that target to the Kinect, and display the angle on a screen. Through the course of this testing, it was found that the angle of view of the Kinect was only about $60^o$, as shown in Figure 9. Originally, we intended to place the Kinect directly below the microphone array, so that the origin of the Kinect’s coordinate system would align with the center of the array. However, our specification requires that any target from a $30^o$ to $150^o$ degree angle be selectable. To accommodate this, we must offset the Kinect to have a better view of the room, and then translate the returned coordinates to a system with the array center at its origin.
+The Kinect uses a Time-Of-Flight system to gauge depth. An infrared emitter emits pulses of infrared light, and an infrared sensor records when the pulse is reflected back. By recording the time required for the reflection to arrive, the relative distance of a point in space may be calculated. Using this system, the Kinect is able to maintain an effective range of 0.5 to 4.5 meters \cite{kinect_spec}, which more than meets our minimum range specification of 20 feet. Further, the TOF system used in the Kinect for Xbox one has been proven accurate to a depth of 1mm \cite{chen}, which is more than adequate resolution for aiming the beamformer.
 
 
-\begin{figure*}[!t]
-\centering
-\subfloat[a]{\includegraphics[width=3.7in]{kinect_view}%
-\label{fig_kinect}}
-\hfil
-\subfloat[b]{\includegraphics[width=3in]{kinect_view_steered}%
-\label{fig_kinect_steered}}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=8cm]{kinect_test}
+    \caption{Screenshot of Kinect Demo for MDR. Depth data returned from the Kinect is plotted to the screen, as well as the IDs and angular displacement of all tracked targets}
+    \label{fig:kinect_demo}
+\end{figure}
 
-\caption{The Angle of View is too narrow to adequately cover a room, so the Kinect must be offset from the microphone array to identify all possible targets}
-\label{fig:multi_beam}
-\end{figure*}
+To test and demonstrate the skeleton tracking for our MDR, a program was written to extract coordinates from any target that entered the field of view, calculate the relative angle of that target to the Kinect, and display the angle on a screen. A screenshot of this application is shown in Figure \ref{fig:kinect_demo}
+
+Through the course of this testing, it was found that the angle of view of the Kinect was only about $60^o$, as shown in Figure 16 of the Appendix. Originally, we intended to place the Kinect directly below the microphone array, so that the origin of the Kinectâ€™s coordinate system would align with the center of the array. However, our specification requires that any target from a $30^o$ to $150^o$ degree angle be selectable. To accommodate this, we must offset the Kinect to have a better view of the room, and then translate the returned coordinates to a system with the array center at its origin.
 
 \subsection{IPhone Application}
 
-The phone application is the single point of interaction for the user.  It communicates with the central processing software running on the computer.  Web socket technology has been chosen to allow for communication between mobile application and computer application.  This is a versatile, platform-agnostic protocol that is supported on many platforms.  More importantly, it allows two-way communication in an arbitrary manner – either party can send a message to the other at any time.  
+The phone application is the single point of interaction for the user.  It communicates with the central processing software running on the computer.  Web socket technology has been chosen to allow for communication between mobile application and computer application.  This is a versatile, platform-agnostic protocol that is supported on many platforms.  More importantly, it allows two-way communication in an arbitrary manner â€“ either party can send a message to the other at any time.
 
-To create the application, an understanding of iOS application development is required, which is something that must be learned.  Specifically, development will be done in the Swift programming language using the Xcode IDE.  This was chosen as it is modern and well-supported, targeting interactive application development of all kinds. Software development techniques learned in the past have been and will be useful in learning this new platform and problem-solving during the development process. 
+\begin{figure}
+    \centering
+    \includegraphics[width=2.5in]{app}
+    \caption{Current Graphical interface for the application. Coordinates of identified targets are used to render representations to the screen}
+    \label{fig:my_label}
+\end{figure}
+
+To create the application, an understanding of iOS application development is required, which is something that must be learned.  Specifically, development will be done in the Swift programming language using the Xcode IDE.  This was chosen as it is modern and well-supported, targeting interactive application development of all kinds. Software development techniques learned in the past have been and will be useful in learning this new platform and problem-solving during the development process.
 
 The computer will run a server to stablish a connection with the application over a network.  This web socket server is created running on the node.js JavaScript environment.  It listens on a port to establish a link with clients, in this case the application. The socket.io engine was used to implement this functionality.  In addition to support for running the server with node.js, there is a socket.io library available for iOS Swift development which was integrated into the mobile application.
 
-What the user sees is a graphical display of each target as shown in the figure.  The room layout on the display will have a fixed orientation, with a fixed reference point indicated.  When the target locations are updated on the main processing software, they will be sent by the server to this application.  These changes will be reflected by moving the position of each target indicator on the phone.  Each target displayed on the application can be pressed, and when it is, the phone sends this information to the server which alerts the system that a change in processing is required – either to enable or disable a specific target.
+What the user sees is a graphical display of each target as shown in the figure.  The room layout on the display will have a fixed orientation, with a fixed reference point indicated.  When the target locations are updated on the main processing software, they will be sent by the server to this application.  These changes will be reflected by moving the position of each target indicator on the phone.  Each target displayed on the application can be pressed, and when it is, the phone sends this information to the server which alerts the system that a change in processing is required â€“ either to enable or disable a specific target.
+
 
 To test the functionality of this subsystem a mobile application was designed and created.  Then a server was set up and the application was deployed on an actual iPhone device.  Both devices were connected to the same WiFi network.  Pressing one of the target indicators on the app generated messages on the computer, reflecting which target was toggled.  This showed that arbitrary communication was possible between the two devices.  Further work must be done to make the app more interactive and dynamic.
 
 \section{Project Management}
 
-The Ear Beamer team has successfully met its MDR objectives with deliverables beyond the initial plan shown in Table 4.  All subsystems have been shown to work successfully and the next objective is complete system integration.  With an initial focus on modelling beam-forming performance, we continued working to implement the hardware subsystems.  Currently the software and hardware subsystems are working successfully with synthetic inputs, without communication with other parts of the system directly.  They are all reading or processing data appropriately but must be patched together before the system will be fully functional.
+As each team member has unique professional and educational experiences, we divided the implementation of the project subsystems according to our particular strengths:
+
+\begin{itemize}
+
+\item Matteo Puzella is our sole Electrical Engineering major, with a particular interest in microwaves. He is applying his knowledge of filters to our project, as well as contributing to some of the more physical aspects of the project.
+\item Aaron Lucia has an interest in system design, but also signal processing, and he is applying that to the beamforming algorithm.
+
+\item Nathan Dunn has previously completed an REU that involved image processing, so he implemented the Kinect integration. He also completed research into the physics and dynamics of a beamforming array, helping with the design of the microphone array and the techniques of improving the beamforming.
+
+\item Niket Gupta has developed an interest in mobile application development through past personal projects, and is working on the user interface with the mobile phone app, as well as figuring out the analog to digital conversion of the microphone signals.
+
+\end{itemize}
+
+With these assignments, the Ear Beamer team has successfully met its MDR objectives with deliverables beyond the initial plan shown in Figure 16 of the Appendix.  All subsystems have been shown to work successfully and the next objective is complete system integration.  With an initial focus on modelling beam-forming performance, we continued working to implement the hardware subsystems.  Currently the software and hardware subsystems are working successfully with synthetic inputs, without communication with other parts of the system directly.  They are all reading or processing data appropriately but must be patched together before the system will be fully functional.
 
 Members of the Ear Beamer team have been assigned specific roles as shown in the figure, but continue to assist each other as needed. Weekly team meetings and adviser meetings help facilitate continued progress.  In addition, the team communicates frequently using a chat application called Slack, with occasional Skype group video calls.
 
-The Ear Beamer is proceeding on schedule. We plan on having a working product and be able to present it for CDR in March. After CDR, we plan to implement Chebychev weighting on microphones and prepare for demo day in May. The full schedule for completing the project is shown in Figure 11 in the Appendix
+The Ear Beamer is proceeding on schedule. We plan on having a working product and be able to present it for CDR in March. After CDR, we plan to implement Chebychev weighting on microphones and prepare for demo day in May. The full schedule for completing the project is shown in Figure 17 in the Appendix.
 
 \section{Conclusion}
 
-Currently, we have many of the subsystems working on their own, and we must now tie them together. We have planned for this, and it should be relatively easy to accomplish this. We anticipate encountering issues however, as most of our subsystems have been tested with simulated data, and we expect that real-world data might cause variances in our results.
+Currently, we have many of the subsystems working on their own, and we must now tie them together. We have planned for this, and are now diverting our attention to the modules of our design that link together major functional units. This includes the implementation of software filters to separate sampled audio into discrete $[600, 1200]$ Hz and $[1200, 2400]$ Hz bands for furhter processing in the beamforming algorithm. We are also developing a query/response protocol to allow a socket server on our Windows application to transfer target data to and from the iPhone application.
 
 
+Another ongoing task is physically building the anti-aliasing filters, connecting them to the 16 microphone outputs, and running our beamforming algorithm on actual data. We anticipate encountering issues here, as most of our subsystems have been tested with simulated data, and we expect that real-world data might cause variances in our results.
 
+For example, while our beamforming algorithm works with simulated data, this is under the assumption of operating within an echoless environment. In our model, sounds only travel away from the point that they originated. In reality, once a sound contacts a surface, it follows the Law of Reflection, and is reflected at an angle equal to the angle of incidence \cite{hyperphysics}.
+
+Sound reflections may cause sounds that a user wishes to amplify to instead be attenuated, or vice versa. This could significantly impact our project's performance at the April demonstration. We are actively investigating methods to bring our demonstration space in line with an ideal, echoless environment. This could include building and installing acoustic barriers made of sound absorbing foam.
+
+\section{Acknowledgements}
+We want to acknowledge the SDP 16 project Sauron team for their advice and use of some of their hardware from last year. We would also like to acknowledge our advisor, Professor Parente, for helping us to stay organized and on schedule, as well as Professors Kelly, Goeckel, Yang, and Tessier for their advice
+on beamforming applications and planning our project.
+
+% references section
+\printbibliography
 
 
 
@@ -999,9 +1065,27 @@ Currently, we have many of the subsystems working on their own, and we must now 
 
 
 \appendices
-\newpage
 \section{}
-Appendix one text goes here.
+
+\begin{figure*}[t]
+\centering
+\subfloat[a]{\includegraphics[width=3.7in]{kinect_view}%
+\label{fig_kinect}}
+\hfil
+\subfloat[b]{\includegraphics[width=3in]{kinect_view_steered}%
+\label{fig_kinect_steered}}
+
+\caption{The Angle of View is too narrow to adequately cover a room, so the Kinect must be offset from the microphone array to identify all possible targets}
+\label{fig:kinect_straight}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=6in]{mdr_deliverables}
+    \caption{Caption}
+    \label{fig:mdr_deliberables}
+\end{figure*}
+
 \thispagestyle{empty}
 \begin{landscape}
 \begin{figure}[]
@@ -1013,10 +1097,8 @@ Appendix one text goes here.
 \end{landscape}
 % you can choose not to have a title for an appendix
 % if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
 
-The authors would like to thank...
+
 
 
 % Can use something like this to put references on a page
@@ -1035,11 +1117,10 @@ The authors would like to thank...
 % The "triggered" command can be changed if desired:
 %\IEEEtriggercmd{\enlargethispage{-5in}}
 
-% references section
-\printbibliography
+
 
 % biography section
-% 
+%
 % If you have an EPS/PDF photo (graphicx package needed) extra braces are
 % needed around the contents of the optional argument to biography to prevent
 % the LaTeX parser from getting confused when it sees the complicated
@@ -1049,22 +1130,6 @@ The authors would like to thank...
 %\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Michael Shell}
-Biography text here.
-\end{IEEEbiography}
-
-% if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{John Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
-
-% insert where needed to balance the two columns on the last page with
-% biographies
-%\newpage
-
-\begin{IEEEbiographynophoto}{Jane Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
 
 % You can push biographies down or up by placing
 % a \vfill before or after them. The appropriate
