@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\adc.cpp" />
     <ClCompile Include="src\driver.cpp" />
     <ClCompile Include="src\FIRFilter.cpp" />
     <ClCompile Include="src\wav-file.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="arithmetic.h" />
+    <ClInclude Include="include\adc.h" />
     <ClInclude Include="include\beamforming.h" />
     <ClInclude Include="include\FIRFilter.h" />
     <ClInclude Include="include\high_coefs.h" />
@@ -87,7 +89,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Nathan\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files (x86)\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -97,6 +102,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib32\msvc;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -105,6 +111,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib64\msvc;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;nidaqmx.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

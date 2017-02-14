@@ -157,9 +157,6 @@
     <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GTest\GTest.vcxproj">
-      <Project>{60a83238-a122-473d-b9fd-8993716deaa6}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Earbeamer.vcxproj">
       <Project>{2b81fb1a-2e24-4881-98c3-ad5f7cc33ada}</Project>
     </ProjectReference>

@@ -197,8 +197,8 @@ oWavFile::oWavFile(string fileName) {
 	fOut = new ofstream(fileName, ios::binary);
 	
 	numChannels = 1;
-    nSamplesPerSec = 22050;
-    nAvgBytesPerSec = 44100;
+    nSamplesPerSec = 16000;
+    nAvgBytesPerSec = 32000;
     numBlockAlingn = 2;
     numBitsPerSample = 16;
 
