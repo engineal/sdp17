@@ -15,48 +15,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\FIRFilter.cpp">
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\coordinate-system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\wav-file.cpp">
+    <ClCompile Include="src\room.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\filterTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entry.cpp">
+    <ClCompile Include="src\target.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="arithmetic.h">
+    <ClInclude Include="inc\coordinate-system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\beamforming.h">
+    <ClInclude Include="inc\room.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\FIRFilter.h">
+    <ClInclude Include="inc\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\high_coefs.h">
+    <ClInclude Include="inc\target.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\low_coefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\microphone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\wav-file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="audiocheck.net_sin_800Hz_-3dBFS_10s.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="audiocheck.net_sin_1200Hz_-3dBFS_10s.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
   </ItemGroup>
 </Project>
