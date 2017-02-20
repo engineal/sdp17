@@ -1,11 +1,10 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <queue>
 #include <utility>
 #include <NIDAQmx.h>
-
-#ifndef ADC_H
-#define ADC_H
 
 class ADC {
 protected:
@@ -15,7 +14,6 @@ public:
 	~ADC();
 	int dataAvailable();
 	int readBuffer(double* samples, int n);
+	int callback();
 	void close();
 };
-
-#endif // ADC_H

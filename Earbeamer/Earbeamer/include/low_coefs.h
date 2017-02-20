@@ -1,7 +1,11 @@
+#pragma once
+
+#include <vector>
+
 //Generated Header file for LOW_COEFS
 //Passband is 600 - 1200
 
-double LOW_COEFS[115] = {
+std::vector<double> LOW_COEFS = {
 -0.0044235544904184,
 0.0047425113972476,
 0.0042420442975096,

@@ -1,8 +1,7 @@
+#pragma once
+
 #include <iostream>
 #include <string>
-
-#ifndef WAV_FILE_H
-#define WAV_FILE_H
 
 class WavFile {
 protected:
@@ -38,12 +37,10 @@ class oWavFile : public WavFile {
 protected:
 	std::ofstream *fOut;
 	size_t data_chunk_pos;
-
+	bool closed;
 public:
 	oWavFile(std::string fileName);
 	~oWavFile();
 	void writeBuffer(double* samples, int n);
 	void close();
 };
-
-#endif // WAV_FILE_H

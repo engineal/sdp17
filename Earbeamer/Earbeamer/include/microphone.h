@@ -1,11 +1,14 @@
-#ifndef MICROPHONE_H
-#define MICROPHONE_H
+#pragma once
+
+#include "coordinate-system.h"
+#include "adc.h"
+#include "FIRFilter.h"
 
 class Microphone {
 protected:
-	int samples_sec;
-	double x_pos; // absolute x position in m
-	double y_pos; // absolute y position in m
+	ADC adc;
+	Coordinate coord;
+	FIRFilter filter;
 
 public:
 	double* buffA;
@@ -13,11 +16,9 @@ public:
 	double* buffC;
 	int delay;
 	
-	Microphone(int samples_rate, double x, double y);
+	Microphone(ADC adc, Coordinate coordinate, FilterType filter);
 	~Microphone();
 	void read_sample();
 	void rotate_buffers();
 	int calculate_delay_to_point(double x, double y);
 };
-
-#endif /*MICROPHONE_H*/

@@ -1,7 +1,11 @@
-//Generated Header file for High Filter
+#pragma once
 
+#include <vector>
+
+//Generated Header file for High Filter
 //Sampling Rate: 15000 Hz
-double HIGH_COEFS[108] = {
+
+std::vector<double> HIGH_COEFS = {
 	-0.0068473261104983,
 	-0.0006780004853430,
 	0.0027778260435027,

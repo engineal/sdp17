@@ -195,6 +195,7 @@ void iWavFile::close() {
 
 oWavFile::oWavFile(string fileName) {
 	fOut = new ofstream(fileName, ios::binary);
+	closed = false;
 	
 	numChannels = 1;
     nSamplesPerSec = 16000;
@@ -240,17 +241,20 @@ void oWavFile::writeBuffer(double* samples, int n) {
 }
 
 void oWavFile::close() {
-	// (We'll need the final file size to fix the chunk sizes above)
-	size_t file_length = fOut->tellp();
+	if (!closed) {
+		// (We'll need the final file size to fix the chunk sizes above)
+		size_t file_length = fOut->tellp();
 
-	// Fix the data chunk header to contain the data size
-	fOut->seekp(data_chunk_pos + 4);
-	write_word(*fOut, file_length - (data_chunk_pos + 8), 4);
+		// Fix the data chunk header to contain the data size
+		fOut->seekp(data_chunk_pos + 4);
+		write_word(*fOut, file_length - (data_chunk_pos + 8), 4);
 
-	// Fix the file header to contain the proper RIFF chunk size, which is (file size - 8) bytes
-	fOut->seekp(0 + 4);
-	write_word(*fOut, file_length - 8, 4);
+		// Fix the file header to contain the proper RIFF chunk size, which is (file size - 8) bytes
+		fOut->seekp(0 + 4);
+		write_word(*fOut, file_length - 8, 4);
 	
-	fOut->close();
-	delete fOut;
+		fOut->close();
+		delete fOut;
+		closed = true;
+	}
 }

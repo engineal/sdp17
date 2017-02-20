@@ -9,8 +9,6 @@ using namespace std;
 int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEventType, uInt32 nSamples, void *callbackData);
 int32 CVICALLBACK DoneCallback(TaskHandle taskHandle, int32 status, void *callbackData);
 
-queue<pair<float64*, int>> data_buffer;
-
 /*-----------------------------------------------------------------------------
  * ADC
  *-----------------------------------------------------------------------------*/
@@ -23,7 +21,7 @@ ADC::ADC(string fileName) {
 	DAQmxErrChk(DAQmxCreateAIVoltageChan(taskHandle, "Dev1/ai1", "", DAQmx_Val_RSE, 0.0, 3.0, DAQmx_Val_Volts, NULL));
 	DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", 16000.0, DAQmx_Val_Rising, DAQmx_Val_ContSamps, 1024));
 
-	DAQmxErrChk(DAQmxRegisterEveryNSamplesEvent(taskHandle, DAQmx_Val_Acquired_Into_Buffer, 1000, 0, EveryNCallback, NULL));
+	DAQmxErrChk(DAQmxRegisterEveryNSamplesEvent(taskHandle, DAQmx_Val_Acquired_Into_Buffer, 1000, 0, EveryNCallback, this));
 	DAQmxErrChk(DAQmxRegisterDoneEvent(taskHandle, 0, DoneCallback, NULL));
 
 	DAQmxErrChk(DAQmxStartTask(taskHandle));
@@ -32,6 +30,10 @@ ADC::ADC(string fileName) {
 }
 
 ADC::~ADC() {
+}
+
+int ADC::callback() {
+	//separate channels
 }
 
 int ADC::dataAvailable() {
@@ -72,7 +74,8 @@ int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEvent
 		pair<float64*, int> pair;
 		pair.first = tmp_data;
 		pair.second = read;
-		data_buffer.push(pair);
+		ADC* self = static_cast<ADC*>(callbackData);
+		self->callback(pair, read);
 		printf("Acquired %d samples. Total %d\n", (int)read, (int)(totalRead += read));
 		fflush(stdout);
 	}
