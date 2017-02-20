@@ -20,7 +20,7 @@ ADC::ADC(string fileName) {
 	char        errBuff[2048] = { '\0' };
 
 	DAQmxErrChk(DAQmxCreateTask("", &taskHandle));
-	DAQmxErrChk(DAQmxCreateAIVoltageChan(taskHandle, "Dev1/ai0", "", DAQmx_Val_RSE, 0.0, 3.0, DAQmx_Val_Volts, NULL));
+	DAQmxErrChk(DAQmxCreateAIVoltageChan(taskHandle, "Dev1/ai1", "", DAQmx_Val_RSE, 0.0, 3.0, DAQmx_Val_Volts, NULL));
 	DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", 16000.0, DAQmx_Val_Rising, DAQmx_Val_ContSamps, 1024));
 
 	DAQmxErrChk(DAQmxRegisterEveryNSamplesEvent(taskHandle, DAQmx_Val_Acquired_Into_Buffer, 1000, 0, EveryNCallback, NULL));
@@ -42,7 +42,7 @@ int ADC::readBuffer(double* samples, int n) {
 	pair<float64*, int> pair = data_buffer.front();
 	data_buffer.pop();
 	for (int i = 0; i < pair.second; i++) {
-		samples[i] = pair.first[i] * 21845;
+		samples[i] = pair.first[i] * 32768;
 	}
 	delete pair.first;
 	return pair.second;
@@ -73,7 +73,7 @@ int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEvent
 		pair.first = tmp_data;
 		pair.second = read;
 		data_buffer.push(pair);
-		printf("Acquired %d samples. Total %d\r", (int)read, (int)(totalRead += read));
+		printf("Acquired %d samples. Total %d\n", (int)read, (int)(totalRead += read));
 		fflush(stdout);
 	}
 	return 0;

@@ -26,8 +26,9 @@ int main(int argc, char *argv[]) {
 		}
 		time(&current);
 	}
-	outWavFile.close();
 	adc.close();
+	outWavFile.close();
 	getchar();
+	return 0;
 }
 
