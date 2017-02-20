@@ -1,7 +1,0 @@
-﻿  SoftwareFiltering.cpp
-c:\users\lh11\source\repos\sdp17\earbeamer\softwarefiltering\softwarefiltering.cpp(8): fatal error C1083: Cannot open include file: '../Earbeamer/FIRFilter.h': No such file or directory
-  wav-file.cpp
-c1xx : fatal error C1083: Cannot open source file: '..\Earbeamer\wav-file.cpp': No such file or directory
-  FIRFilter.cpp
-c1xx : fatal error C1083: Cannot open source file: '..\Earbeamer\FIRFilter.cpp': No such file or directory
-  Generating Code...
