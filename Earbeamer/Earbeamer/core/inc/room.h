@@ -41,13 +41,12 @@ public:
 	Room(CoordinateSystem xy) : grid(xy) {};
 	void Init();
 	void Shutdown();
-	void getTargets(list<Target*> &targs);
+	void getTargets(map<UINT64, Target*> &targs);
 	void updateTargets();
 
 private:
 	IKinectSensor* m_sensor = nullptr;
 	IBodyFrameReader* m_bodyFrameReader = nullptr;
-	std::list<Target*> l_targets;
 	std::map<UINT64, Target*> m_targets;
 	void processBodies(std::list<IBody*> &vBodies);
 	

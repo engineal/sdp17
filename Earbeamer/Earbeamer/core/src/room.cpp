@@ -66,100 +66,65 @@ void Room::processBodies(std::list<IBody*> &lBodies)
 	//Remove all bodies that are untracked
 	lBodies.remove_if(untracked);
 
-	//Set all targets to untracked
-	list<Target*>::iterator itTarget;
+
+	map<UINT64, Target*>::iterator itTarget;
 	list<IBody*>::iterator itBody;
 
+	//Set all targets to untracked
 	for (itTarget = m_targets.begin(); itTarget != m_targets.end(); itTarget++)
 	{
-		(*itTarget)->setTracked(false);
+		itTarget->second->setTracked(false);
 	}
 
 	UINT64 bodyId;
 	Joint joints[JointType_Count];
 	Joint headJoint;
-	if (lBodies.size() > 0) {
-		cout << "Found one" << endl;
-	}
+
 	
 	itBody = lBodies.begin();
 	while (itBody != lBodies.end())
 	{
 		(*itBody)->get_TrackingId(&bodyId);
-		(*itBody)->GetJoints(JointType_Count, joints);
-		headJoint = joints[JointType_Head];
-
-		//Look for a target with the same tracking id, update
-		for (itTarget = m_targets.begin(); itTarget != m_targets.end(); itTarget++)
+		if ((itTarget = m_targets.find(bodyId)) != m_targets.end())
 		{
-			if ((*itTarget)->getTrackingId() == bodyId)
-			{
-				(*itTarget)->setTracked(true);
-				(*itTarget)->updatePosition(grid.cameraToSystemSpace(headJoint.Position));
+			(*itBody)->GetJoints(JointType_Count, joints);
+			headJoint = joints[JointType_Head];
 
-				//Updated target, can remove body (do not need to worry about deleting IBody object, that is done in caller method)
-				lBodies.erase(itBody);
+			(itTarget)->second->setTracked(true);
+			(itTarget)->second->updatePosition(grid.cameraToSystemSpace(headJoint.Position));
 
-				break;
-			}
+			//Updated target, can remove body (do not need to worry about deleting IBody object, that is done in caller method)
+			itBody = lBodies.erase(itBody);
+		}
+
+		else {
+			++itBody;
 		}
 	}
-	/*
-	for (itBody = lBodies.begin(); itBody != lBodies.end(); itBody++)
-	{
-		(*itBody)->get_TrackingId(&bodyId);
-		(*itBody)->GetJoints(JointType_Count, joints);
-		headJoint = joints[JointType_Head];
 
-		//Look for a target with the same tracking id, update
-		for (itTarget = m_targets.begin(); itTarget != m_targets.end(); itTarget++)
-		{
-			if ((*itTarget)->getTrackingId() == bodyId)
-			{
-				(*itTarget)->setTracked(true);
-				(*itTarget)->updatePosition(grid.cameraToSystemSpace(headJoint.Position));
-
-				//Updated target, can remove body (do not need to worry about deleting IBody object, that is done in caller method)
-				lBodies.erase(itBody);
-
-				break;
-			}
-		}
-		
-	}
-	*/
-	/*
-	//Delete all untracked targets
-	for (itTarget = m_targets.begin(); itTarget != m_targets.end(); itTarget++) {
-		if ((*itTarget)->getTrackedStatus() == false)
-		{
-			delete *itTarget;			//delete the target object
-			m_targets.erase(itTarget);	//remove the target pointer from the list
-		}
-	}
-	*/
-	
 	//Delete all untracked targets
 	itTarget = m_targets.begin();
 	while (itTarget != m_targets.end())
 	{
-		if ((*itTarget)->getTrackedStatus() == false)
+		if (itTarget->second->getTrackedStatus() == false)
 		{
-			delete *itTarget;						//delete the target object
-			itTarget = m_targets.erase(itTarget);	//remove the target pointer from the list
+			delete itTarget->second;						//delete the target object
+			m_targets.erase(itTarget++);	//remove the target pointer from the list
 		}
 		else {
 			++itTarget;
 		}
+		
 	}
 	
-
 	//Any remaining items in lBodies are newly tracked, and need to be added to m_targets
 	for (itBody = lBodies.begin(); itBody != lBodies.end(); itBody++) {
 		
 		if (m_targets.size() < MAXBODIES)
 		{
-			m_targets.push_back(new Target(grid.cameraToSystemSpace(headJoint.Position), bodyId));
+			(*itBody)->get_TrackingId(&bodyId);
+			
+			m_targets.insert(pair<UINT64, Target*>(bodyId, new Target(grid.cameraToSystemSpace(headJoint.Position), bodyId)));
 		}
 		else {
 			printf("Error: Overran Target Buffer.\n");
@@ -207,7 +172,7 @@ void Room::updateTargets()
 	
 }
 
-void Room::getTargets(list<Target*> &targs) {
+void Room::getTargets(map<UINT64, Target*> &targs) {
 	targs = m_targets;
 }
 
