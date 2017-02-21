@@ -95,6 +95,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,12 +142,16 @@
     <ClCompile Include="src\coordinate-system.cpp" />
     <ClCompile Include="src\room.cpp" />
     <ClCompile Include="src\target.cpp" />
+    <ClCompile Include="src\websocket_server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header.h" />
     <ClInclude Include="inc\coordinate-system.h" />
     <ClInclude Include="inc\room.h" />
+    <ClInclude Include="inc\server.h" />
     <ClInclude Include="inc\stdafx.h" />
     <ClInclude Include="inc\target.h" />
+    <ClInclude Include="inc\websocket_server.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

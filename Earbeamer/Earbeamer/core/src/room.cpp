@@ -8,8 +8,12 @@
 
 using namespace std;
 
-//Constructor
+//Define Room Thread variables
 
+mutex Room::target_mutex;
+condition_variable Room::target_trigger;
+
+//Constructor
 void Room::Init()
 {
 
@@ -134,6 +138,10 @@ void Room::processBodies(std::list<IBody*> &lBodies)
 }
 
 
+map<UINT64, Target*>& Room::getTargetReference()
+{
+	return m_targets;
+}
 
 
 void Room::updateTargets()
@@ -172,10 +180,34 @@ void Room::updateTargets()
 	
 }
 
+void Room::monitor() {
+
+	while (1) {
+		Sleep(1000);
+		this->updateTargets();
+		target_trigger.notify_one();
+	}
+
+
+
+}
+
+
 void Room::getTargets(map<UINT64, Target*> &targs) {
+	std::lock_guard<mutex> guard(target_mutex);
 	targs = m_targets;
 }
 
+void Room::beginMonitoring() {
+	this->t_monitor = thread(&Room::monitor, this);
+}
+
+Room::~Room() {
+	if (t_monitor.joinable()) {
+		t_monitor.join();
+	}
+	Shutdown();
+}
 
 void Room::Shutdown()
 {

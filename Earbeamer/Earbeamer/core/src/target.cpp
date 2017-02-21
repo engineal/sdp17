@@ -29,6 +29,10 @@ void Target::togglemute() {
 	}
 }
 
+BOOLEAN Target::isMuted() {
+	return muted;
+}
+
 void Target::setVolume(int newVol) {
 	volume = newVol;
 }

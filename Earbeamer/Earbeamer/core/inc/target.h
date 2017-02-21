@@ -23,11 +23,26 @@ public:
 	void setTracked(BOOLEAN status);
 	void updatePosition(Coordinate headPosition);
 
-
+	BOOLEAN isMuted();
 	BOOLEAN getTrackedStatus();
 	Coordinate getPosition();
 	UINT64 getTrackingId();
 	double getAngleFromOrigin();
+	friend ostream& operator<<(ostream& os, Target  targ)
+	{
+		Coordinate pos = targ.getPosition();
+		os << "{\"id\": " << targ.getTrackingId() << ',';
+		os << "\"x_coord\": " << pos.x << ',';
+		os << "\"y_coord\": " << pos.y << ',';
+		os << "\"muted\": ";
+		if (targ.isMuted()) {
+			os << "true}";
+		}
+		else {
+			os << "false}";
+		}
+		return os;
+	}
 
 	
 	

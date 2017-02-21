@@ -15,6 +15,10 @@
 #include <map>
 #include <utility>	//use for pair type definition
 
+//For thread communication
+#include <mutex>
+#include <condition_variable>
+
 #include "target.h"
 #include "coordinate-system.h"
 
@@ -38,17 +42,25 @@ void SafeRelease(T& ptr) { if(ptr) { ptr->Release(); ptr = nullptr; } }
 class Room
 {
 public:
+	static std::mutex target_mutex;
+	static std::condition_variable target_trigger;
+
 	Room(CoordinateSystem xy) : grid(xy) {};
+	~Room();
 	void Init();
 	void Shutdown();
 	void getTargets(map<UINT64, Target*> &targs);
+	map<UINT64, Target*>& getTargetReference();
 	void updateTargets();
+	void beginMonitoring();
 
 private:
+	thread t_monitor;
 	IKinectSensor* m_sensor = nullptr;
 	IBodyFrameReader* m_bodyFrameReader = nullptr;
 	std::map<UINT64, Target*> m_targets;
 	void processBodies(std::list<IBody*> &vBodies);
+	void monitor();
 	
 
 protected:
