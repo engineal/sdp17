@@ -21,10 +21,11 @@
   <ItemGroup>
     <ClCompile Include="src\adc.cpp" />
     <ClCompile Include="src\beamformer.cpp" />
+    <ClCompile Include="src\channel.cpp" />
     <ClCompile Include="src\coordinate-system.cpp" />
     <ClCompile Include="src\driver.cpp" />
     <ClCompile Include="src\FIRFilter.cpp" />
-    <ClCompile Include="src\microphone.cpp" />
+    <ClCompile Include="src\virtual_source.cpp" />
     <ClCompile Include="src\room.cpp" />
     <ClCompile Include="src\target.cpp" />
     <ClCompile Include="src\wav-file.cpp" />
@@ -32,11 +33,12 @@
   <ItemGroup>
     <ClInclude Include="include\adc.h" />
     <ClInclude Include="include\beamformer.h" />
+    <ClInclude Include="include\channel.h" />
     <ClInclude Include="include\coordinate-system.h" />
     <ClInclude Include="include\FIRFilter.h" />
     <ClInclude Include="include\high_coefs.h" />
     <ClInclude Include="include\low_coefs.h" />
-    <ClInclude Include="include\microphone.h" />
+    <ClInclude Include="include\virtual_source.h" />
     <ClInclude Include="include\room.h" />
     <ClInclude Include="include\target.h" />
     <ClInclude Include="include\wav-file.h" />

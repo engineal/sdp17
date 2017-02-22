@@ -1,19 +1,21 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <queue>
-#include <utility>
+#include <vector>
 #include <NIDAQmx.h>
+#include "channel.h"
 
 class ADC {
-protected:
+private:
 	TaskHandle taskHandle = 0;
+	int tmp_data_size;
+	std::vector<Channel> channels;
+	double rate;
+	bool running;
 public:
-	ADC(std::string fileName);
+	ADC(std::vector<Channel> channels, double rate);
 	~ADC();
-	int dataAvailable();
-	int readBuffer(double* samples, int n);
-	int callback();
-	void close();
+	void start();
+	void stop();
+	void data_callback();
+	void done_callback(int32 status);
 };

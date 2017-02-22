@@ -8,8 +8,6 @@
 
 using namespace std;
 
-//Constructor
-
 void Room::Init()
 {
 

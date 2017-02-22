@@ -10,7 +10,7 @@ protected:
     unsigned int nAvgBytesPerSec;
     short int numBlockAlingn;
     short int numBitsPerSample;
-
+	bool open;
 public:
 	int delays[16];
 	int getNumChannels();
@@ -37,7 +37,6 @@ class oWavFile : public WavFile {
 protected:
 	std::ofstream *fOut;
 	size_t data_chunk_pos;
-	bool closed;
 public:
 	oWavFile(std::string fileName);
 	~oWavFile();

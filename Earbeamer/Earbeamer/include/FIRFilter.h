@@ -1,22 +1,18 @@
 #pragma once
 
 #include <vector>
-#include "beamformer.h"
+
+#define BUFFER_LENGTH 1024
+
+enum FilterType { HIGH, LOW };
 
 class FIRFilter {
-
 private:
-	vector<double> h;			//filter impulse response
+	std::vector<double> h;			//filter impulse response
 	double* workspace;	//holds a sample, and a filter's length worth of the previous sample
-
 public:
 	FIRFilter(FilterType type);
 	~FIRFilter();
 	void filter(double (&sample)[BUFFER_LENGTH], double (&buffer)[BUFFER_LENGTH]);
 	void flush();
-
-};
-
-enum FilterType {
-	HIGH, LOW
 };

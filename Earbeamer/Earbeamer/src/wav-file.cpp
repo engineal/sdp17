@@ -62,6 +62,7 @@ void WavFile::displayInformation() {
 
 iWavFile::iWavFile(string fileName) {
 	fIn = new ifstream(fileName, ios::binary);
+	open = true;
 	if(!fIn) {
 		cerr << "Cannot open " << fileName << endl;
 		exit(-1);
@@ -142,7 +143,9 @@ iWavFile::iWavFile(string fileName) {
 }
 
 iWavFile::~iWavFile() {
-	close();
+	if (open) {
+		close();
+	}
 }
 
 int iWavFile::dataAvailable() {
@@ -186,6 +189,7 @@ int iWavFile::readBuffer(double* samples, int n) {
 void iWavFile::close() {
 	fIn->close();
 	delete fIn;
+	open = false;
 }
 
 /*-----------------------------------------------------------------------------
@@ -195,7 +199,7 @@ void iWavFile::close() {
 
 oWavFile::oWavFile(string fileName) {
 	fOut = new ofstream(fileName, ios::binary);
-	closed = false;
+	open = true;
 	
 	numChannels = 1;
     nSamplesPerSec = 16000;
@@ -219,7 +223,9 @@ oWavFile::oWavFile(string fileName) {
 }
 
 oWavFile::~oWavFile() {
-	close();
+	if (open) {
+		close();
+	}
 }
 
 void oWavFile::writeBuffer(double* samples, int n) {
@@ -241,20 +247,18 @@ void oWavFile::writeBuffer(double* samples, int n) {
 }
 
 void oWavFile::close() {
-	if (!closed) {
-		// (We'll need the final file size to fix the chunk sizes above)
-		size_t file_length = fOut->tellp();
+	// (We'll need the final file size to fix the chunk sizes above)
+	size_t file_length = fOut->tellp();
 
-		// Fix the data chunk header to contain the data size
-		fOut->seekp(data_chunk_pos + 4);
-		write_word(*fOut, file_length - (data_chunk_pos + 8), 4);
+	// Fix the data chunk header to contain the data size
+	fOut->seekp(data_chunk_pos + 4);
+	write_word(*fOut, file_length - (data_chunk_pos + 8), 4);
 
-		// Fix the file header to contain the proper RIFF chunk size, which is (file size - 8) bytes
-		fOut->seekp(0 + 4);
-		write_word(*fOut, file_length - 8, 4);
+	// Fix the file header to contain the proper RIFF chunk size, which is (file size - 8) bytes
+	fOut->seekp(0 + 4);
+	write_word(*fOut, file_length - 8, 4);
 	
-		fOut->close();
-		delete fOut;
-		closed = true;
-	}
+	fOut->close();
+	delete fOut;
+	open = false;
 }

@@ -19,7 +19,6 @@ FIRFilter::FIRFilter(FilterType type) {
 }
 
 FIRFilter::~FIRFilter() {
-
 	free(workspace);
 }
 

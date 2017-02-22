@@ -1,23 +1,22 @@
 #pragma once
 
 #include "coordinate-system.h"
-#include "adc.h"
+#include "channel.h"
 #include "FIRFilter.h"
 
-class Microphone {
-protected:
-	ADC adc;
+class VirtualSource {
+private:
+	Channel channel;
 	Coordinate coord;
 	FIRFilter filter;
-
 public:
 	double* buffA;
 	double* buffB;
 	double* buffC;
 	int delay;
 	
-	Microphone(ADC adc, Coordinate coordinate, FilterType filter);
-	~Microphone();
+	VirtualSource(Channel channel, Coordinate coordinate, FilterType filter_type);
+	~VirtualSource();
 	void read_sample();
 	void rotate_buffers();
 	int calculate_delay_to_point(double x, double y);
