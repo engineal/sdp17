@@ -1,4 +1,4 @@
-#include <fstream>
+#include <iostream>
 #include <math.h>
 #include "virtual_source.h"
 
@@ -6,35 +6,34 @@ using namespace std;
 
 #define samples_sec 16000
 
-VirtualSource::VirtualSource(Channel channel, Coordinate coordinate, FilterType filter_type) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)){
-	channel.addListener();
+VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)) {
+	channel->addListener();
 	delay = 0;
 	
 	buffA = new double[BUFFER_LENGTH];
+	buffA_length = BUFFER_LENGTH;
 	buffB = new double[BUFFER_LENGTH];
-	buffC = new double[BUFFER_LENGTH];
+	buffB_length = BUFFER_LENGTH;
 }
 
 VirtualSource::~VirtualSource() {
+	cout << "VirtualSource deconstructor" << endl;
 	delete [] buffA;
 	delete [] buffB;
-	delete [] buffC;
 }
 
 /*
  * Will eventually read from source buffer
  */
 void VirtualSource::read_sample() {
-	pair<double*, int> sample = channel.pop_buffer();
-	sample.first;
-		sample.second;
-}
-
-void VirtualSource::rotate_buffers() {
-	double* tmp_buff = buffA;
+	// rotate buffB into buffA
+	delete [] buffA;
 	buffA = buffB;
-	buffB = buffC;
-	buffC = tmp_buff;
+	buffA_length = buffB_length;
+
+	pair<double*, int> sample = channel->pop_buffer();
+	buffB = sample.first;
+	buffB_length = sample.second;
 }
 
 /*

@@ -1,4 +1,6 @@
+#include <iostream>
 #include "channel.h"
+#include "cexception.h"
 
 using namespace std;
 
@@ -8,7 +10,7 @@ Channel::Channel(string channel_id) : channel_id(channel_id){
 }
 
 Channel::~Channel() {
-
+	cout << "Channel deconstructor" << endl;
 }
 
 string Channel::getChannelId() {
@@ -28,10 +30,13 @@ void Channel::push_buffer(double* data, int size) {
 }
 
 pair<double*, int> Channel::pop_buffer() {
-	pair<double*, int> tmp = data_buffer.front();
-	if ((++listeners_read) == listeners) {
-		data_buffer.pop();
-		listeners_read = 0;
+	if (data_buffer.size() > 0) {
+		pair<double*, int> tmp = data_buffer.front();
+		if ((++listeners_read) == listeners) {
+			data_buffer.pop();
+			listeners_read = 0;
+		}
+		return tmp;
 	}
-	return tmp;
+	throw ElementNotAvailableException();
 }

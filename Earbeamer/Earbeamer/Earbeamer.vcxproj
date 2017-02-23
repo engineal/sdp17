@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\adc.cpp" />
     <ClCompile Include="src\beamformer.cpp" />
+    <ClCompile Include="src\cexception.cpp" />
     <ClCompile Include="src\channel.cpp" />
     <ClCompile Include="src\coordinate-system.cpp" />
     <ClCompile Include="src\driver.cpp" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ClInclude Include="include\adc.h" />
     <ClInclude Include="include\beamformer.h" />
+    <ClInclude Include="include\cexception.h" />
     <ClInclude Include="include\channel.h" />
     <ClInclude Include="include\coordinate-system.h" />
     <ClInclude Include="include\FIRFilter.h" />

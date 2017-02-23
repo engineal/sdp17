@@ -1,22 +1,21 @@
 #include <iostream>
 #include <math.h>
 #include "adc.h"
+#include "cexception.h"
 
 using namespace std;
 
-#define DAQmxErrChk(functionCall) if(DAQmxFailed(functionCall)){ DAQmxGetExtendedErrorInfo(errBuff, 2048);printf("DAQmx Error: %s\n", errBuff);}
+#define DAQmxErrChk(functionCall) if(DAQmxFailed(functionCall)){ throw ADCException(); }
 
 int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEventType, uInt32 nSamples, void *callbackData);
 int32 CVICALLBACK DoneCallback(TaskHandle taskHandle, int32 status, void *callbackData);
 
-ADC::ADC(vector<Channel> channels, double rate) : channels(channels), rate(rate) {
+ADC::ADC(vector<Channel*> channels, double rate) : channels(channels), rate(rate) {
 	tmp_data_size = 1024 * (int) channels.size();
 
-	int32       error = 0;
-	char        errBuff[2048] = { '\0' };
 	DAQmxErrChk(DAQmxCreateTask("", &taskHandle));
-	for (vector<Channel>::iterator itr = channels.begin(); itr != channels.end(); ++itr) {
-		DAQmxErrChk(DAQmxCreateAIVoltageChan(taskHandle, itr->getChannelId().c_str(), "", DAQmx_Val_RSE, 0.0, 3.0, DAQmx_Val_Volts, NULL));
+	for (vector<Channel*>::iterator itr = channels.begin(); itr != channels.end(); ++itr) {
+		DAQmxErrChk(DAQmxCreateAIVoltageChan(taskHandle, (*itr)->getChannelId().c_str(), "", DAQmx_Val_RSE, 0.0, 3.0, DAQmx_Val_Volts, NULL));
 	}
 	DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", rate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, 1024));
 
@@ -27,6 +26,7 @@ ADC::ADC(vector<Channel> channels, double rate) : channels(channels), rate(rate)
 }
 
 ADC::~ADC() {
+	cout << "ADC deconstructor" << endl;
 	if (running) {
 		stop();
 	}
@@ -37,17 +37,11 @@ ADC::~ADC() {
 }
 
 void ADC::start() {
-	int32       error = 0;
-	char        errBuff[2048] = { '\0' };
-
 	DAQmxErrChk(DAQmxStartTask(taskHandle));
 	running = true;
 }
 
 void ADC::stop() {
-	int32       error = 0;
-	char        errBuff[2048] = { '\0' };
-
 	if (taskHandle != 0) {
 		DAQmxStopTask(taskHandle);
 		running = false;
@@ -55,8 +49,6 @@ void ADC::stop() {
 }
 
 void ADC::data_callback() {
-	int32       error = 0;
-	char        errBuff[2048] = { '\0' };
 	static int  totalRead = 0;
 	int32       read = 0;
 	float64*    tmp_data = new float64[tmp_data_size];
@@ -67,7 +59,7 @@ void ADC::data_callback() {
 		int channel_segment_length = read / (int) channels.size();
 		//separate channels
 		for (int i = 0; i < channels.size(); i++) {
-			channels[i].push_buffer(tmp_data + (i * channel_segment_length), channel_segment_length);
+			channels[i]->push_buffer(tmp_data + (i * channel_segment_length), channel_segment_length);
 		}
 
 		cout << "Acquired " << read << " samples. Total " << (totalRead += read) << endl;
@@ -75,9 +67,6 @@ void ADC::data_callback() {
 }
 
 void ADC::done_callback(int32 status) {
-	int32   error = 0;
-	char    errBuff[2048] = { '\0' };
-
 	// Check to see if an error stopped the task.
 	DAQmxErrChk(status);
 }

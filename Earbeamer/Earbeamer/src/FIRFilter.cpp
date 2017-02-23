@@ -1,6 +1,9 @@
+#include <iostream>
 #include "FIRFilter.h"
 #include "high_coefs.h"
 #include "low_coefs.h"
+
+using namespace std;
 
 FIRFilter::FIRFilter(FilterType type) {
 	switch (type)
@@ -19,6 +22,7 @@ FIRFilter::FIRFilter(FilterType type) {
 }
 
 FIRFilter::~FIRFilter() {
+	cout << "FIRFilter deconstructor" << endl;
 	free(workspace);
 }
 

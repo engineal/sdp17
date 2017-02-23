@@ -6,18 +6,18 @@
 
 class VirtualSource {
 private:
-	Channel channel;
+	Channel* channel;
 	Coordinate coord;
 	FIRFilter filter;
 public:
 	double* buffA;
+	int buffA_length;
 	double* buffB;
-	double* buffC;
+	int buffB_length;
 	int delay;
 	
-	VirtualSource(Channel channel, Coordinate coordinate, FilterType filter_type);
+	VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type);
 	~VirtualSource();
 	void read_sample();
-	void rotate_buffers();
 	int calculate_delay_to_point(double x, double y);
 };

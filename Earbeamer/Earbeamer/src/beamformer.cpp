@@ -6,12 +6,12 @@
 
 using namespace std;
 
-Beamformer::Beamformer(vector<VirtualSource> sources) : sources(sources) {
+Beamformer::Beamformer(vector<VirtualSource*> sources) : sources(sources) {
 	running = false;
 }
 
 Beamformer::~Beamformer() {
-
+	cout << "Beamformer deconstructor" << endl;
 }
 
 void Beamformer::start() {
@@ -32,7 +32,7 @@ void Beamformer::beamforming() {
 	while (running) {
 		// Read in samples from microphones
 		for (int i = 0; i < sources.size(); i++) {
-			sources[i].read_sample();
+			sources[i]->read_sample();
 		}
 
 		// Start processing previously received data
@@ -41,20 +41,9 @@ void Beamformer::beamforming() {
 
 		// Wait for calculations to be done
 		//t1.join();
-
-		rotate_buffers();
 	}
 
 	delete output;
-}
-
-/*
-* Wrapper function for rotating mic buffers
-*/
-void Beamformer::rotate_buffers() {
-	for (int i = 0; i < sources.size(); i++) {
-		sources[i].rotate_buffers();
-	}
 }
 
 /**
@@ -82,11 +71,11 @@ void Beamformer::process_segment(double* output) {
 	for (int i = 0; i < BUFFER_LENGTH; i++) {
 		output[i] = 0;
 		for (int j = 0; j < sources.size(); j++) {
-			if (i + sources[j].delay < BUFFER_LENGTH) {
-				output[i] += sources[j].buffA[i + sources[j].delay];
+			if (i + sources[j]->delay < BUFFER_LENGTH) {
+				output[i] += sources[j]->buffA[i + sources[j]->delay];
 			}
 			else {
-				output[i] += sources[j].buffB[i + sources[j].delay - BUFFER_LENGTH];
+				output[i] += sources[j]->buffB[i + sources[j]->delay - BUFFER_LENGTH];
 			}
 		}
 
@@ -100,17 +89,17 @@ void Beamformer::process_segment(double* output) {
 void Beamformer::calculate_target_delays(Coordinate coord) {
 	int min_delay = BUFFER_LENGTH;
 	for (int i = 0; i < sources.size(); i++) {
-		sources[i].delay = sources[i].calculate_delay_to_point(coord.x, coord.y);
-		if (sources[i].delay < min_delay) {
-			min_delay = sources[i].delay;
+		sources[i]->delay = sources[i]->calculate_delay_to_point(coord.x, coord.y);
+		if (sources[i]->delay < min_delay) {
+			min_delay = sources[i]->delay;
 		}
 	}
 	
 	cout << "target delays" << endl;
 	// minimize delay on all mics
 	for (int i = 0; i < sources.size(); i++) {
-		sources[i].delay -= min_delay;
-		cout << sources[i].delay << endl;
+		sources[i]->delay -= min_delay;
+		cout << sources[i]->delay << endl;
 	}
 	cout << endl;
 }

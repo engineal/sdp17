@@ -8,11 +8,11 @@ class ADC {
 private:
 	TaskHandle taskHandle = 0;
 	int tmp_data_size;
-	std::vector<Channel> channels;
+	std::vector<Channel*> channels;
 	double rate;
 	bool running;
 public:
-	ADC(std::vector<Channel> channels, double rate);
+	ADC(std::vector<Channel*> channels, double rate);
 	~ADC();
 	void start();
 	void stop();
