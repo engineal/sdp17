@@ -21,6 +21,10 @@ VirtualSource::~VirtualSource() {
 	delete [] buffB;
 }
 
+Coordinate VirtualSource::getPosition() {
+	return coord;
+}
+
 /*
  * Will eventually read from source buffer
  */
@@ -35,16 +39,6 @@ void VirtualSource::read_sample() {
 	pair<double*, int> sample = channel->pop_buffer();
 	buffB = sample.first;
 	buffB_length = sample.second;
-}
 
-/*
- * Calculate a delay for the source based on target's coordinates
- */
-int VirtualSource::calculate_delay_to_point(double x, double y) {
-	double temp = 20; // in C
-	
-	double distance = sqrt(pow(x - coord.x, 2) + pow(y - coord.y, 2)); // in m
-	double v_sound = 331 + 0.6 * temp; // in m/s
-	double t_sound = distance / v_sound; // in s
-	return (int)((t_sound * samples_sec) + 0.5); // in samples
+	// apply filter
 }

@@ -14,10 +14,9 @@ public:
 	int buffA_length;
 	double* buffB;
 	int buffB_length;
-	std::vector<int> delays;
 	
 	VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type);
 	~VirtualSource();
+	Coordinate getPosition();
 	void read_sample();
-	int calculate_delay_to_point(double x, double y);
 };

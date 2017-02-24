@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\adc.cpp" />
+    <ClCompile Include="src\beam.cpp" />
     <ClCompile Include="src\beamformer.cpp" />
     <ClCompile Include="src\cexception.cpp" />
     <ClCompile Include="src\channel.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="include\channel.h" />
     <ClInclude Include="include\coordinate-system.h" />
     <ClInclude Include="include\FIRFilter.h" />
+    <ClInclude Include="include\beam.h" />
     <ClInclude Include="include\high_coefs.h" />
     <ClInclude Include="include\low_coefs.h" />
     <ClInclude Include="include\virtual_source.h" />
