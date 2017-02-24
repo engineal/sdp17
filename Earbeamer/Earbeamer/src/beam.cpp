@@ -1,4 +1,3 @@
-
 #include "beam.h"
 
 using namespace std;

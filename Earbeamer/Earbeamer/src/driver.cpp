@@ -71,11 +71,10 @@ int main(int argc, char *argv[]) {
 
 		time(&start);
 		time(&current);
-		channels[0]->addListener();
 		while (difftime(current, start) < 10) {
-			if (channels[0]->dataAvailable()) {
+			if (beamformer.dataAvailable()) {
 				cout << difftime(current, start) << endl;
-				pair<double*, int> output = channels[0]->pop_buffer();
+				pair<double*, int> output = beamformer.pop_buffer();
 				outWavFile.writeBuffer(output.first, output.second);
 			}
 			time(&current);
