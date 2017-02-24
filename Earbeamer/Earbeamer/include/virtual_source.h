@@ -14,7 +14,7 @@ public:
 	int buffA_length;
 	double* buffB;
 	int buffB_length;
-	int delay;
+	std::vector<int> delays;
 	
 	VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type);
 	~VirtualSource();

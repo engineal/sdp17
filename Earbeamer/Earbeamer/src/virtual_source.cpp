@@ -8,7 +8,6 @@ using namespace std;
 
 VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)) {
 	channel->addListener();
-	delay = 0;
 	
 	buffA = new double[BUFFER_LENGTH];
 	buffA_length = BUFFER_LENGTH;
@@ -26,6 +25,8 @@ VirtualSource::~VirtualSource() {
  * Will eventually read from source buffer
  */
 void VirtualSource::read_sample() {
+	// should wait for buffer to have data
+
 	// rotate buffB into buffA
 	delete [] buffA;
 	buffA = buffB;

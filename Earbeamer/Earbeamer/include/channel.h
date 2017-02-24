@@ -3,6 +3,7 @@
 #include <utility>
 #include <queue>
 #include <string>
+#include <mutex>
 
 class Channel {
 private:
@@ -10,6 +11,8 @@ private:
 	std::string channel_id;
 	int listeners;
 	int listeners_read;
+	std::mutex data_buffer_mtx;
+	std::mutex listeners_mtx;
 public:
 	Channel(std::string channel_id);
 	~Channel();

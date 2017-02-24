@@ -56,7 +56,7 @@ void Beamformer::calculate_task(double* output) {
 
 	//double temp_output[BUFFER_LENGTH];
 	//for (int i = 0; i < 6; i++) {
-	process_segment(output);
+	process_segment(output, 0);
 
 	//for (int j = 0; j < BUFFER_LENGTH; j++) {
 	//output[j] += temp_output[j];
@@ -67,15 +67,15 @@ void Beamformer::calculate_task(double* output) {
 /**
 * Implements delay-sum on one beam
 */
-void Beamformer::process_segment(double* output) {
+void Beamformer::process_segment(double* output, int target) {
 	for (int i = 0; i < BUFFER_LENGTH; i++) {
 		output[i] = 0;
 		for (int j = 0; j < sources.size(); j++) {
-			if (i + sources[j]->delay < BUFFER_LENGTH) {
-				output[i] += sources[j]->buffA[i + sources[j]->delay];
+			if (i + sources[j]->delays[target] < BUFFER_LENGTH) {
+				output[i] += sources[j]->buffA[i + sources[j]->delays[target]];
 			}
 			else {
-				output[i] += sources[j]->buffB[i + sources[j]->delay - BUFFER_LENGTH];
+				output[i] += sources[j]->buffB[i + sources[j]->delays[target] - BUFFER_LENGTH];
 			}
 		}
 
@@ -86,20 +86,20 @@ void Beamformer::process_segment(double* output) {
 /*
  * Test code to calculate delays for each mic based on one target
  */
-void Beamformer::calculate_target_delays(Coordinate coord) {
+void Beamformer::add_target(Target target) {
 	int min_delay = BUFFER_LENGTH;
 	for (int i = 0; i < sources.size(); i++) {
-		sources[i]->delay = sources[i]->calculate_delay_to_point(coord.x, coord.y);
-		if (sources[i]->delay < min_delay) {
-			min_delay = sources[i]->delay;
+		sources[i]->delays.push_back(sources[i]->calculate_delay_to_point(target.getPosition().x, target.getPosition().y));
+		if (sources[i]->delays.back < min_delay) {
+			min_delay = sources[i]->delays.back;
 		}
 	}
 	
 	cout << "target delays" << endl;
 	// minimize delay on all mics
 	for (int i = 0; i < sources.size(); i++) {
-		sources[i]->delay -= min_delay;
-		cout << sources[i]->delay << endl;
+		sources[i]->delays.back -= min_delay;
+		cout << sources[i]->delays.back << endl;
 	}
 	cout << endl;
 }

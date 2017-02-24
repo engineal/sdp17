@@ -4,6 +4,7 @@
 #include <vector>
 #include <thread>
 #include "virtual_source.h"
+#include "target.h"
 
 class Beamformer {
 private:
@@ -13,8 +14,8 @@ private:
 
 	void beamforming();
 	void calculate_task(double* output);
-	void process_segment(double* output);
-	void calculate_target_delays(Coordinate coord);
+	void process_segment(double* output, int target);
+	void add_target(Target target);
 public:
 	Beamformer(std::vector<VirtualSource*> sources);
 	~Beamformer();

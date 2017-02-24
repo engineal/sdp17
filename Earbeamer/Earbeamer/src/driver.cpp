@@ -6,6 +6,7 @@
 #include "adc.h"
 #include "beamformer.h"
 #include "wav-file.h"
+#include "room.h"
 
 using namespace std;
 
@@ -57,10 +58,11 @@ int main(int argc, char *argv[]) {
 
 	try {
 		ADC adc(channels, 16000.0);
+		Room room();
+
 		Beamformer beamformer(sources);
 		oWavFile outWavFile("test.wav");
 
-		double* output = new double[BUFFER_LENGTH];
 		time_t start;
 		time_t current;
 
@@ -69,12 +71,13 @@ int main(int argc, char *argv[]) {
 
 		time(&start);
 		time(&current);
+		channels[0]->addListener();
 		while (difftime(current, start) < 10) {
-			//if (adc.dataAvailable()) {
-			cout << difftime(current, start) << endl;
-			//adc.readBuffer(output, BUFFER_LENGTH);
-			outWavFile.writeBuffer(output, BUFFER_LENGTH);
-			//}
+			if (channels[0]->dataAvailable()) {
+				cout << difftime(current, start) << endl;
+				pair<double*, int> output = channels[0]->pop_buffer();
+				outWavFile.writeBuffer(output.first, output.second);
+			}
 			time(&current);
 		}
 

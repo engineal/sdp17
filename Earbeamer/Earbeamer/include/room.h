@@ -1,10 +1,5 @@
 #pragma once
 
-//some often used C standard library header files
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-
 //some often used STL header files
 #include <iostream>
 #include <memory>
