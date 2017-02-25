@@ -13,15 +13,24 @@ Target::Target(Coordinate headPosition, UINT64 trackingId) : position(headPositi
 	tracked = true;
 	muted = false;
 	volume = 100;
+	unmuted_volume = 100;
 
 }
 
 void Target::togglemute() {
 	if (muted) {
+		volume = unmuted_volume;
 		muted = false;
-	} else {
+	}
+	else {
+		unmuted_volume = volume;
+		volume = 0;
 		muted = true;
 	}
+}
+
+BOOLEAN Target::isMuted() {
+	return muted;
 }
 
 void Target::setVolume(int newVol) {

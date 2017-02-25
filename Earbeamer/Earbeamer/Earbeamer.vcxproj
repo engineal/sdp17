@@ -31,6 +31,7 @@
     <ClCompile Include="src\room.cpp" />
     <ClCompile Include="src\target.cpp" />
     <ClCompile Include="src\wav-file.cpp" />
+    <ClCompile Include="src\websocket_server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\adc.h" />
@@ -46,6 +47,7 @@
     <ClInclude Include="include\room.h" />
     <ClInclude Include="include\target.h" />
     <ClInclude Include="include\wav-file.h" />
+    <ClInclude Include="include\websocket_server.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="audiocheck.net_sin_1200Hz_-3dBFS_10s.wav" />

@@ -8,6 +8,12 @@
 
 using namespace std;
 
+//Define Room Thread variables
+
+shared_mutex Room::target_mutex;
+condition_variable_any Room::target_trigger;
+
+//Constructor
 void Room::Init()
 {
 
@@ -38,7 +44,6 @@ void Room::Init()
 		printf("Failed to open the Body Frame Reader.\n");
 		exit(10);
 	}
-	cout << "Initializing" << endl;
 	SafeRelease(bodyFrameSource);
 }
 
@@ -61,6 +66,9 @@ bool untracked(IBody* body) {
 
 void Room::processBodies(std::list<IBody*> &lBodies)
 {
+	//Lock down the targets so no one else accesses them
+	std::unique_lock<std::shared_mutex> guard(Room::target_mutex);
+
 	//Remove all bodies that are untracked
 	lBodies.remove_if(untracked);
 
@@ -132,6 +140,10 @@ void Room::processBodies(std::list<IBody*> &lBodies)
 }
 
 
+map<UINT64, Target*>& Room::getTargetReference()
+{
+	return m_targets;
+}
 
 
 void Room::updateTargets()
@@ -170,10 +182,50 @@ void Room::updateTargets()
 	
 }
 
-void Room::getTargets(map<UINT64, Target*> &targs) {
-	targs = m_targets;
+void Room::monitor() {
+
+	while (1) {
+		Sleep(1000);
+		this->updateTargets();
+		target_trigger.notify_one();
+		/*
+		map<UINT64, Target*> targs;
+		map<UINT64, Target*>::iterator itr;
+		this->getTargets(targs);
+
+		cout << "Test" << endl;
+
+		for (itr = targs.begin(); itr != targs.end(); itr++)
+		{
+			cout << "Testing JSON: " << endl;
+			cout << *(itr->second) << endl;
+			Coordinate coord = itr->second->getPosition();
+			cout << "ID: " << itr->second->getTrackingId();
+			cout << "Coordinate: " << coord << endl;
+			cout << "Angle: " << itr->second->getAngleFromOrigin() << endl;
+		}
+		*/
+	}
+
+
+
 }
 
+
+map<UINT64, Target*> Room::getTargets() {
+	return this->m_targets;
+}
+
+void Room::beginMonitoring() {
+	this->t_monitor = thread(&Room::monitor, this);
+}
+
+Room::~Room() {
+	if (t_monitor.joinable()) {
+		t_monitor.join();
+	}
+	Shutdown();
+}
 
 void Room::Shutdown()
 {
