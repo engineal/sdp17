@@ -1,6 +1,6 @@
 #include <iostream>
 #include <NIDAQmx.h>
-#include "cexception.h"
+#include "cexcept.h"
 
 using namespace std;
 

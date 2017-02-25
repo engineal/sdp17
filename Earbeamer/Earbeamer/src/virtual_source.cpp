@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <stdexcept>
 #include "virtual_source.h"
 
 using namespace std;
@@ -8,17 +9,10 @@ using namespace std;
 
 VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)) {
 	channel->addListener();
-	
-	buffA = new double[BUFFER_LENGTH];
-	buffA_length = BUFFER_LENGTH;
-	buffB = new double[BUFFER_LENGTH];
-	buffB_length = BUFFER_LENGTH;
 }
 
 VirtualSource::~VirtualSource() {
 	cout << "VirtualSource deconstructor" << endl;
-	delete [] buffA;
-	delete [] buffB;
 }
 
 Coordinate VirtualSource::getPosition() {
@@ -28,17 +22,28 @@ Coordinate VirtualSource::getPosition() {
 /*
  * Will eventually read from source buffer
  */
-void VirtualSource::read_sample() {
+void VirtualSource::readBuffer() {
 	// should wait for buffer to have data
+	channel->waitForData();
 
 	// rotate buffB into buffA
-	delete [] buffA;
 	buffA = buffB;
-	buffA_length = buffB_length;
 
-	pair<double*, int> sample = channel->pop_buffer();
-	buffB = sample.first;
-	buffB_length = sample.second;
+	// channel should have data
+	vector<double> data = channel->pop_buffer();
+	buffB = data;
 
 	// apply filter
+}
+
+double VirtualSource::getSample(int index) {
+	if (index >= 0 && index < buffA.size()) {
+		return buffA[index];
+	}
+	else if ((index - buffA.size()) >= 0 && (index - buffA.size()) < buffB.size()) {
+		return buffB[(index - buffA.size())];
+	}
+	else {
+		throw out_of_range("Attempt to access memory outside of buffers");
+	}
 }

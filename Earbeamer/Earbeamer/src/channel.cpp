@@ -1,13 +1,12 @@
 #include <iostream>
 #include "channel.h"
-#include "cexception.h"
+#include "cexcept.h"
 
 using namespace std;
 
 Channel::Channel(string channel_id) : channel_id(channel_id){
-	listeners_mtx.lock();
+	unique_lock<mutex> lck(listeners_mtx);
 	listeners = 0;
-	listeners_mtx.unlock();
 
 	listeners_read = 0;
 }
@@ -21,38 +20,40 @@ string Channel::getChannelId() {
 }
 
 void Channel::addListener() {
-	listeners_mtx.lock();
+	unique_lock<mutex> lck(listeners_mtx);
 	listeners++;
-	listeners_mtx.unlock();
 }
 
 bool Channel::dataAvailable() {
-	data_buffer_mtx.lock();
+	unique_lock<mutex> lck(data_buffer_mtx);
 	return data_buffer.size() > 0;
-	data_buffer_mtx.unlock();
 }
 
-void Channel::push_buffer(double* data, int size) {
-	data_buffer_mtx.lock();
-	data_buffer.push(pair<double*, int>(data, size));
-	data_buffer_mtx.unlock();
+void Channel::waitForData() {
+	unique_lock<mutex> lck(data_buffer_mtx);
+	while (data_buffer.size() == 0) {
+		data_buffer_cv.wait(lck);
+	}
 }
 
-pair<double*, int> Channel::pop_buffer() {
-	pair<double*, int> tmp;
+void Channel::push_buffer(vector<double> data) {
+	unique_lock<mutex> lck(data_buffer_mtx);
+	data_buffer.push(data);
+	data_buffer_cv.notify_all();
+}
 
-	data_buffer_mtx.lock();
+vector<double> Channel::pop_buffer() {
+	unique_lock<mutex> lck(data_buffer_mtx);
 	if (data_buffer.size() > 0) {
-		tmp = data_buffer.front();
-		listeners_mtx.lock();
+		vector<double> data = data_buffer.front();
+
+		// Check if more listeners need the data and if not, remove it from the queue
+		unique_lock<mutex> lck(listeners_mtx);
 		if ((++listeners_read) == listeners) {
 			data_buffer.pop();
 			listeners_read = 0;
 		}
-		listeners_mtx.unlock();
-		data_buffer_mtx.unlock();
-		return tmp;
+		return data;
 	}
-	data_buffer_mtx.unlock();
 	throw ElementNotAvailableException();
 }

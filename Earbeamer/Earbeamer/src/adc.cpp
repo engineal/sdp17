@@ -1,7 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include "adc.h"
-#include "cexception.h"
+#include "cexcept.h"
 
 using namespace std;
 
@@ -49,9 +49,9 @@ void ADC::stop() {
 }
 
 void ADC::data_callback() {
-	static int  totalRead = 0;
-	int32       read = 0;
-	float64*    tmp_data = new float64[tmp_data_size];
+	static int totalRead = 0;
+	int32 read = 0;
+	float64* tmp_data = new float64[tmp_data_size];
 
 	DAQmxErrChk(DAQmxReadAnalogF64(taskHandle, 1024, 10.0, DAQmx_Val_GroupByChannel, tmp_data, tmp_data_size, &read, NULL));
 
@@ -59,11 +59,17 @@ void ADC::data_callback() {
 		int channel_segment_length = read / (int) channels.size();
 		//separate channels
 		for (int i = 0; i < channels.size(); i++) {
-			channels[i]->push_buffer(tmp_data + (i * channel_segment_length), channel_segment_length);
+			float64* start = tmp_data + (i * channel_segment_length);
+			float64* end = tmp_data + ((i + 1) * channel_segment_length) - 1;
+			vector<double> data;
+			data.assign(start, end);
+			channels[i]->push_buffer(data);
 		}
 
-		cout << "Acquired " << read << " samples. Total " << (totalRead += read) << endl;
+		cout << "Acquired " << read << " samples. Total " << (totalRead += read) << " Buffer length: " << channels[2]->data_buffer.size() << endl;
 	}
+
+	delete[] tmp_data;
 }
 
 void ADC::done_callback(int32 status) {
@@ -73,14 +79,26 @@ void ADC::done_callback(int32 status) {
 
 int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEventType, uInt32 nSamples, void *callbackData) {
 	ADC* self = static_cast<ADC*>(callbackData);
-	self->data_callback();
+	try {
+		self->data_callback();
+	}
+	catch (exception& e) {
+		cout << e.what() << endl;
+		self->stop();
+	}
 	
 	return 0;
 }
 
 int32 CVICALLBACK DoneCallback(TaskHandle taskHandle, int32 status, void *callbackData) {
 	ADC* self = static_cast<ADC*>(callbackData);
-	self->done_callback(status);
+	try {
+		self->done_callback(status);
+	}
+	catch (exception& e) {
+		cout << e.what() << endl;
+		self->stop();
+	}
 
 	return 0;
 }

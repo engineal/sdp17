@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "coordinate-system.h"
 #include "channel.h"
 #include "FIRFilter.h"
@@ -9,14 +10,12 @@ private:
 	Channel* channel;
 	Coordinate coord;
 	FIRFilter filter;
+	vector<double> buffA;
+	vector<double> buffB;
 public:
-	double* buffA;
-	int buffA_length;
-	double* buffB;
-	int buffB_length;
-	
 	VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type);
 	~VirtualSource();
 	Coordinate getPosition();
-	void read_sample();
+	void readBuffer();
+	double getSample(int index);
 };

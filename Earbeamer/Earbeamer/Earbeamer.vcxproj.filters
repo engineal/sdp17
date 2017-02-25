@@ -45,10 +45,10 @@
     <ClCompile Include="src\virtual_source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\cexception.cpp">
+    <ClCompile Include="src\beam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\beam.cpp">
+    <ClCompile Include="src\cexcept.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,10 +86,10 @@
     <ClInclude Include="include\virtual_source.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\cexception.h">
+    <ClInclude Include="include\beam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\beam.h">
+    <ClInclude Include="include\cexcept.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

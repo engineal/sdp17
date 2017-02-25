@@ -16,15 +16,6 @@
 #define MAXBODIES 6
 
 using namespace std;
-//some useful typedefs for explicit type sizes
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned int uint32;
-typedef unsigned long long uint64;
-typedef char int8;
-typedef short int16;
-typedef int int32;
-typedef long long int64;
 
 //safe way of deleting a COM object
 template<typename T>

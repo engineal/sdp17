@@ -1,5 +1,7 @@
 #include "beam.h"
 
+#define samples_sec 16000
+
 using namespace std;
 
 Beam::Beam(vector<VirtualSource*> sources) {

@@ -4,28 +4,32 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <condition_variable>
 #include "virtual_source.h"
 #include "beam.h"
 #include "target.h"
 
 class Beamformer {
 private:
-	std::queue<std::pair<double*, int>> data_buffer;
+	std::queue<std::vector<double>> data_buffer;
 	std::vector<VirtualSource*> sources;
-	std::vector<Beam> beams;
+	std::map<Target*, Beam> beams;
 	std::thread beamforming_thread;
 	bool running;
 	std::mutex data_buffer_mtx;
+	std::condition_variable data_buffer_cv;
+	std::mutex beams_mtx;
 
 	void beamforming();
-	void calculate_task(double* output);
-	void process_segment(double* output, Beam beam);
+	std::vector<double> calculate_task();
+	std::vector<double> process_segment(Beam beam);
 public:
 	Beamformer(std::vector<VirtualSource*> sources);
 	~Beamformer();
 	void start();
 	void stop();
-	void add_target(Target target);
+	void updateTargets(std::map<UINT64, Target*> targets);
 	bool dataAvailable();
-	std::pair<double*, int> pop_buffer();
+	void waitForData();
+	std::vector<double> pop_buffer();
 };

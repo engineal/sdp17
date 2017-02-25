@@ -22,7 +22,7 @@
     <ClCompile Include="src\adc.cpp" />
     <ClCompile Include="src\beam.cpp" />
     <ClCompile Include="src\beamformer.cpp" />
-    <ClCompile Include="src\cexception.cpp" />
+    <ClCompile Include="src\cexcept.cpp" />
     <ClCompile Include="src\channel.cpp" />
     <ClCompile Include="src\coordinate-system.cpp" />
     <ClCompile Include="src\driver.cpp" />
@@ -35,7 +35,7 @@
   <ItemGroup>
     <ClInclude Include="include\adc.h" />
     <ClInclude Include="include\beamformer.h" />
-    <ClInclude Include="include\cexception.h" />
+    <ClInclude Include="include\cexcept.h" />
     <ClInclude Include="include\channel.h" />
     <ClInclude Include="include\coordinate-system.h" />
     <ClInclude Include="include\FIRFilter.h" />
@@ -105,7 +105,10 @@
     <IncludePath>C:\Program Files (x86)\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;D:\OneDrive\Documents\School\SDP17\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,7 +118,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib32\msvc;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)Lib\x32\;$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib32\msvc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nidaqmx.lib;Kinect20.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,7 +130,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)Lib\x64\;$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib64\msvc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;nidaqmx.lib;Kinect20.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nidaqmx.lib;Kinect20.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,6 +144,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib32\msvc;$(KINECTSDK20_DIR)Lib\x32\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,6 +158,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>nidaqmx.lib;Kinect20.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib64\msvc;$(KINECTSDK20_DIR)Lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

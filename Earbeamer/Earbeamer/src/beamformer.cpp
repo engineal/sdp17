@@ -3,7 +3,7 @@
 #include <mutex>
 #include <ctime>
 #include "beamformer.h"
-#include "cexception.h"
+#include "cexcept.h"
 
 using namespace std;
 
@@ -30,64 +30,88 @@ void Beamformer::stop() {
 /*
 * Create a beam for the target
 */
-void Beamformer::add_target(Target target) {
-	Beam beam(sources);
-	beam.update_delays(target);
-	beams.push_back(beam);
+void Beamformer::updateTargets(map<UINT64, Target*> targets) {
+	unique_lock<mutex> lck(beams_mtx);
+	for (map<UINT64, Target*>::iterator itr = targets.begin(); itr != targets.end(); ++itr) {
+		map<Target*, Beam>::iterator it = beams.find(itr->second);
+		if (it != beams.end()) {
+			// Target does not have beam, so add it
+			Beam beam(sources);
+			beam.update_delays(*(itr->second));
+			beams.insert(pair<Target*, Beam>(itr->second, beam));
+		}
+		else {
+			// Target already has beam, so update it
+			it->second.update_delays(*(itr->second));
+		}
+	}
+
+	for (map<Target*, Beam>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
+		map<UINT64, Target*>::iterator it = targets.find(itr->first->getTrackingId());
+		if (it == targets.end()) {
+			// Target missing, so remove it
+			beams.erase(itr);
+		}
+	}
 }
 
 bool Beamformer::dataAvailable() {
-	data_buffer_mtx.lock();
+	unique_lock<mutex> lck(data_buffer_mtx);
 	return data_buffer.size() > 0;
-	data_buffer_mtx.unlock();
 }
 
-pair<double*, int> Beamformer::pop_buffer() {
-	pair<double*, int> tmp;
+void Beamformer::waitForData() {
+	unique_lock<mutex> lck(data_buffer_mtx);
+	while (data_buffer.size() == 0) {
+		data_buffer_cv.wait(lck);
+	}
+}
 
-	data_buffer_mtx.lock();
+vector<double> Beamformer::pop_buffer() {
+	vector<double> tmp;
+
+	unique_lock<mutex> lck(data_buffer_mtx);
 	if (data_buffer.size() > 0) {
 		tmp = data_buffer.front();
 		data_buffer.pop();
-		data_buffer_mtx.unlock();
 		return tmp;
 	}
-	data_buffer_mtx.unlock();
 	throw ElementNotAvailableException();
 }
 
 void Beamformer::beamforming() {
 	while (running) {
-		// Read in samples from microphones
+		// Read in samples from sources
 		for (int i = 0; i < sources.size(); i++) {
-			sources[i]->read_sample();
+			sources[i]->readBuffer();
 		}
 
-		double* output = new double[BUFFER_LENGTH];
-		calculate_task(output);
+		vector<double> output = calculate_task();
 
 		// push output into buffer
-		data_buffer_mtx.lock();
-		data_buffer.push(pair<double*, int>(output, BUFFER_LENGTH));
-		data_buffer_mtx.unlock();
+		unique_lock<mutex> lck(data_buffer_mtx);
+		data_buffer.push(output);
+		data_buffer_cv.notify_all();
 	}
 }
 
 /**
 * Thead to calculate more than one beam
 */
-void Beamformer::calculate_task(double* output) {
+vector<double> Beamformer::calculate_task() {
+	vector<double> output;
+	output.resize(BUFFER_LENGTH);
 	// Clear output buffer first
-	for (int i = 0; i < BUFFER_LENGTH; i++) {
+	for (int i = 0; i < output.size(); i++) {
 		output[i] = 0;
 	}
 
 	// Calculate each beam separately
-	double temp_output[BUFFER_LENGTH];
-	for (vector<Beam>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
-		process_segment(temp_output, *itr);
+	unique_lock<mutex> lck(beams_mtx);
+	for (map<Target*, Beam>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
+		vector<double> temp_output = process_segment(itr->second);
 
-		for (int j = 0; j < BUFFER_LENGTH; j++) {
+		for (int j = 0; j < temp_output.size(); j++) {
 			output[j] += temp_output[j];
 		}
 	}
@@ -96,23 +120,22 @@ void Beamformer::calculate_task(double* output) {
 	for (int i = 0; i < BUFFER_LENGTH; i++) {
 		output[i] /= beams.size();
 	}
+	return output;
 }
 
 /**
 * Implements delay-sum on one beam
 */
-void Beamformer::process_segment(double* output, Beam beam) {
-	for (int i = 0; i < BUFFER_LENGTH; i++) {
+vector<double> Beamformer::process_segment(Beam beam) {
+	vector<double> output;
+	output.resize(BUFFER_LENGTH);
+	for (int i = 0; i < output.size(); i++) {
 		output[i] = 0;
 		for (int j = 0; j < sources.size(); j++) {
-			if (i + beam.getDelay(sources[j]) < BUFFER_LENGTH) {
-				output[i] += sources[j]->buffA[i + beam.getDelay(sources[j])];
-			}
-			else {
-				output[i] += sources[j]->buffB[i + beam.getDelay(sources[j]) - BUFFER_LENGTH];
-			}
+			output[i] += sources[j]->getSample(i + beam.getDelay(sources[j]));
 		}
 
 		output[i] /= sources.size();
 	}
+	return output;
 }

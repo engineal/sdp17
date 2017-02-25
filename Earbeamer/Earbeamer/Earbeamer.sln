@@ -5,9 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Earbeamer", "Earbeamer.vcxproj", "{2B81FB1A-2E24-4881-98C3-AD5F7CC33ADA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoftwareFiltering", "..\SoftwareFiltering\SoftwareFiltering.vcxproj", "{E58521F1-0CB0-4ACE-A735-501661A044FE}"
-EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -23,14 +24,6 @@ Global
 		{2B81FB1A-2E24-4881-98C3-AD5F7CC33ADA}.Release|x64.Build.0 = Release|x64
 		{2B81FB1A-2E24-4881-98C3-AD5F7CC33ADA}.Release|x86.ActiveCfg = Release|Win32
 		{2B81FB1A-2E24-4881-98C3-AD5F7CC33ADA}.Release|x86.Build.0 = Release|Win32
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Debug|x64.ActiveCfg = Debug|x64
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Debug|x64.Build.0 = Debug|x64
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Debug|x86.ActiveCfg = Debug|Win32
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Debug|x86.Build.0 = Debug|Win32
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Release|x64.ActiveCfg = Release|x64
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Release|x64.Build.0 = Release|x64
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Release|x86.ActiveCfg = Release|Win32
-		{E58521F1-0CB0-4ACE-A735-501661A044FE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -57,8 +57,8 @@ int main(int argc, char *argv[]) {
 	vector<VirtualSource*> sources = createSources(channels);
 
 	try {
-		ADC adc(channels, 16000.0);
-		Room room();
+		ADC adc(channels, 15625.0);
+		//Room room(CoordinateSystem());
 
 		Beamformer beamformer(sources);
 		oWavFile outWavFile("test.wav");
@@ -71,12 +71,12 @@ int main(int argc, char *argv[]) {
 
 		time(&start);
 		time(&current);
-		while (difftime(current, start) < 10) {
-			if (beamformer.dataAvailable()) {
-				cout << difftime(current, start) << endl;
-				pair<double*, int> output = beamformer.pop_buffer();
-				outWavFile.writeBuffer(output.first, output.second);
-			}
+		while (difftime(current, start) < 60) {
+			beamformer.waitForData();
+			vector<double> output = beamformer.pop_buffer();
+			outWavFile.writeBuffer(&output[0], (int)output.size());
+
+			//cout << difftime(current, start) << endl;
 			time(&current);
 		}
 
@@ -89,6 +89,6 @@ int main(int argc, char *argv[]) {
 		cout << e.what() << endl;
 	}
 
-	getchar();
+	//getchar();
 	return 0;
 }
