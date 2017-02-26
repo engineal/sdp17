@@ -84,19 +84,16 @@ int main(int argc, char *argv[]) {
 		Beamformer beamformer(sources);
 		room->beginMonitoring(&beamformer);
 
-		oWavFile* outputFiles[16];
-		IListener listeners[16];
-		for (int i = 0; i < channels.size(); i++) {
-			outputFiles[i] = new oWavFile("test" + to_string(i) + ".wav");
-		}
+		oWavFile outWavFile("test.wav");
+		//oWavFile* outputFiles[16];
+		//IListener listeners[16];
+		//for (int i = 0; i < channels.size(); i++) {
+		//	outputFiles[i] = new oWavFile("test" + to_string(i) + ".wav");
+		//	channels[i]->addListener(&listeners[i]);
+		//}
 
 		time_t start;
 		time_t current;
-
-		// test recording of each channel
-		for (int i = 0; i < 16; i++) {
-			channels[i]->addListener(&listeners[i]);
-		}
 
 		adc.start();
 		beamformer.start();
@@ -105,16 +102,15 @@ int main(int argc, char *argv[]) {
 		time(&current);
 		
 		while (difftime(current, start) < 10) {
-			
-			//beamformer.waitForData();
-			//vector<double> output = beamformer.pop_buffer();
-			//outWavFile.writeBuffer(&output[0], (int)output.size());
+			//for (int i = 0; i < 16; i++) {
+			//	channels[i]->waitForData();
+			//	vector<double> data = channels[i]->pop_buffer(&listeners[i]);
+			//	outputFiles[i]->writeBuffer(&data[0], data.size());
+			//}
 
-			for (int i = 0; i < 16; i++) {
-				channels[i]->waitForData();
-				vector<double> data = channels[i]->pop_buffer(&listeners[i]);
-				outputFiles[i]->writeBuffer(&data[0], data.size());
-			}
+			beamformer.waitForData();
+			vector<double> output = beamformer.pop_buffer();
+			outWavFile.writeBuffer(&output[0], (int)output.size());
 			
 			cout << difftime(current, start) << endl;
 			time(&current);
@@ -123,9 +119,10 @@ int main(int argc, char *argv[]) {
 		beamformer.stop();
 		adc.stop();
 
-		for (int i = 0; i < channels.size(); i++) {
-			outputFiles[i]->close();
-		}
+		outWavFile.close();
+		//for (int i = 0; i < channels.size(); i++) {
+		//	outputFiles[i]->close();
+		//}
 	}
 	catch (exception& e) {
 		cout << e.what() << endl;

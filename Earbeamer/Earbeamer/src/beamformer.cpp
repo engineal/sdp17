@@ -38,12 +38,13 @@ void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 		if (it == beams.end()) {
 			// Target does not have beam, so add it
 			Beam* beam = new Beam(sources);
-			beam->update_delays(*(itr->second));
+			beam->update_delays(*(itr->second), sources);
 			beams.insert(pair<Target*, Beam*>(itr->second, beam));
+			cout << "New target found" << endl;
 		}
 		else {
 			// Target already has beam, so update it
-			it->second->update_delays(*(itr->second));
+			it->second->update_delays(*(itr->second), sources);
 		}
 	}
 
@@ -54,6 +55,7 @@ void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 			// Target missing, so remove it
 			delete itr->second;
 			itr = beams.erase(itr);
+			cout << "Target lost" << endl;
 		}
 		else {
 			++itr;
@@ -102,8 +104,6 @@ void Beamformer::beamforming() {
 		catch (exception& e) {
 			cout << e.what() << endl;
 		}
-
-
 	}
 }
 
@@ -121,15 +121,11 @@ vector<double> Beamformer::calculate_task() {
 	// Calculate each beam separately
 	unique_lock<mutex> lck(beams_mtx);
 	for (map<Target*, Beam*>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
-		vector<double> temp_output = process_segment(*(itr->second));
-
-		for (int j = 0; j < temp_output.size(); j++) {
-			output[j] += temp_output[j];
-		}
+		process_beam(*(itr->second), output);
 	}
 
 	// Normalize the audio level so no clipping happens
-	for (int i = 0; i < BUFFER_LENGTH; i++) {
+	for (int i = 0; i < output.size(); i++) {
 		output[i] /= beams.size();
 	}
 	return output;
@@ -138,16 +134,15 @@ vector<double> Beamformer::calculate_task() {
 /**
 * Implements delay-sum on one beam
 */
-vector<double> Beamformer::process_segment(Beam& beam) {
-	vector<double> output;
-	output.resize(BUFFER_LENGTH);
+void Beamformer::process_beam(Beam& beam, vector<double>& output) {
+	int num_sources = sources.size();
 	for (int i = 0; i < output.size(); i++) {
-		output[i] = 0;
-		for (int j = 0; j < sources.size(); j++) {
-			output[i] += sources[j]->getSample(i + beam.getDelay(sources[j]));
+		double avg = 0.0;
+		for (int j = 0; j < num_sources; j++) {
+			avg += sources[j]->getSample(i + beam.getDelay(j));
 		}
 
-		output[i] /= sources.size();
+		avg /= num_sources;
+		output[i] += avg;
 	}
-	return output;
 }

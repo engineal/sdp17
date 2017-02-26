@@ -48,7 +48,6 @@ Coordinate CoordinateSystem::cameraToSystemSpace(CameraSpacePoint pt)
 {
 
 	//Applies a Coordinate System Translation, then a rotation
-	std::cout << orientation << std::endl;
 	double x_prime = (pt.X - origin.X)*cos(orientation) + (pt.Z - origin.Z)*sin(orientation);
 	double z_prime = -1 * (pt.X - origin.X)*sin(orientation) + (pt.Z - origin.Z)*cos(orientation);
 	return Coordinate(x_prime, z_prime);

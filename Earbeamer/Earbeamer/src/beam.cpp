@@ -6,7 +6,7 @@ using namespace std;
 
 Beam::Beam(vector<VirtualSource*> sources) {
 	for (vector<VirtualSource*>::iterator itr = sources.begin(); itr != sources.end(); ++itr) {
-		delays.insert(pair<VirtualSource*, int>(*itr, 0));
+		delays.push_back(0);
 	}
 }
 
@@ -14,23 +14,23 @@ Beam::~Beam() {
 	cout << "Beam deconstructor" << endl;
 }
 
-int Beam::getDelay(VirtualSource* source) {
-	return delays.find(source)->second;
+int Beam::getDelay(int source) {
+	return delays[source];
 }
 
-void Beam::update_delays(Target target) {
+void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 	int min_delay = BUFFER_LENGTH;
-	for (map<VirtualSource*, int>::iterator itr = delays.begin(); itr != delays.end(); ++itr) {
-		itr->second = calculate_delay_between_points(target.getPosition(), itr->first->getPosition());
-		if (itr->second < min_delay) {
-			min_delay = itr->second;
+	for (int i = 0; i < delays.size(); i++) {
+		delays[i] = calculate_delay_between_points(target.getPosition(), sources[i]->getPosition());
+		if (delays[i] < min_delay) {
+			min_delay = delays[i];
 		}
 	}
 
 	//cout << "target delays" << endl;
 	// minimize delay on all mics
-	for (map<VirtualSource*, int>::iterator itr = delays.begin(); itr != delays.end(); ++itr) {
-		itr->second -= min_delay;
+	for (int i = 0; i < delays.size(); i++) {
+		delays[i] -= min_delay;
 		//cout << itr->second << endl;
 	}
 	//cout << endl;

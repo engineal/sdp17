@@ -37,11 +37,12 @@ void VirtualSource::readBuffer() {
 }
 
 double VirtualSource::getSample(int index) {
-	if (index >= 0 && index < buffA.size()) {
+	int buffA_size = buffA.size();
+	if (index >= 0 && index < buffA_size) {
 		return buffA[index];
 	}
-	else if ((index - buffA.size()) >= 0 && (index - buffA.size()) < buffB.size()) {
-		return buffB[index - buffA.size()];
+	else if ((index - buffA_size) >= 0 && (index - buffA_size) < buffB.size()) {
+		return buffB[index - buffA_size];
 	}
 	else {
 		throw out_of_range("Attempt to access memory outside of buffers");

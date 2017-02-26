@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 #include <vector>
 #include <thread>
 #include <mutex>
@@ -22,7 +23,7 @@ private:
 
 	void beamforming();
 	std::vector<double> calculate_task();
-	std::vector<double> process_segment(Beam& beam);
+	void process_beam(Beam& beam, vector<double>& output);
 public:
 	Beamformer(std::vector<VirtualSource*> sources);
 	~Beamformer();
