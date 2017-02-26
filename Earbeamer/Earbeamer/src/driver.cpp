@@ -1,5 +1,4 @@
 #include <iostream>
-#include "websocket_server.h"
 #include <windows.h>
 #include <time.h>
 #include "channel.h"
@@ -71,9 +70,6 @@ int main(int argc, char *argv[]) {
 
 	CoordinateSystem grid = CoordinateSystem(left, right);
 
-	
-
-
 	try {
 		ADC adc(channels, 15625.0);
 		Room* room = new Room(grid);
@@ -85,12 +81,12 @@ int main(int argc, char *argv[]) {
 		room->beginMonitoring(&beamformer);
 
 		oWavFile outWavFile("test.wav");
-		//oWavFile* outputFiles[16];
-		//IListener listeners[16];
-		//for (int i = 0; i < channels.size(); i++) {
-		//	outputFiles[i] = new oWavFile("test" + to_string(i) + ".wav");
-		//	channels[i]->addListener(&listeners[i]);
-		//}
+		oWavFile* outputFiles[16];
+		IListener listeners[16];
+		for (int i = 0; i < channels.size(); i++) {
+			outputFiles[i] = new oWavFile("test" + to_string(i) + ".wav");
+			channels[i]->addListener(&listeners[i]);
+		}
 
 		time_t start;
 		time_t current;
@@ -101,33 +97,36 @@ int main(int argc, char *argv[]) {
 		time(&start);
 		time(&current);
 		
-		while (difftime(current, start) < 10) {
-			//for (int i = 0; i < 16; i++) {
-			//	channels[i]->waitForData();
-			//	vector<double> data = channels[i]->pop_buffer(&listeners[i]);
-			//	outputFiles[i]->writeBuffer(&data[0], data.size());
-			//}
+		while (difftime(current, start) < 30) {
+			for (int i = 0; i < 16; i++) {
+				channels[i]->waitForData();
+				vector<double> data = channels[i]->pop_buffer(&listeners[i]);
+				outputFiles[i]->writeBuffer(&data[0], data.size());
+			}
 
 			beamformer.waitForData();
 			vector<double> output = beamformer.pop_buffer();
 			outWavFile.writeBuffer(&output[0], (int)output.size());
 			
-			cout << difftime(current, start) << endl;
+			//cout << difftime(current, start) << endl;
 			time(&current);
 		}
 
+		for (int i = 0; i < channels.size(); i++) {
+			outputFiles[i]->close();
+			channels[i]->removeListener(&listeners[i]);
+		}
+
+		room->stop();
 		beamformer.stop();
 		adc.stop();
 
 		outWavFile.close();
-		//for (int i = 0; i < channels.size(); i++) {
-		//	outputFiles[i]->close();
-		//}
 	}
 	catch (exception& e) {
 		cout << e.what() << endl;
 	}
 
-	//getchar();
+	getchar();
 	return 0;
 }

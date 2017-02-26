@@ -13,6 +13,6 @@ private:
 public:
 	FIRFilter(FilterType type);
 	~FIRFilter();
-	void filter(double (&sample)[BUFFER_LENGTH], double (&buffer)[BUFFER_LENGTH]);
+	void filter(std::vector<double> samples, std::vector<double> out);
 	void flush();
 };

@@ -23,8 +23,9 @@ void Beamformer::start() {
 
 void Beamformer::stop() {
 	running = false;
-	//spawn processing thread
-	beamforming_thread.join();
+	if (beamforming_thread.joinable()) {
+		beamforming_thread.join();
+	}
 }
 
 /*
@@ -37,10 +38,10 @@ void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 		map<Target*, Beam*>::iterator it = beams.find(itr->second);
 		if (it == beams.end()) {
 			// Target does not have beam, so add it
+			cout << "New target found" << endl;
 			Beam* beam = new Beam(sources);
 			beam->update_delays(*(itr->second), sources);
 			beams.insert(pair<Target*, Beam*>(itr->second, beam));
-			cout << "New target found" << endl;
 		}
 		else {
 			// Target already has beam, so update it
@@ -53,9 +54,9 @@ void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 		map<UINT64, Target*>::iterator it = targets.find(itr->first->getTrackingId());
 		if (it == targets.end()) {
 			// Target missing, so remove it
+			cout << "Target lost" << endl;
 			delete itr->second;
 			itr = beams.erase(itr);
-			cout << "Target lost" << endl;
 		}
 		else {
 			++itr;
@@ -105,6 +106,7 @@ void Beamformer::beamforming() {
 			cout << e.what() << endl;
 		}
 	}
+	cout << "beamforming done" << endl;
 }
 
 /**

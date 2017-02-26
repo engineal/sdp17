@@ -18,12 +18,12 @@ FIRFilter::FIRFilter(FilterType type) {
 		break;
 	}
 
-	workspace = (double*)malloc((h.size() + BUFFER_LENGTH) * sizeof(double));
+	workspace = new double[h.size() + BUFFER_LENGTH];
 }
 
 FIRFilter::~FIRFilter() {
 	cout << "FIRFilter deconstructor" << endl;
-	free(workspace);
+	delete[] workspace;
 }
 
 //Removes all remnants of previous filtering from the workspace
@@ -31,7 +31,7 @@ void FIRFilter::flush() {
 	memset(workspace, 0, (h.size() + BUFFER_LENGTH) * sizeof(double));
 }
 
-void FIRFilter::filter(double(&sample)[BUFFER_LENGTH], double(&out)[BUFFER_LENGTH]) {
+void FIRFilter::filter(vector<double> samples, vector<double> out) {
 
 	int n;
 	int k;
@@ -42,7 +42,7 @@ void FIRFilter::filter(double(&sample)[BUFFER_LENGTH], double(&out)[BUFFER_LENGT
 
 	//Place the sample at an offset into the workspace buffer
 	// the offset leaves room for a filter's worth of prev data
-	memcpy(&workspace[h.size() - 1], &sample, BUFFER_LENGTH * sizeof(double));
+	memcpy(&workspace[h.size() - 1], &samples[0], BUFFER_LENGTH * sizeof(double));
 
 	for (n = 0; n < BUFFER_LENGTH; n++) {
 		

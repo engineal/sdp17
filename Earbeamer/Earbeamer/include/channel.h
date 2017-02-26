@@ -23,6 +23,7 @@ public:
 	~Channel();
 	std::string getChannelId();
 	void addListener(IListener* listener);
+	void removeListener(IListener* listener);
 	bool dataAvailable();
 	void waitForData();
 	void push_buffer(std::vector<double> data);

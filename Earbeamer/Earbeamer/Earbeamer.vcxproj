@@ -32,7 +32,6 @@
     <ClCompile Include="src\room.cpp" />
     <ClCompile Include="src\target.cpp" />
     <ClCompile Include="src\wav-file.cpp" />
-    <ClCompile Include="src\websocket_server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\adc.h" />
@@ -49,7 +48,6 @@
     <ClInclude Include="include\room.h" />
     <ClInclude Include="include\target.h" />
     <ClInclude Include="include\wav-file.h" />
-    <ClInclude Include="include\websocket_server.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="audiocheck.net_sin_1200Hz_-3dBFS_10s.wav" />
@@ -112,7 +110,7 @@
     <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\$(USERNAME)\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(BOOST);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\$(USERNAME)\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

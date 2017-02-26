@@ -15,6 +15,10 @@ shared_mutex Room::target_mutex;
 condition_variable_any Room::target_trigger;
 
 //Constructor
+Room::Room(CoordinateSystem xy) : grid(xy) {
+	running = false;
+}
+
 void Room::Init()
 {
 
@@ -188,31 +192,32 @@ void Room::updateTargets()
 }
 
 void Room::monitor(Beamformer* beamformer) {
-	while (1) {
+	while (running) {
 		Sleep(1000);
 		this->updateTargets();
 		target_trigger.notify_one();
 		beamformer->updateTargets(this->getTargets());
 	}
+	cout << "room done" << endl;
 }
-
-
-
-
 
 map<UINT64, Target*> Room::getTargets() {
 	return this->m_targets;
 }
 
-
 void Room::beginMonitoring(Beamformer* beamformer) {
+	running = true;
 	this->t_monitor = thread(&Room::monitor, this, beamformer);
 }
 
-Room::~Room() {
+void Room::stop() {
+	running = false;
 	if (t_monitor.joinable()) {
 		t_monitor.join();
 	}
+}
+
+Room::~Room() {
 	Shutdown();
 }
 

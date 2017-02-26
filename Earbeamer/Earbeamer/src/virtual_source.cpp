@@ -9,6 +9,7 @@ using namespace std;
 
 VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)) {
 	channel->addListener(this);
+	//buffB.resize(BUFFER_LENGTH);
 }
 
 VirtualSource::~VirtualSource() {
@@ -34,6 +35,7 @@ void VirtualSource::readBuffer() {
 	buffB = data;
 
 	// apply filter
+	//filter.filter(data, buffB);
 }
 
 double VirtualSource::getSample(int index) {

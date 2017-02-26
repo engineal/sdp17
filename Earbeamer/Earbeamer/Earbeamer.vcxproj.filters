@@ -51,9 +51,6 @@
     <ClCompile Include="src\cexcept.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\websocket_server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\listener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\cexcept.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\websocket_server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\listener.h">
