@@ -202,8 +202,8 @@ oWavFile::oWavFile(string fileName) {
 	open = true;
 	
 	numChannels = 1;
-    nSamplesPerSec = 16000;
-    nAvgBytesPerSec = 32000;
+    nSamplesPerSec = 15625;
+    nAvgBytesPerSec = 31250;
     numBlockAlingn = 2;
     numBitsPerSample = 16;
 
@@ -237,11 +237,12 @@ void oWavFile::writeBuffer(double* samples, int n) {
 	//todo: level checking
 	
 	for (int i = 0; i < n; i++) {
+		int sample = (int)(samples[i] * 32000); // don't know why it's not 21845.3333
 		if (numChannels == 2) {
-			write_word(*fOut, (int)samples[i], num_bytes);
-			write_word(*fOut, (int)samples[i], num_bytes);
+			write_word(*fOut, sample, num_bytes);
+			write_word(*fOut, sample, num_bytes);
 		} else {
-			write_word(*fOut, (int)samples[i], num_bytes);
+			write_word(*fOut, sample, num_bytes);
 		}
 	}
 }

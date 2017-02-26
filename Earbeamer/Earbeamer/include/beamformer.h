@@ -13,7 +13,7 @@ class Beamformer {
 private:
 	std::queue<std::vector<double>> data_buffer;
 	std::vector<VirtualSource*> sources;
-	std::map<Target*, Beam> beams;
+	std::map<Target*, Beam*> beams;
 	std::thread beamforming_thread;
 	bool running;
 	std::mutex data_buffer_mtx;
@@ -22,7 +22,7 @@ private:
 
 	void beamforming();
 	std::vector<double> calculate_task();
-	std::vector<double> process_segment(Beam beam);
+	std::vector<double> process_segment(Beam& beam);
 public:
 	Beamformer(std::vector<VirtualSource*> sources);
 	~Beamformer();

@@ -27,6 +27,7 @@
     <ClCompile Include="src\coordinate-system.cpp" />
     <ClCompile Include="src\driver.cpp" />
     <ClCompile Include="src\FIRFilter.cpp" />
+    <ClCompile Include="src\listener.cpp" />
     <ClCompile Include="src\virtual_source.cpp" />
     <ClCompile Include="src\room.cpp" />
     <ClCompile Include="src\target.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="include\FIRFilter.h" />
     <ClInclude Include="include\beam.h" />
     <ClInclude Include="include\high_coefs.h" />
+    <ClInclude Include="include\listener.h" />
     <ClInclude Include="include\low_coefs.h" />
     <ClInclude Include="include\virtual_source.h" />
     <ClInclude Include="include\room.h" />
@@ -107,7 +109,7 @@
     <IncludePath>C:\Program Files (x86)\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\$(USERNAME)\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(BOOST);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
@@ -129,6 +131,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)Lib\x64\;$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib64\msvc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

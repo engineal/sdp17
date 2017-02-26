@@ -4,8 +4,9 @@
 #include "coordinate-system.h"
 #include "channel.h"
 #include "FIRFilter.h"
+#include "listener.h"
 
-class VirtualSource {
+class VirtualSource : public IListener {
 private:
 	Channel* channel;
 	Coordinate coord;

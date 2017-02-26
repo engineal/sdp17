@@ -14,6 +14,7 @@
 
 #include "target.h"
 #include "coordinate-system.h"
+#include "beamformer.h"
 
 #define MAXBODIES 6
 
@@ -36,7 +37,7 @@ public:
 	map<UINT64, Target*> getTargets();
 	map<UINT64, Target*>& getTargetReference();
 	void updateTargets();
-	void beginMonitoring();
+	void beginMonitoring(Beamformer*);
 
 private:
 	thread t_monitor;
@@ -44,7 +45,7 @@ private:
 	IBodyFrameReader* m_bodyFrameReader = nullptr;
 	std::map<UINT64, Target*> m_targets;
 	void processBodies(std::list<IBody*> &vBodies);
-	void monitor();
+	void monitor(Beamformer*);
 	
 
 protected:

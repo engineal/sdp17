@@ -5,6 +5,7 @@
 
 #include "coordinate-system.h"
 #include "room.h"
+#include "beamformer.h"
 
 using namespace std;
 
@@ -91,6 +92,8 @@ void Room::processBodies(std::list<IBody*> &lBodies)
 	while (itBody != lBodies.end())
 	{
 		(*itBody)->get_TrackingId(&bodyId);
+
+		//Check if the ID matches a body currently tracked in the room
 		if ((itTarget = m_targets.find(bodyId)) != m_targets.end())
 		{
 			(*itBody)->GetJoints(JointType_Count, joints);
@@ -125,10 +128,12 @@ void Room::processBodies(std::list<IBody*> &lBodies)
 	
 	//Any remaining items in lBodies are newly tracked, and need to be added to m_targets
 	for (itBody = lBodies.begin(); itBody != lBodies.end(); itBody++) {
-		
+
 		if (m_targets.size() < MAXBODIES)
 		{
 			(*itBody)->get_TrackingId(&bodyId);
+			(*itBody)->GetJoints(JointType_Count, joints);
+			headJoint = joints[JointType_Head];
 			
 			m_targets.insert(pair<UINT64, Target*>(bodyId, new Target(grid.cameraToSystemSpace(headJoint.Position), bodyId)));
 		}
@@ -182,42 +187,26 @@ void Room::updateTargets()
 	
 }
 
-void Room::monitor() {
-
+void Room::monitor(Beamformer* beamformer) {
 	while (1) {
 		Sleep(1000);
 		this->updateTargets();
 		target_trigger.notify_one();
-		/*
-		map<UINT64, Target*> targs;
-		map<UINT64, Target*>::iterator itr;
-		this->getTargets(targs);
-
-		cout << "Test" << endl;
-
-		for (itr = targs.begin(); itr != targs.end(); itr++)
-		{
-			cout << "Testing JSON: " << endl;
-			cout << *(itr->second) << endl;
-			Coordinate coord = itr->second->getPosition();
-			cout << "ID: " << itr->second->getTrackingId();
-			cout << "Coordinate: " << coord << endl;
-			cout << "Angle: " << itr->second->getAngleFromOrigin() << endl;
-		}
-		*/
+		beamformer->updateTargets(this->getTargets());
 	}
-
-
-
 }
+
+
+
 
 
 map<UINT64, Target*> Room::getTargets() {
 	return this->m_targets;
 }
 
-void Room::beginMonitoring() {
-	this->t_monitor = thread(&Room::monitor, this);
+
+void Room::beginMonitoring(Beamformer* beamformer) {
+	this->t_monitor = thread(&Room::monitor, this, beamformer);
 }
 
 Room::~Room() {

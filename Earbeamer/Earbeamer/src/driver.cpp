@@ -1,4 +1,5 @@
 #include <iostream>
+#include "websocket_server.h"
 #include <windows.h>
 #include <time.h>
 #include "channel.h"
@@ -7,6 +8,8 @@
 #include "beamformer.h"
 #include "wav-file.h"
 #include "room.h"
+
+
 
 using namespace std;
 
@@ -56,34 +59,73 @@ int main(int argc, char *argv[]) {
 	}
 	vector<VirtualSource*> sources = createSources(channels);
 
+	CameraSpacePoint left = CameraSpacePoint();
+	left.X = 0.7;
+	left.Y = 0;
+	left.Z = .42;
+
+	CameraSpacePoint right = CameraSpacePoint();
+	right.X = -0.7;
+	right.Y = 0;
+	right.Z = 0.42;
+
+	CoordinateSystem grid = CoordinateSystem(left, right);
+
+	
+
+
 	try {
 		ADC adc(channels, 15625.0);
-		//Room room(CoordinateSystem());
+		Room* room = new Room(grid);
+
+		room->Init();
+		
 
 		Beamformer beamformer(sources);
-		oWavFile outWavFile("test.wav");
+		room->beginMonitoring(&beamformer);
+
+		oWavFile* outputFiles[16];
+		IListener listeners[16];
+		for (int i = 0; i < channels.size(); i++) {
+			outputFiles[i] = new oWavFile("test" + to_string(i) + ".wav");
+		}
 
 		time_t start;
 		time_t current;
 
+		// test recording of each channel
+		for (int i = 0; i < 16; i++) {
+			channels[i]->addListener(&listeners[i]);
+		}
+
 		adc.start();
 		beamformer.start();
-
+		
 		time(&start);
 		time(&current);
-		while (difftime(current, start) < 60) {
-			beamformer.waitForData();
-			vector<double> output = beamformer.pop_buffer();
-			outWavFile.writeBuffer(&output[0], (int)output.size());
+		
+		while (difftime(current, start) < 10) {
+			
+			//beamformer.waitForData();
+			//vector<double> output = beamformer.pop_buffer();
+			//outWavFile.writeBuffer(&output[0], (int)output.size());
 
-			//cout << difftime(current, start) << endl;
+			for (int i = 0; i < 16; i++) {
+				channels[i]->waitForData();
+				vector<double> data = channels[i]->pop_buffer(&listeners[i]);
+				outputFiles[i]->writeBuffer(&data[0], data.size());
+			}
+			
+			cout << difftime(current, start) << endl;
 			time(&current);
 		}
 
 		beamformer.stop();
 		adc.stop();
 
-		outWavFile.close();
+		for (int i = 0; i < channels.size(); i++) {
+			outputFiles[i]->close();
+		}
 	}
 	catch (exception& e) {
 		cout << e.what() << endl;

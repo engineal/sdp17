@@ -50,23 +50,22 @@ void ADC::stop() {
 
 void ADC::data_callback() {
 	static int totalRead = 0;
-	int32 read = 0;
+	int32 samples_per_channel = 0;
 	float64* tmp_data = new float64[tmp_data_size];
 
-	DAQmxErrChk(DAQmxReadAnalogF64(taskHandle, 1024, 10.0, DAQmx_Val_GroupByChannel, tmp_data, tmp_data_size, &read, NULL));
+	DAQmxErrChk(DAQmxReadAnalogF64(taskHandle, 1024, 10.0, DAQmx_Val_GroupByChannel, tmp_data, tmp_data_size, &samples_per_channel, NULL));
 
-	if (read>0) {
-		int channel_segment_length = read / (int) channels.size();
+	if (samples_per_channel > 0) {
 		//separate channels
 		for (int i = 0; i < channels.size(); i++) {
-			float64* start = tmp_data + (i * channel_segment_length);
-			float64* end = tmp_data + ((i + 1) * channel_segment_length) - 1;
+			float64* start = tmp_data + (i * samples_per_channel);
+			float64* end = tmp_data + ((i + 1) * samples_per_channel);
 			vector<double> data;
 			data.assign(start, end);
 			channels[i]->push_buffer(data);
 		}
 
-		cout << "Acquired " << read << " samples. Total " << (totalRead += read) << " Buffer length: " << channels[2]->data_buffer.size() << endl;
+		//cout << "Acquired " << samples_per_channel << " samples. Total " << (totalRead += samples_per_channel) << " Buffer length: " << channels[2]->data_buffer.size() << endl;
 	}
 
 	delete[] tmp_data;

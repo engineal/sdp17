@@ -32,25 +32,31 @@ void Beamformer::stop() {
 */
 void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 	unique_lock<mutex> lck(beams_mtx);
+
 	for (map<UINT64, Target*>::iterator itr = targets.begin(); itr != targets.end(); ++itr) {
-		map<Target*, Beam>::iterator it = beams.find(itr->second);
-		if (it != beams.end()) {
+		map<Target*, Beam*>::iterator it = beams.find(itr->second);
+		if (it == beams.end()) {
 			// Target does not have beam, so add it
-			Beam beam(sources);
-			beam.update_delays(*(itr->second));
-			beams.insert(pair<Target*, Beam>(itr->second, beam));
+			Beam* beam = new Beam(sources);
+			beam->update_delays(*(itr->second));
+			beams.insert(pair<Target*, Beam*>(itr->second, beam));
 		}
 		else {
 			// Target already has beam, so update it
-			it->second.update_delays(*(itr->second));
+			it->second->update_delays(*(itr->second));
 		}
 	}
 
-	for (map<Target*, Beam>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
+	map<Target*, Beam*>::iterator itr = beams.begin();
+	while (itr != beams.end()) {
 		map<UINT64, Target*>::iterator it = targets.find(itr->first->getTrackingId());
 		if (it == targets.end()) {
 			// Target missing, so remove it
-			beams.erase(itr);
+			delete itr->second;
+			itr = beams.erase(itr);
+		}
+		else {
+			++itr;
 		}
 	}
 }
@@ -86,12 +92,18 @@ void Beamformer::beamforming() {
 			sources[i]->readBuffer();
 		}
 
-		vector<double> output = calculate_task();
+		try {
+			vector<double> output = calculate_task();
+			// push output into buffer
+			unique_lock<mutex> lck(data_buffer_mtx);
+			data_buffer.push(output);
+			data_buffer_cv.notify_all();
+		}
+		catch (exception& e) {
+			cout << e.what() << endl;
+		}
 
-		// push output into buffer
-		unique_lock<mutex> lck(data_buffer_mtx);
-		data_buffer.push(output);
-		data_buffer_cv.notify_all();
+
 	}
 }
 
@@ -108,8 +120,8 @@ vector<double> Beamformer::calculate_task() {
 
 	// Calculate each beam separately
 	unique_lock<mutex> lck(beams_mtx);
-	for (map<Target*, Beam>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
-		vector<double> temp_output = process_segment(itr->second);
+	for (map<Target*, Beam*>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
+		vector<double> temp_output = process_segment(*(itr->second));
 
 		for (int j = 0; j < temp_output.size(); j++) {
 			output[j] += temp_output[j];
@@ -126,7 +138,7 @@ vector<double> Beamformer::calculate_task() {
 /**
 * Implements delay-sum on one beam
 */
-vector<double> Beamformer::process_segment(Beam beam) {
+vector<double> Beamformer::process_segment(Beam& beam) {
 	vector<double> output;
 	output.resize(BUFFER_LENGTH);
 	for (int i = 0; i < output.size(); i++) {

@@ -27,13 +27,13 @@ void Beam::update_delays(Target target) {
 		}
 	}
 
-	cout << "target delays" << endl;
+	//cout << "target delays" << endl;
 	// minimize delay on all mics
 	for (map<VirtualSource*, int>::iterator itr = delays.begin(); itr != delays.end(); ++itr) {
 		itr->second -= min_delay;
-		cout << itr->second << endl;
+		//cout << itr->second << endl;
 	}
-	cout << endl;
+	//cout << endl;
 }
 
 /*

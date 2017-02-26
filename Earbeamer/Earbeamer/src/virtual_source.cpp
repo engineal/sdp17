@@ -8,7 +8,7 @@ using namespace std;
 #define samples_sec 16000
 
 VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)) {
-	channel->addListener();
+	channel->addListener(this);
 }
 
 VirtualSource::~VirtualSource() {
@@ -30,7 +30,7 @@ void VirtualSource::readBuffer() {
 	buffA = buffB;
 
 	// channel should have data
-	vector<double> data = channel->pop_buffer();
+	vector<double> data = channel->pop_buffer(this);
 	buffB = data;
 
 	// apply filter
@@ -41,7 +41,7 @@ double VirtualSource::getSample(int index) {
 		return buffA[index];
 	}
 	else if ((index - buffA.size()) >= 0 && (index - buffA.size()) < buffB.size()) {
-		return buffB[(index - buffA.size())];
+		return buffB[index - buffA.size()];
 	}
 	else {
 		throw out_of_range("Attempt to access memory outside of buffers");
