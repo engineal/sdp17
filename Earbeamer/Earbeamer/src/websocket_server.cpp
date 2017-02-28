@@ -5,6 +5,7 @@
 #include "websocket_server.h"
 #include <sstream>
 #include "room.h"
+#include <regex>
 
 
 WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
@@ -53,12 +54,37 @@ void WebsocketServer::on_message(server *s, websocketpp::connection_hdl, message
 	
 
 
-
 }
 
-std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string) {
+std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string json) {
 
+	regex r("{\"id\":[\n]*([0-9]*)[,\n]*\"muted\":[\n]*([a-z]*)}");
 
+	sregex_iterator beg = sregex_iterator(json.begin(), json.end(), r);
+	sregex_iterator end = sregex_iterator();
+
+	std::map<UINT64, BOOLEAN> out;
+
+	//Iterate over all id matches within json
+	for (sregex_iterator it = beg; it != end; it++)
+	{
+		smatch match = *it;
+		string s_id = match[1];								//Gets the capture group
+		UINT64 i_id = (_strtoui64(s_id.c_str(), NULL, 10));	//Convert string to unsigned 64-bit int
+
+		string s_muted = match[2];
+		BOOLEAN b_muted;
+		if (!s_muted.compare("true")) {
+			b_muted = true;
+		}
+		else {
+			b_muted = false;
+		}
+
+		out.insert(std::pair<UINT64, BOOLEAN>(i_id, b_muted));
+	}
+
+	return out;
 
 }
 
