@@ -13,6 +13,7 @@ private:
 public:
 	FIRFilter(FilterType type);
 	~FIRFilter();
-	void filter(std::vector<double> samples, std::vector<double> out);
+	std::vector<double> filter(std::vector<double> samples);
+	void filter2(std::vector<double> samples, std::vector<double>& out);
 	void flush();
 };

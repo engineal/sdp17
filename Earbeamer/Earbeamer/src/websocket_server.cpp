@@ -16,22 +16,56 @@ WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
 
 	m_endpoint.set_open_handler(bind(&WebsocketServer::on_open, this, _1));
 	m_endpoint.set_close_handler(bind(&WebsocketServer::on_close, this, _1));
+	m_endpoint.set_message_handler(bind(&on_message, this, ::_1, ::_2));
 	
 
 }
 
+/**
+ *	Callback when a client terminates the websocket connection
+ */ 
 void WebsocketServer::on_close(connection_hdl hdl) {
 	std::lock_guard<std::mutex> guard(m_mutex);
 	cout << "Someone left!" << endl;
 	m_connections.erase(hdl);
 }
 
+/**
+ *	Callback when a client joins a websocket connection
+ */
 void WebsocketServer::on_open(connection_hdl hdl) {
 	std::lock_guard<std::mutex> guard(m_mutex);
 	cout << "Someone connected!" << endl;
 	m_connections.insert(hdl);
 }
 
+/**
+ *	Callback to handle event when server receives a message from the client
+ *
+ */
+
+void WebsocketServer::on_message(server *s, websocketpp::connection_hdl, message_ptr msg) {
+
+	std::cout << "Received message from client" << endl;
+
+	std::map<UINT64, BOOLEAN> mute_status = this->parse_client_msg(msg->get_payload());
+
+	
+
+
+
+}
+
+std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string) {
+
+
+
+}
+
+
+/**
+ *	Initiates a thread that continually publishes target locations over websockets
+ */
 void WebsocketServer::begin_broadcast() {
 	this->t_broadcast = thread(&WebsocketServer::broadcast_targets, this);
 }

@@ -21,6 +21,11 @@ public:
 	Coordinate getPosition();
 	UINT64 getTrackingId();
 	double getAngleFromOrigin();
+
+	/**
+	 *	Overloading ostream operator, to print JSON representation of target
+	 *	Used to publish updates over websocket connection
+	 */
 	friend ostream& operator<<(ostream& os, Target  targ)
 	{
 		Coordinate pos = targ.getPosition();

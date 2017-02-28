@@ -32,10 +32,11 @@ void VirtualSource::readBuffer() {
 
 	// channel should have data
 	vector<double> data = channel->pop_buffer(this);
-	buffB = data;
+	//buffB = data;
 
 	// apply filter
-	//filter.filter(data, buffB);
+	filter.filter2(data, buffB);
+	//buffB = filter.filter(data);
 }
 
 double VirtualSource::getSample(int index) {

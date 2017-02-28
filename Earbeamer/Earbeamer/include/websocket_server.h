@@ -6,10 +6,13 @@
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 #include <set>
+#include <map>
+#include <utility>
 
 #include "room.h"
 
 typedef websocketpp::server<websocketpp::config::asio> server;
+typedef server::message_ptr message_ptr;
 
 
 using websocketpp::connection_hdl;
@@ -23,6 +26,7 @@ public:
 	WebsocketServer(Room& room);
 	void on_open(connection_hdl hdl);
 	void on_close(connection_hdl hdl);
+	void on_message(server *s, websocketpp::connection_hdl, message_ptr msg);
 
 	void begin_broadcast();
 	void broadcast_targets();
@@ -38,6 +42,8 @@ private:
 	server m_endpoint;
 	con_list m_connections;
 	websocketpp::lib::shared_ptr<websocketpp::lib::thread> m_thread;
+
+	std::map<UINT64, BOOLEAN> parse_client_msg(std::string);
 
 
 

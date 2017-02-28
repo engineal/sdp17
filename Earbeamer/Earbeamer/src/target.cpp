@@ -7,7 +7,6 @@
 *	Constructs the target by passing in a CameraSpacePoint (preferably the head position), and a 
 *	body tracking Id.
 */
-
 Target::Target(Coordinate headPosition, UINT64 trackingId) : position(headPosition), trackingId(trackingId)
 {
 	tracked = true;
