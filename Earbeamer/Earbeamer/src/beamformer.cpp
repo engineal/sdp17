@@ -41,11 +41,13 @@ void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 			cout << "New target found" << endl;
 			Beam* beam = new Beam(sources);
 			beam->update_delays(*(itr->second), sources);
+			beam->setMuted(itr->second->isMuted());			//If target is muted, beam should be muted
 			beams.insert(pair<Target*, Beam*>(itr->second, beam));
 		}
 		else {
 			// Target already has beam, so update it
 			it->second->update_delays(*(itr->second), sources);
+			it->second->setMuted(itr->second->isMuted());
 		}
 	}
 
@@ -123,7 +125,12 @@ vector<double> Beamformer::calculate_task() {
 	// Calculate each beam separately
 	unique_lock<mutex> lck(beams_mtx);
 	for (map<Target*, Beam*>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
-		process_beam(*(itr->second), output);
+
+		//If the beam is muted, do not process
+		if (!itr->second->isMuted()) {
+			process_beam(*(itr->second), output);
+		}
+		
 	}
 
 	// Normalize the audio level so no clipping happens

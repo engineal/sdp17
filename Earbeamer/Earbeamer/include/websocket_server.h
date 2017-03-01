@@ -28,6 +28,8 @@ public:
 	void on_close(connection_hdl hdl);
 	void on_message(server *s, websocketpp::connection_hdl, message_ptr msg);
 
+	
+
 	void begin_broadcast();
 	void broadcast_targets();
 	void run(UINT16 port);
@@ -43,7 +45,9 @@ private:
 	con_list m_connections;
 	websocketpp::lib::shared_ptr<websocketpp::lib::thread> m_thread;
 
-	std::map<UINT64, BOOLEAN> parse_client_msg(std::string);
+	std::map<UINT64, BOOLEAN> parse_client_msg(std::string);	//Parses incoming messages from client on muted targets
+
+	
 
 
 

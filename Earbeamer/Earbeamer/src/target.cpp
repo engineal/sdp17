@@ -12,20 +12,11 @@ Target::Target(Coordinate headPosition, UINT64 trackingId) : position(headPositi
 	tracked = true;
 	muted = false;
 	volume = 100;
-	unmuted_volume = 100;
 
 }
 
-void Target::togglemute() {
-	if (muted) {
-		volume = unmuted_volume;
-		muted = false;
-	}
-	else {
-		unmuted_volume = volume;
-		volume = 0;
-		muted = true;
-	}
+void Target::setMute(BOOLEAN mute) {
+	muted = mute;
 }
 
 BOOLEAN Target::isMuted() {

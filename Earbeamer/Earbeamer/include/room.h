@@ -36,6 +36,8 @@ public:
 	void Shutdown();
 	map<UINT64, Target*> getTargets();
 	map<UINT64, Target*>& getTargetReference();
+
+	void muteTargets(std::map<UINT64, BOOLEAN> mute_actions);
 	void updateTargets();
 	void beginMonitoring(Beamformer*);
 	void stop();

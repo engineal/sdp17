@@ -17,6 +17,7 @@ public:
 	void updatePosition(Coordinate headPosition);
 
 	BOOLEAN isMuted();
+	void setMute(BOOLEAN);
 	BOOLEAN getTrackedStatus();
 	Coordinate getPosition();
 	UINT64 getTrackingId();
@@ -48,7 +49,6 @@ private:
 	BOOLEAN tracked;
 	BOOLEAN muted;
 	UINT64 trackingId;
-	UINT8 unmuted_volume;
 	UINT8 volume;
 	Coordinate position;
 };

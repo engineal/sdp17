@@ -53,3 +53,15 @@ int Beam::calculate_delay_between_points(Coordinate coord1, Coordinate coord2) {
 	double t_sound = distance / v_sound; // in s
 	return (int)((t_sound * samples_sec) + 0.5); // in samples
 }
+
+/**
+ *	Set the mute flag to the passed value
+ */
+void Beam::setMuted(BOOLEAN mute)
+{
+	muted = mute;
+}
+
+BOOLEAN Beam::isMuted() {
+	return muted;
+}

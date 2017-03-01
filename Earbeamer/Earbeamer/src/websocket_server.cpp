@@ -5,7 +5,7 @@
 #include "websocket_server.h"
 #include <sstream>
 #include "room.h"
-#include <regex>
+#include <boost/regex.hpp>
 
 
 WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
@@ -17,7 +17,7 @@ WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
 
 	m_endpoint.set_open_handler(bind(&WebsocketServer::on_open, this, _1));
 	m_endpoint.set_close_handler(bind(&WebsocketServer::on_close, this, _1));
-	m_endpoint.set_message_handler(bind(&on_message, this, ::_1, ::_2));
+	//m_endpoint.set_message_handler(bind(&WebsocketServer::on_message, this, &m_endpoint, _1, _2));
 	
 
 }
@@ -58,21 +58,23 @@ void WebsocketServer::on_message(server *s, websocketpp::connection_hdl, message
 
 std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string json) {
 
-	regex r("{\"id\":[\n]*([0-9]*)[,\n]*\"muted\":[\n]*([a-z]*)}");
+	boost::regex r("{\"id\":[\n ]*([0-9]*)[^,]*?,[ \n]*\"muted\":[\n ]*([a-z]*)}", boost::regex::perl | boost::regex::icase);
 
-	sregex_iterator beg = sregex_iterator(json.begin(), json.end(), r);
-	sregex_iterator end = sregex_iterator();
+	boost::sregex_iterator beg = boost::sregex_iterator(json.begin(), json.end(), r);
+	boost::sregex_iterator end = boost::sregex_iterator();
 
 	std::map<UINT64, BOOLEAN> out;
 
 	//Iterate over all id matches within json
-	for (sregex_iterator it = beg; it != end; it++)
+	for (boost::sregex_iterator it = beg; it != end; it++)
 	{
-		smatch match = *it;
+		boost::smatch match = *it;
 		string s_id = match[1];								//Gets the capture group
+		cout << "The id is " << s_id << endl;
 		UINT64 i_id = (_strtoui64(s_id.c_str(), NULL, 10));	//Convert string to unsigned 64-bit int
 
 		string s_muted = match[2];
+		cout << "The mute status is " << s_muted << endl;
 		BOOLEAN b_muted;
 		if (!s_muted.compare("true")) {
 			b_muted = true;

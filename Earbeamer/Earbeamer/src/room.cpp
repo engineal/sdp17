@@ -201,6 +201,24 @@ void Room::monitor(Beamformer* beamformer) {
 	cout << "room done" << endl;
 }
 
+/**
+ *	Updates whether or not a target is muted
+ */
+void Room::muteTargets(std::map<UINT64, BOOLEAN> mute_actions)
+{
+	unique_lock<shared_mutex> lck(target_mutex);
+
+	std::map<UINT64, BOOLEAN>::iterator itr;
+	std::map<UINT64, Target*>::iterator current;
+	for (itr = mute_actions.begin(); itr != mute_actions.end(); itr++)
+	{
+		if ((current = m_targets.find(itr->first)) != m_targets.end()) {
+			//If Target ID exists in map, update its mute value
+			current->second->setMute(itr->second);
+		}
+	}
+}
+
 map<UINT64, Target*> Room::getTargets() {
 	return this->m_targets;
 }

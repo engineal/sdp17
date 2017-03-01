@@ -1,12 +1,15 @@
 #include <iostream>
+#include "websocket_server.h"// <--- Must be included before windows.h
 #include <windows.h>
 #include <time.h>
 #include "channel.h"
 #include "virtual_source.h"
+
 #include "adc.h"
 #include "beamformer.h"
 #include "wav-file.h"
 #include "room.h"
+#include <map>
 
 
 
@@ -52,6 +55,11 @@ vector<VirtualSource*> createSources(vector<Channel*> channels) {
 }
 
 int main(int argc, char *argv[]) {
+
+	
+
+
+	
 	vector<Channel*> channels;
 	for (int i = 0; i < 16; i++) {
 		channels.push_back(new Channel("Dev1/ai" + to_string(i)));
@@ -69,6 +77,7 @@ int main(int argc, char *argv[]) {
 	right.Z = 0.42;
 
 	CoordinateSystem grid = CoordinateSystem(left, right);
+
 
 	try {
 		ADC adc(channels, 15625.0);
@@ -129,4 +138,6 @@ int main(int argc, char *argv[]) {
 
 	getchar();
 	return 0;
+
+	
 }
