@@ -10,6 +10,8 @@
 
 WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
 
+	running = true;
+
 	m_endpoint.set_access_channels(websocketpp::log::alevel::all ^ websocketpp::log::alevel::frame_payload);
 	m_endpoint.clear_error_channels(websocketpp::log::elevel::all);
 
@@ -103,7 +105,7 @@ void WebsocketServer::broadcast_targets() {
 	shared_lock<shared_mutex> lck(Room::target_mutex);
 	std::map<UINT64, Target*> targs;
 	
-	while (1) {
+	while (running) {
 		
 		Room::target_trigger.wait(lck);
 
@@ -135,6 +137,17 @@ void WebsocketServer::run(UINT16 port) {
 
 	t_server = thread(&server::run, &m_endpoint);
 
+}
+
+void WebsocketServer::stop(){
+	running = false;
+	if (t_broadcast.joinable()) {
+		t_broadcast.join();
+	}
+
+	if (t_server.joinable()) {
+		t_server.join();
+	}
 }
 
 

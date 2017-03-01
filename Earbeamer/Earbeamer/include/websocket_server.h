@@ -33,9 +33,11 @@ public:
 	void begin_broadcast();
 	void broadcast_targets();
 	void run(UINT16 port);
-
+	void stop();
 
 private:
+	BOOLEAN running;
+
 	thread t_broadcast;		//Thread for broadcasting target information
 	thread t_server;		//Thread for managing connections
 	typedef std::set<connection_hdl, std::owner_less<connection_hdl>> con_list;
@@ -43,7 +45,6 @@ private:
 	std::mutex m_mutex;
 	server m_endpoint;
 	con_list m_connections;
-	websocketpp::lib::shared_ptr<websocketpp::lib::thread> m_thread;
 
 	std::map<UINT64, BOOLEAN> parse_client_msg(std::string);	//Parses incoming messages from client on muted targets
 

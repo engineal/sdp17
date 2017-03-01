@@ -56,10 +56,6 @@ vector<VirtualSource*> createSources(vector<Channel*> channels) {
 
 int main(int argc, char *argv[]) {
 
-	
-
-
-	
 	vector<Channel*> channels;
 	for (int i = 0; i < 16; i++) {
 		channels.push_back(new Channel("Dev1/ai" + to_string(i)));
@@ -85,9 +81,13 @@ int main(int argc, char *argv[]) {
 
 		room->Init();
 		
-
+		
 		Beamformer beamformer(sources);
 		room->beginMonitoring(&beamformer);
+
+		WebsocketServer server(*room);
+		server.run(9002);
+		server.begin_broadcast();
 
 		oWavFile outWavFile("test.wav");
 		oWavFile* outputFiles[16];
