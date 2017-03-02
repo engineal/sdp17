@@ -127,6 +127,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		room->stop();
+		server.stop();
 		beamformer.stop();
 		adc.stop();
 

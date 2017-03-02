@@ -19,7 +19,7 @@ WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
 
 	m_endpoint.set_open_handler(bind(&WebsocketServer::on_open, this, _1));
 	m_endpoint.set_close_handler(bind(&WebsocketServer::on_close, this, _1));
-	//m_endpoint.set_message_handler(bind(&WebsocketServer::on_message, this, &m_endpoint, _1, _2));
+	m_endpoint.set_message_handler(bind(&WebsocketServer::on_message, this, &m_endpoint, _1, _2));
 	
 
 }
@@ -120,8 +120,6 @@ void WebsocketServer::broadcast_targets() {
 			ss << *(itr->second);
 		}
 		ss << "]}";
-
-		cout << ss.str() << endl;
 
 		for (auto it : m_connections) {
 			m_endpoint.send(it, ss.str(), websocketpp::frame::opcode::text);
