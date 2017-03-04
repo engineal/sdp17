@@ -7,6 +7,9 @@ using namespace std;
 
 #define DAQmxErrChk(functionCall) if(DAQmxFailed(functionCall)){ throw ADCException(); }
 
+#define VOLTAGE 3.3
+#define CENTER_V 1.65
+
 int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEventType, uInt32 nSamples, void *callbackData);
 int32 CVICALLBACK DoneCallback(TaskHandle taskHandle, int32 status, void *callbackData);
 
@@ -15,7 +18,7 @@ ADC::ADC(vector<Channel*> channels, double rate) : channels(channels), rate(rate
 
 	DAQmxErrChk(DAQmxCreateTask("", &taskHandle));
 	for (vector<Channel*>::iterator itr = channels.begin(); itr != channels.end(); ++itr) {
-		DAQmxErrChk(DAQmxCreateAIVoltageChan(taskHandle, (*itr)->getChannelId().c_str(), "", DAQmx_Val_RSE, 0.0, 3.0, DAQmx_Val_Volts, NULL));
+		DAQmxErrChk(DAQmxCreateAIVoltageChan(taskHandle, (*itr)->getChannelId().c_str(), "", DAQmx_Val_RSE, 0.0, 3.3, DAQmx_Val_Volts, NULL));
 	}
 	DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", rate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, 1024));
 
@@ -56,6 +59,11 @@ void ADC::data_callback() {
 	DAQmxErrChk(DAQmxReadAnalogF64(taskHandle, 1024, 10.0, DAQmx_Val_GroupByChannel, tmp_data, tmp_data_size, &samples_per_channel, NULL));
 
 	if (samples_per_channel > 0) {
+		// Center audio
+		for (int i = 0; i < tmp_data_size; i++) {
+			tmp_data[i] -= CENTER_V;
+		}
+
 		//separate channels
 		for (int i = 0; i < channels.size(); i++) {
 			float64* start = tmp_data + (i * samples_per_channel);

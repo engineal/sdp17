@@ -234,10 +234,8 @@ void oWavFile::writeBuffer(double* samples, int n) {
 		num_bytes = 2;
 	}
 	
-	//todo: level checking
-	
 	for (int i = 0; i < n; i++) {
-		int sample = (int)(samples[i] * 32000); // don't know why it's not 21845.3333
+		short sample = (short)(samples[i] * 32000);
 		if (numChannels == 2) {
 			write_word(*fOut, sample, num_bytes);
 			write_word(*fOut, sample, num_bytes);

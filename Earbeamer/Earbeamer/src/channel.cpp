@@ -4,9 +4,7 @@
 
 using namespace std;
 
-Channel::Channel(string channel_id) : channel_id(channel_id){
-	listeners_read = 0;
-}
+Channel::Channel(string channel_id) : channel_id(channel_id) {}
 
 Channel::~Channel() {
 	cout << "Channel deconstructor" << endl;
@@ -24,7 +22,14 @@ void Channel::addListener(IListener* listener) {
 void Channel::removeListener(IListener* listener) {
 	unique_lock<mutex> lck(listeners_mtx);
 	listeners.erase(remove(listeners.begin(), listeners.end(), listener));
-	listeners_cv.notify_all();
+
+	if (everyoneRead()) {
+		data_buffer.pop();
+		for (vector<IListener*>::iterator itr = listeners.begin(); itr != listeners.end(); ++itr) {
+			(*itr)->clearRead();
+		}
+		listeners_cv.notify_all();
+	}
 }
 
 bool Channel::dataAvailable() {
@@ -45,12 +50,20 @@ void Channel::push_buffer(vector<double> data) {
 	data_buffer_cv.notify_all();
 }
 
+bool Channel::everyoneRead() {
+	bool result = true;
+	for (vector<IListener*>::iterator itr = listeners.begin(); itr != listeners.end(); ++itr) {
+		result &= (*itr)->hasRead();
+	}
+	return result;
+}
+
 vector<double> Channel::pop_buffer(IListener* listener) {
 	unique_lock<mutex> data_lck(data_buffer_mtx);
 	if (data_buffer.size() > 0) {
 		unique_lock<mutex> listen_lck(listeners_mtx);
-		// check if listener has not read current buffer yet
-		if (listener->hasRead() && listeners.size() > 1) {
+		// wait if listener has already read current buffer
+		if (listener->hasRead()) {
 			data_lck.release();
 			cout << "waiting for all listeners" << endl;
 			listeners_cv.wait(listen_lck);
@@ -61,9 +74,8 @@ vector<double> Channel::pop_buffer(IListener* listener) {
 		listener->setRead();
 
 		// Check if more listeners need the data and if not, remove it from the queue
-		if ((++listeners_read) >= listeners.size()) {
+		if (everyoneRead()) {
 			data_buffer.pop();
-			listeners_read = 0;
 			for (vector<IListener*>::iterator itr = listeners.begin(); itr != listeners.end(); ++itr) {
 				(*itr)->clearRead();
 			}

@@ -12,11 +12,11 @@ class Channel {
 private:
 	std::string channel_id;
 	std::vector<IListener*> listeners;
-	int listeners_read;
 	std::mutex data_buffer_mtx;
 	std::condition_variable data_buffer_cv;
 	std::mutex listeners_mtx;
 	std::condition_variable listeners_cv;
+	bool everyoneRead();
 public:
 	std::queue<std::vector<double>> data_buffer;
 	Channel(std::string channel_id);

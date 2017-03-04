@@ -109,7 +109,7 @@
     <IncludePath>C:\Program Files (x86)\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\$(USERNAME)\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(BOOST);$(IncludePath)</IncludePath>
+    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;$(EARBEAMER)\Earbeamer\include;$(BOOST);$(WEBSOCKETPP);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\$(USERNAME)\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
