@@ -1,6 +1,7 @@
 #include <iostream>
 #include <NIDAQmx.h>
 #include "cexcept.h"
+#include "portaudio.h"
 
 using namespace std;
 
@@ -21,4 +22,11 @@ ADCException::~ADCException() {
 const char* ADCException::what() const throw() {
 	DAQmxGetExtendedErrorInfo(errBuff, 2048);
 	return errBuff;
+}
+
+OutputDeviceException::OutputDeviceException(int err) : error(err) {}
+
+
+const char* OutputDeviceException::what() const throw() {
+	return Pa_GetErrorText(error);
 }

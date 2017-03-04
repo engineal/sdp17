@@ -9,6 +9,7 @@
 #include "beamformer.h"
 #include "wav-file.h"
 #include "room.h"
+#include "outputdevice.h"
 #include <map>
 
 
@@ -85,10 +86,33 @@ int main(int argc, char *argv[]) {
 		Beamformer beamformer(sources);
 		room->beginMonitoring(&beamformer);
 
+		OutputDevice speaker(1, 15000);	//Create an OutputDevice with an amplification factor of 1, sample rate of 15,000 Hz
+		speaker.connect();
+
 		WebsocketServer server(*room);
+
+		//Generate some test targets
+		//room->DEBUG_GenerateTestTarget();
+		//Sleep(1000);
+		//room->DEBUG_GenerateTestTarget();
+
 		server.run(9002);
 		server.begin_broadcast();
+		/**
+		time_t start;
+		time_t current;
+		time(&start);
+		time(&current);
 
+		while (difftime(current, start) < 99999) {
+			Sleep(1000);
+			Room::target_trigger.notify_one();
+			time(&current);
+		}
+
+		server.stop();
+		**/
+		
 		oWavFile outWavFile("test.wav");
 		oWavFile* outputFiles[16];
 		IListener listeners[16];
@@ -115,6 +139,8 @@ int main(int argc, char *argv[]) {
 
 			beamformer.waitForData();
 			vector<double> output = beamformer.pop_buffer();
+
+			speaker.enqueue(output);
 			outWavFile.writeBuffer(&output[0], (int)output.size());
 			
 			//cout << difftime(current, start) << endl;
@@ -126,12 +152,15 @@ int main(int argc, char *argv[]) {
 			channels[i]->removeListener(&listeners[i]);
 		}
 
+		speaker.disconnect();
 		room->stop();
 		server.stop();
 		beamformer.stop();
 		adc.stop();
 
 		outWavFile.close();
+
+		
 	}
 	catch (exception& e) {
 		cout << e.what() << endl;
