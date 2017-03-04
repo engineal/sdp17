@@ -14,3 +14,14 @@ public:
 private:
 	char* errBuff;
 };
+
+class OutputDeviceException : public std::exception {
+	virtual const char* what() const throw();
+
+public:
+	OutputDeviceException(int err);
+private:
+	int error;;
+};
+
+

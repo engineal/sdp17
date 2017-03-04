@@ -12,7 +12,7 @@ WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
 
 	running = true;
 
-	m_endpoint.set_access_channels(websocketpp::log::alevel::all ^ websocketpp::log::alevel::frame_payload);
+	m_endpoint.set_access_channels(websocketpp::log::alevel::none);
 	m_endpoint.clear_error_channels(websocketpp::log::elevel::all);
 
 	m_endpoint.init_asio();
@@ -49,11 +49,14 @@ void WebsocketServer::on_open(connection_hdl hdl) {
 
 void WebsocketServer::on_message(server *s, websocketpp::connection_hdl, message_ptr msg) {
 
-	std::cout << "Received message from client" << endl;
+	std::cout << "Received message from client:" << endl;
+	std::cout << "################" << endl;
+	std::cout << msg->get_payload() << endl;
+	std::cout << "################" << endl;
 
 	std::map<UINT64, BOOLEAN> mute_status = this->parse_client_msg(msg->get_payload());
 
-	
+	room.muteTargets(mute_status);
 
 
 }
@@ -115,11 +118,17 @@ void WebsocketServer::broadcast_targets() {
 		targs = room.getTargets();
 
 		ss << "{\"targets\":[";
-		for (map<UINT64, Target*>::iterator itr = targs.begin(); itr != targs.end(); itr++)
+		for (map<UINT64, Target*>::iterator itr = targs.begin(); itr != targs.end(); ++itr)
 		{
 			ss << *(itr->second);
+			if (!(std::next(itr, 1) == targs.end()))
+			{
+				ss << ",";
+			}
 		}
 		ss << "]}";
+
+		//cout << ss.str() << endl;
 
 		for (auto it : m_connections) {
 			m_endpoint.send(it, ss.str(), websocketpp::frame::opcode::text);

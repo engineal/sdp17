@@ -36,6 +36,7 @@ public:
 	void Shutdown();
 	map<UINT64, Target*> getTargets();
 	map<UINT64, Target*>& getTargetReference();
+	void Room::DEBUG_GenerateTestTarget();
 
 	void muteTargets(std::map<UINT64, BOOLEAN> mute_actions);
 	void updateTargets();

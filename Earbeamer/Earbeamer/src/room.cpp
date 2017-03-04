@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 #include <Kinect.h>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 #include "coordinate-system.h"
 #include "room.h"
@@ -189,6 +191,20 @@ void Room::updateTargets()
 
 	SafeRelease(bodyFrame);
 	
+}
+
+void Room::DEBUG_GenerateTestTarget() {
+
+	srand(time(NULL));
+
+	Coordinate head( rand() % 20, rand() % 20);
+
+	UINT64 id = rand();
+
+	Target* targ = new Target(head, id);
+
+	m_targets.insert(pair<UINT64, Target*>(id, targ));
+
 }
 
 void Room::monitor(Beamformer* beamformer) {
