@@ -64,14 +64,14 @@ int main(int argc, char *argv[]) {
 	vector<VirtualSource*> sources = createSources(channels);
 
 	CameraSpacePoint left = CameraSpacePoint();
-	left.X = 0.7;
-	left.Y = 0;
-	left.Z = .42;
+	left.X = 0.7f;
+	left.Y = 0.0f;
+	left.Z = .08f;
 
 	CameraSpacePoint right = CameraSpacePoint();
-	right.X = -0.7;
-	right.Y = 0;
-	right.Z = 0.42;
+	right.X = -0.7f;
+	right.Y = 0.0f;
+	right.Z = 0.08f;
 
 	CoordinateSystem grid = CoordinateSystem(left, right);
 
@@ -86,8 +86,8 @@ int main(int argc, char *argv[]) {
 		Beamformer beamformer(sources);
 		room->beginMonitoring(&beamformer);
 
-		OutputDevice speaker(1, 15000);	//Create an OutputDevice with an amplification factor of 1, sample rate of 15,000 Hz
-		speaker.connect();
+		//OutputDevice speaker(2, 15625);	//Create an OutputDevice with an amplification factor of 1, sample rate of 15,000 Hz
+		//speaker.connect();
 
 		WebsocketServer server(*room);
 
@@ -113,11 +113,11 @@ int main(int argc, char *argv[]) {
 		server.stop();
 		**/
 		
-		oWavFile outWavFile("test.wav");
+		oWavFile outWavFile("test.wav", 750000);
 		oWavFile* outputFiles[16];
 		IListener listeners[16];
 		for (int i = 0; i < channels.size(); i++) {
-			outputFiles[i] = new oWavFile("test" + to_string(i) + ".wav");
+			outputFiles[i] = new oWavFile("test" + to_string(i) + ".wav", 200000);
 			channels[i]->addListener(&listeners[i]);
 		}
 
@@ -130,35 +130,36 @@ int main(int argc, char *argv[]) {
 		time(&start);
 		time(&current);
 		
-		while (difftime(current, start) < 30) {
+		while (difftime(current, start) < 2) {
 			for (int i = 0; i < 16; i++) {
 				channels[i]->waitForData();
 				vector<double> data = channels[i]->pop_buffer(&listeners[i]);
-				outputFiles[i]->writeBuffer(&data[0], data.size());
+				outputFiles[i]->writeBuffer(data);
 			}
 
 			beamformer.waitForData();
 			vector<double> output = beamformer.pop_buffer();
 
-			speaker.enqueue(output);
-			outWavFile.writeBuffer(&output[0], (int)output.size());
+			//speaker.enqueue(output);
+			outWavFile.writeBuffer(output);
 			
 			//cout << difftime(current, start) << endl;
 			time(&current);
 		}
 
+		outWavFile.close();
 		for (int i = 0; i < channels.size(); i++) {
 			outputFiles[i]->close();
 			channels[i]->removeListener(&listeners[i]);
 		}
 
-		speaker.disconnect();
-		room->stop();
+		//speaker.disconnect();
 		server.stop();
+		room->stop();
+		
 		beamformer.stop();
 		adc.stop();
 
-		outWavFile.close();
 
 		
 	}

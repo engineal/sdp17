@@ -40,7 +40,7 @@ void VirtualSource::readBuffer() {
 }
 
 double VirtualSource::getSample(int index) {
-	int buffA_size = buffA.size();
+	size_t buffA_size = buffA.size();
 	if (index >= 0 && index < buffA_size) {
 		return buffA[index];
 	}

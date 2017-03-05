@@ -207,11 +207,19 @@ void Room::DEBUG_GenerateTestTarget() {
 
 }
 
+void Room::waitForTargets() {
+
+	shared_lock<shared_mutex> lck(Room::target_mutex);
+
+	Room::target_trigger.wait(lck);
+
+}
+
 void Room::monitor(Beamformer* beamformer) {
 	while (running) {
 		Sleep(1000);
 		this->updateTargets();
-		target_trigger.notify_one();
+		target_trigger.notify_all();
 		beamformer->updateTargets(this->getTargets());
 	}
 	cout << "room done" << endl;
@@ -236,6 +244,7 @@ void Room::muteTargets(std::map<UINT64, BOOLEAN> mute_actions)
 }
 
 map<UINT64, Target*> Room::getTargets() {
+	unique_lock<shared_mutex> lck(Room::target_mutex);
 	return this->m_targets;
 }
 

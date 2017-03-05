@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 class WavFile {
 protected:
@@ -20,26 +21,26 @@ public:
 };
 
 class iWavFile : public WavFile {
-protected:
+private:
 	std::ifstream *fIn;
 	long int numInSamples;
 	long int maxInSamples;
-
 public:
 	iWavFile(std::string fileName);
 	~iWavFile();
 	int dataAvailable();
-	int readBuffer(double* samples, int n);
+	std::vector<double> readBuffer(int n);
 	void close();
 };
 
 class oWavFile : public WavFile {
-protected:
+private:
 	std::ofstream *fOut;
 	size_t data_chunk_pos;
+	double amplify;
 public:
-	oWavFile(std::string fileName);
+	oWavFile(std::string fileName, double amplify);
 	~oWavFile();
-	void writeBuffer(double* samples, int n);
+	void writeBuffer(std::vector<double> samples);
 	void close();
 };

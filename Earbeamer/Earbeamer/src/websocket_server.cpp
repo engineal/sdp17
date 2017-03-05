@@ -16,12 +16,17 @@ WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
 	m_endpoint.clear_error_channels(websocketpp::log::elevel::all);
 
 	m_endpoint.init_asio();
+	m_endpoint.start_perpetual();
 
 	m_endpoint.set_open_handler(bind(&WebsocketServer::on_open, this, _1));
 	m_endpoint.set_close_handler(bind(&WebsocketServer::on_close, this, _1));
 	m_endpoint.set_message_handler(bind(&WebsocketServer::on_message, this, &m_endpoint, _1, _2));
 	
 
+}
+
+WebsocketServer::~WebsocketServer() {
+	cout << "Websocket Server Deconstructed" << endl;
 }
 
 /**
@@ -105,16 +110,15 @@ void WebsocketServer::begin_broadcast() {
 
 void WebsocketServer::broadcast_targets() {
 	
-	shared_lock<shared_mutex> lck(Room::target_mutex);
 	std::map<UINT64, Target*> targs;
 	
 	while (running) {
 		
-		Room::target_trigger.wait(lck);
 
 		std::stringstream ss;
 		ss.str(std::string());
 
+		room.waitForTargets();
 		targs = room.getTargets();
 
 		ss << "{\"targets\":[";
@@ -133,6 +137,8 @@ void WebsocketServer::broadcast_targets() {
 		for (auto it : m_connections) {
 			m_endpoint.send(it, ss.str(), websocketpp::frame::opcode::text);
 		}
+
+		cout << "Broadcasted" << endl;
 		
 	}
 
@@ -147,10 +153,28 @@ void WebsocketServer::run(UINT16 port) {
 }
 
 void WebsocketServer::stop(){
+
+	//Stop broadcasting
 	running = false;
 	if (t_broadcast.joinable()) {
 		t_broadcast.join();
 	}
+
+	//Server can end when no connections are active
+	m_endpoint.stop_perpetual();
+
+
+	//Close all active connections
+	for (auto it : m_connections) {
+
+		server::connection_ptr con = m_endpoint.get_con_from_hdl(it);
+
+		
+		m_endpoint.close(it, websocketpp::close::status::normal, "");
+	}
+	
+	//Stop server
+	m_endpoint.stop();
 
 	if (t_server.joinable()) {
 		t_server.join();
