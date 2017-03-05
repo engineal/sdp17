@@ -7,8 +7,7 @@ using namespace std;
 
 #define DAQmxErrChk(functionCall) if(DAQmxFailed(functionCall)){ throw ADCException(); }
 
-#define VOLTAGE 3.3
-#define CENTER_V 1.65
+#define CENTER_V 1.636
 
 int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEventType, uInt32 nSamples, void *callbackData);
 int32 CVICALLBACK DoneCallback(TaskHandle taskHandle, int32 status, void *callbackData);

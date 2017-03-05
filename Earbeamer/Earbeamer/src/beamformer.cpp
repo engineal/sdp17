@@ -125,12 +125,10 @@ vector<double> Beamformer::calculate_task() {
 	// Calculate each beam separately
 	unique_lock<mutex> lck(beams_mtx);
 	for (map<Target*, Beam*>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
-
 		//If the beam is muted, do not process
 		if (!itr->second->isMuted()) {
 			process_beam(*(itr->second), output);
 		}
-		
 	}
 
 	// Normalize the audio level so no clipping happens
@@ -144,7 +142,7 @@ vector<double> Beamformer::calculate_task() {
 * Implements delay-sum on one beam
 */
 void Beamformer::process_beam(Beam& beam, vector<double>& output) {
-	int num_sources = sources.size();
+	size_t num_sources = sources.size();
 	for (int i = 0; i < output.size(); i++) {
 		double avg = 0.0;
 		for (int j = 0; j < num_sources; j++) {

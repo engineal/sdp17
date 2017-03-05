@@ -38,6 +38,8 @@ public:
 	map<UINT64, Target*>& getTargetReference();
 	void Room::DEBUG_GenerateTestTarget();
 
+	void waitForTargets();
+
 	void muteTargets(std::map<UINT64, BOOLEAN> mute_actions);
 	void updateTargets();
 	void beginMonitoring(Beamformer*);

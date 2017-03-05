@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include "wav-file.h"
+#include "cexcept.h"
 
 using namespace std;
 
@@ -155,7 +156,8 @@ int iWavFile::dataAvailable() {
     return 1;
 }
 
-int iWavFile::readBuffer(double* samples, int n) {
+vector<double> iWavFile::readBuffer(int n) {
+	vector<double> samples;
 	if (maxInSamples > 0 && numInSamples < maxInSamples) {
 		short int num_bytes = 1;
 		if (numBitsPerSample == 16) {
@@ -176,13 +178,12 @@ int iWavFile::readBuffer(double* samples, int n) {
 				read_word(*fIn, value, num_bytes);
 			}
 			
-			samples[i] = (double)value;
+			samples.push_back((double)value);
 			numInSamples++;
 		}
-		return i;
+		return samples;
 	} else {
-		cout << "There is no data to be read!" << endl;
-        return -1;
+		throw ElementNotAvailableException();
 	}
 }
 
@@ -197,7 +198,7 @@ void iWavFile::close() {
  *-----------------------------------------------------------------------------*/
 
 
-oWavFile::oWavFile(string fileName) {
+oWavFile::oWavFile(string fileName, double amplify) : amplify(amplify) {
 	fOut = new ofstream(fileName, ios::binary);
 	open = true;
 	
@@ -228,14 +229,14 @@ oWavFile::~oWavFile() {
 	}
 }
 
-void oWavFile::writeBuffer(double* samples, int n) {
+void oWavFile::writeBuffer(vector<double> samples) {
 	short int num_bytes = 1;
 	if (numBitsPerSample == 16) {
 		num_bytes = 2;
 	}
 	
-	for (int i = 0; i < n; i++) {
-		short sample = (short)(samples[i] * 32000);
+	for (int i = 0; i < samples.size(); i++) {
+		short sample = (short)(samples[i] * amplify);
 		if (numChannels == 2) {
 			write_word(*fOut, sample, num_bytes);
 			write_word(*fOut, sample, num_bytes);
