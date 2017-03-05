@@ -31,5 +31,5 @@
 # Test wav files
 test.wav
 test*.wav
-/Earbeamer/boost_1_63_0
 /Earbeamer/websocketpp
+/Earbeamer/portaudio

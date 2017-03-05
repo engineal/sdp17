@@ -107,15 +107,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files (x86)\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\LH11\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(IncludePath)</IncludePath>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;$(EARBEAMER)\Earbeamer\include;$(BOOST);$(WEBSOCKETPP);$(IncludePath)</IncludePath>
+    <IncludePath>$(KINECTSDK20_DIR)inc;$(NIDAQ)\include;$(PORTAUDIO)\include;$(EARBEAMER)\include;$(BOOST);$(WEBSOCKETPP);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(KINECTSDK20_DIR)inc;C:\Program Files %28x86%29\National Instruments\Shared\ExternalCompilerSupport\C\include;C:\Users\$(USERNAME)\Source\Repos\sdp17\Earbeamer\Earbeamer\include;$(PORTAUDIO)include;$(IncludePath)</IncludePath>
+    <IncludePath>$(KINECTSDK20_DIR)inc;$(NIDAQ)\include;$(PORTAUDIO)\include;$(EARBEAMER)\include;$(BOOST);$(WEBSOCKETPP);$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -124,8 +123,6 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>$(KINECTSDK20_DIR)Lib\x32\;$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib32\msvc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>nidaqmx.lib;Kinect20.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,8 +133,8 @@
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(BOOST);$(KINECTSDK20_DIR)Lib\x64\;$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib64\msvc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>nidaqmx.lib;Kinect20.lib;libboost_system-vc140-mt-gd-1_63.lib;libboost_date_time-vc140-mt-gd-1_63.lib;libboost_regex-vc140-mt-gd-1_63.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(PORTAUDIO)\build\msvc\$(Platform)\$(Configuration);$(BOOST)\lib64-msvc-14.0;$(NIDAQ)\lib64\msvc;$(KINECTSDK20_DIR)Lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>nidaqmx.lib;Kinect20.lib;libboost_system-vc140-mt-gd-1_63.lib;libboost_date_time-vc140-mt-gd-1_63.lib;libboost*-vc140-mt-gd-1_63.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -151,7 +148,6 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib32\msvc;$(KINECTSDK20_DIR)Lib\x32\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -166,7 +162,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>nidaqmx.lib;Kinect20.lib;libboost_system-vc140-mt-1_63.lib;libboost_date_time-vc140-mt-1_63.lib;libboost*-vc140-mt-1_63.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(PORTAUDIO)build\msvc\$(Platform)\$(Configuration);$(BOOST);$(ProgramFiles)\National Instruments\Shared\ExternalCompilerSupport\C\lib64\msvc;$(KINECTSDK20_DIR)Lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PORTAUDIO)\build\msvc\$(Platform)\$(Configuration);$(BOOST)\lib64-msvc-14.0;$(NIDAQ)\lib64\msvc;$(KINECTSDK20_DIR)Lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
