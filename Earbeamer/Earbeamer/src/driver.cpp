@@ -4,6 +4,7 @@
 #include <time.h>
 #include "channel.h"
 #include "virtual_source.h"
+#include <conio.h>
 
 #include "adc.h"
 #include "beamformer.h"
@@ -12,9 +13,17 @@
 #include "outputdevice.h"
 #include <map>
 
-
-
 using namespace std;
+
+bool getInput(char *c)
+{
+	if (_kbhit())
+	{
+		*c = _getch();
+		return true; // Key Was Hit
+	}
+	return false; // No keys were pressed
+}
 
 vector<VirtualSource*> createSources(vector<Channel*> channels) {
 	vector<pair<double, Channel*>> low_positions = {
@@ -78,18 +87,18 @@ int main(int argc, char *argv[]) {
 
 	try {
 		ADC adc(channels, 15625.0);
-		Room* room = new Room(grid);
+		Room room(grid);
 
-		room->Init();
+		room.Init();
 		
 		
 		Beamformer beamformer(sources);
-		room->beginMonitoring(&beamformer);
+		room.beginMonitoring(&beamformer);
 
 		OutputDevice speaker(200000, 15625);	//Create an OutputDevice with an amplification factor of 1, sample rate of 15,000 Hz
 		speaker.connect();
 
-		WebsocketServer server(*room);
+		WebsocketServer server(room);
 
 		//Generate some test targets
 		//room->DEBUG_GenerateTestTarget();
@@ -130,7 +139,8 @@ int main(int argc, char *argv[]) {
 		time(&start);
 		time(&current);
 		
-		while (difftime(current, start) < 120) {
+		bool running = true;
+		while (difftime(current, start) < 60*10 && running) {
 			for (int i = 0; i < 16; i++) {
 				channels[i]->waitForData();
 				vector<double> data = channels[i]->pop_buffer(&listeners[i]);
@@ -145,6 +155,11 @@ int main(int argc, char *argv[]) {
 			
 			//cout << difftime(current, start) << endl;
 			time(&current);
+
+			char key = ' ';
+			if (getInput(&key) && key == 'q') {
+				running = false;
+			}
 		}
 
 		outWavFile.close();
@@ -155,19 +170,14 @@ int main(int argc, char *argv[]) {
 
 		speaker.disconnect();
 		server.stop();
-		room->stop();
-		
+		room.stop();
 		beamformer.stop();
-		adc.stop();
-
-
-		
+		adc.stop();	
 	}
 	catch (exception& e) {
 		cout << e.what() << endl;
 	}
 
+	getchar();
 	return 0;
-
-	
 }

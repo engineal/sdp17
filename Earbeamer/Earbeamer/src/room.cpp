@@ -69,8 +69,6 @@ bool untracked(IBody* body) {
 	}
 }
 
-
-
 void Room::processBodies(std::list<IBody*> &lBodies)
 {
 	//Lock down the targets so no one else accesses them
@@ -258,9 +256,14 @@ void Room::stop() {
 	if (t_monitor.joinable()) {
 		t_monitor.join();
 	}
+
+	cout << "Room done" << endl;
 }
 
 Room::~Room() {
+	if (running) {
+		stop();
+	}
 	Shutdown();
 }
 

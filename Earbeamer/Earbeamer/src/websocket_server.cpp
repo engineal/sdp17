@@ -97,7 +97,6 @@ std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string json) {
 	}
 
 	return out;
-
 }
 
 
@@ -109,12 +108,9 @@ void WebsocketServer::begin_broadcast() {
 }
 
 void WebsocketServer::broadcast_targets() {
-	
 	std::map<UINT64, Target*> targs;
 	
 	while (running) {
-		
-
 		std::stringstream ss;
 		ss.str(std::string());
 
@@ -132,16 +128,14 @@ void WebsocketServer::broadcast_targets() {
 		}
 		ss << "]}";
 
-		//cout << ss.str() << endl;
+		cout << ss.str() << endl;
 
 		for (auto it : m_connections) {
 			m_endpoint.send(it, ss.str(), websocketpp::frame::opcode::text);
 		}
 
-		cout << "Broadcasted" << endl;
-		
+		//cout << "Broadcasted" << endl;
 	}
-
 }
 
 void WebsocketServer::run(UINT16 port) {
@@ -179,6 +173,6 @@ void WebsocketServer::stop(){
 	if (t_server.joinable()) {
 		t_server.join();
 	}
+
+	cout << "Server done" << endl;
 }
-
-

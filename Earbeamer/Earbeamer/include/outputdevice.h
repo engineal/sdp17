@@ -5,29 +5,19 @@
 #include <mutex>
 #include <queue>
 
-
 using namespace std;
 
 class OutputDevice {
 
 public:
-
 	OutputDevice(int amplify, int rate);
 	~OutputDevice();
 
 	void connect();
 	void disconnect();
-
-	//bool deviceEmpty();						//Returns true if device queue has no data
-
-	void enqueue(vector<double> block);		//Queue a block of data to be played			
-
-	std::mutex queue_access;				//Used to control access to targets
-	std::condition_variable queue_update;	//Used to notify when targets have been updated
-
-
+	//bool deviceEmpty();					//Returns true if device queue has no data
+	void enqueue(vector<double> block);		//Queue a block of data to be played
 private:
-
 	void feed_output();		//thread that continually feeds output device, as long as data is available in queue
 
 	PaStream* stream;
@@ -40,5 +30,6 @@ private:
 	PaStreamParameters outputParameters;
 	PaStreamParameters inputParameters;
 
-
+	std::mutex queue_access;				//Used to control access to targets
+	std::condition_variable queue_update;	//Used to notify when targets have been updated
 };

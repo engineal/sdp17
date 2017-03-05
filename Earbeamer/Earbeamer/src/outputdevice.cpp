@@ -138,23 +138,20 @@ void OutputDevice::disconnect() {
 		this->t_output.join();
 	}
 
-
 	PaError err = Pa_StopStream(stream);
 	if (err != paNoError) {
-		goto error;
+		throw OutputDeviceException(err);
 	}
 
 	err = Pa_CloseStream(stream);
 	if (err != paNoError) {
-		goto error;
+		throw OutputDeviceException(err);
 	}
 
 	err = Pa_Terminate();
 	if (err != paNoError) {
-		goto error;
+		throw OutputDeviceException(err);
 	}
-	return;
-error:
-	throw OutputDeviceException(err);
 
+	cout << "Output device done" << endl;
 }

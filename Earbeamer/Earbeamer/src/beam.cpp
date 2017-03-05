@@ -27,7 +27,7 @@ void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 		}
 	}
 
-	cout << "Target At X=" << target.getPosition().x << " Y=" << target.getPosition().y << endl;
+	//cout << "Target At X=" << target.getPosition().x << " Y=" << target.getPosition().y << endl;
 	//cout << "target delays" << endl;
 	// minimize delay on all mics
 	for (int i = 0; i < delays.size(); i++) {
