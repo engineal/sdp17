@@ -26,7 +26,7 @@ WebsocketServer::WebsocketServer(Room& the_room) : room(the_room){
 }
 
 WebsocketServer::~WebsocketServer() {
-	cout << "Websocket Server Deconstructed" << endl;
+	cout << "Websocket Server deconstructor" << endl;
 }
 
 /**
@@ -54,10 +54,10 @@ void WebsocketServer::on_open(connection_hdl hdl) {
 
 void WebsocketServer::on_message(server *s, websocketpp::connection_hdl, message_ptr msg) {
 
-	std::cout << "Received message from client:" << endl;
-	std::cout << "################" << endl;
-	std::cout << msg->get_payload() << endl;
-	std::cout << "################" << endl;
+	//std::cout << "Received message from client:" << endl;
+	//std::cout << "################" << endl;
+	//std::cout << msg->get_payload() << endl;
+	//std::cout << "################" << endl;
 
 	std::map<UINT64, BOOLEAN> mute_status = this->parse_client_msg(msg->get_payload());
 
@@ -80,11 +80,9 @@ std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string json) {
 	{
 		boost::smatch match = *it;
 		string s_id = match[1];								//Gets the capture group
-		cout << "The id is " << s_id << endl;
 		UINT64 i_id = (_strtoui64(s_id.c_str(), NULL, 10));	//Convert string to unsigned 64-bit int
 
 		string s_muted = match[2];
-		cout << "The mute status is " << s_muted << endl;
 		BOOLEAN b_muted;
 		if (!s_muted.compare("true")) {
 			b_muted = true;
@@ -92,6 +90,8 @@ std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string json) {
 		else {
 			b_muted = false;
 		}
+
+		cout << "Target: " << i_id << " muted: " << b_muted << endl;
 
 		out.insert(std::pair<UINT64, BOOLEAN>(i_id, b_muted));
 	}
@@ -128,7 +128,7 @@ void WebsocketServer::broadcast_targets() {
 		}
 		ss << "]}";
 
-		cout << ss.str() << endl;
+		//cout << ss.str() << endl;
 
 		for (auto it : m_connections) {
 			m_endpoint.send(it, ss.str(), websocketpp::frame::opcode::text);

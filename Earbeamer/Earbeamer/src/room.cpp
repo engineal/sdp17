@@ -21,6 +21,15 @@ Room::Room(CoordinateSystem xy) : grid(xy) {
 	running = false;
 }
 
+Room::~Room() {
+	cout << "Room deconstructor" << endl;
+
+	if (running) {
+		stop();
+	}
+	Shutdown();
+}
+
 void Room::Init()
 {
 
@@ -220,7 +229,6 @@ void Room::monitor(Beamformer* beamformer) {
 		target_trigger.notify_all();
 		beamformer->updateTargets(this->getTargets());
 	}
-	cout << "room done" << endl;
 }
 
 /**
@@ -258,13 +266,6 @@ void Room::stop() {
 	}
 
 	cout << "Room done" << endl;
-}
-
-Room::~Room() {
-	if (running) {
-		stop();
-	}
-	Shutdown();
 }
 
 void Room::Shutdown()

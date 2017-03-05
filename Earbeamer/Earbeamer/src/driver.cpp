@@ -84,13 +84,10 @@ int main(int argc, char *argv[]) {
 
 	CoordinateSystem grid = CoordinateSystem(left, right);
 
-
 	try {
 		ADC adc(channels, 15625.0);
 		Room room(grid);
-
 		room.Init();
-		
 		
 		Beamformer beamformer(sources);
 		room.beginMonitoring(&beamformer);
