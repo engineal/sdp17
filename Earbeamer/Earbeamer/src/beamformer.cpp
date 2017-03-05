@@ -92,12 +92,13 @@ vector<double> Beamformer::pop_buffer() {
 
 void Beamformer::beamforming() {
 	while (running) {
-		// Read in samples from sources
-		for (int i = 0; i < sources.size(); i++) {
-			sources[i]->readBuffer();
-		}
-
 		try {
+			// Read in samples from sources
+			for (int i = 0; i < sources.size(); i++) {
+				sources[i]->readBuffer();
+			}
+
+		
 			vector<double> output = calculate_task();
 			// push output into buffer
 			unique_lock<mutex> lck(data_buffer_mtx);
@@ -106,6 +107,7 @@ void Beamformer::beamforming() {
 		}
 		catch (exception& e) {
 			cout << e.what() << endl;
+			running = false;
 		}
 	}
 	cout << "beamforming done" << endl;
@@ -123,17 +125,19 @@ vector<double> Beamformer::calculate_task() {
 	}
 
 	// Calculate each beam separately
-	unique_lock<mutex> lck(beams_mtx);
-	for (map<Target*, Beam*>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
-		//If the beam is muted, do not process
-		if (!itr->second->isMuted()) {
-			process_beam(*(itr->second), output);
+	if (beams.size() > 0) {
+		unique_lock<mutex> lck(beams_mtx);
+		for (map<Target*, Beam*>::iterator itr = beams.begin(); itr != beams.end(); ++itr) {
+			//If the beam is muted, do not process
+			if (!itr->second->isMuted()) {
+				process_beam(*(itr->second), output);
+			}
 		}
-	}
 
-	// Normalize the audio level so no clipping happens
-	for (int i = 0; i < output.size(); i++) {
-		output[i] /= beams.size();
+		// Normalize the audio level so no clipping happens
+		for (int i = 0; i < output.size(); i++) {
+			output[i] /= beams.size();
+		}
 	}
 	return output;
 }

@@ -57,32 +57,39 @@ void OutputDevice::enqueue(vector<double> block)
 void OutputDevice::feed_output() {
 
 	while (this->running) {
+		try {
+			unique_lock<std::mutex> lck(queue_access);
 
-		unique_lock<std::mutex> lck(queue_access);
-		
-		//If data buffer is empty, wait until somethin has been queued
-		if (this->data_buffer.size() == 0) {
-			this->queue_update.wait(lck);
+			//If data buffer is empty, wait until something has been queued
+			if (this->data_buffer.size() == 0) {
+				this->queue_update.wait(lck);
+			}
+
+			if (this->running) {
+				vector<double> block_dub = data_buffer.front();
+				short* block_shr = new short[block_dub.size()];
+
+
+				for (int ii = 0; ii < block_dub.size(); ii++)
+				{
+					block_shr[ii] = (short)(block_dub[ii] * amplification);
+				}
+
+				//Otherwise load up the device
+				PaError err = Pa_WriteStream(this->stream, block_shr, block_dub.size());
+				if (err) {
+					throw OutputDeviceException(err);
+				}
+
+				//Deallocate Memory
+				delete[] block_shr;
+				data_buffer.pop();
+			}
 		}
-
-		vector<double> block_dub = data_buffer.front();
-		short* block_shr = new short[block_dub.size()];
-		
-
-		for (int ii = 0; ii < block_dub.size(); ii++)
-		{
-			block_shr[ii] = (short) block_dub[ii] * amplification;
+		catch (exception& e) {
+			cout << e.what() << endl;
+			running = false;
 		}
-
-		//Otherwise load up the device
-		PaError err = Pa_WriteStream(this->stream, block_shr, block_dub.size());
-		if (err) {
-			throw OutputDeviceException(err);
-		}
-
-		//Deallocate Memory
-		delete block_shr;
-		data_buffer.pop();
 	}
 
 }
@@ -126,7 +133,7 @@ error:
 void OutputDevice::disconnect() {
 
 	running = false;
-	running = false;
+	queue_update.notify_all();
 	if (this->t_output.joinable()) {
 		this->t_output.join();
 	}

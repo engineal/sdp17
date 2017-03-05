@@ -86,8 +86,8 @@ int main(int argc, char *argv[]) {
 		Beamformer beamformer(sources);
 		room->beginMonitoring(&beamformer);
 
-		//OutputDevice speaker(2, 15625);	//Create an OutputDevice with an amplification factor of 1, sample rate of 15,000 Hz
-		//speaker.connect();
+		OutputDevice speaker(200000, 15625);	//Create an OutputDevice with an amplification factor of 1, sample rate of 15,000 Hz
+		speaker.connect();
 
 		WebsocketServer server(*room);
 
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 		time(&start);
 		time(&current);
 		
-		while (difftime(current, start) < 2) {
+		while (difftime(current, start) < 120) {
 			for (int i = 0; i < 16; i++) {
 				channels[i]->waitForData();
 				vector<double> data = channels[i]->pop_buffer(&listeners[i]);
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
 			beamformer.waitForData();
 			vector<double> output = beamformer.pop_buffer();
 
-			//speaker.enqueue(output);
+			speaker.enqueue(output);
 			outWavFile.writeBuffer(output);
 			
 			//cout << difftime(current, start) << endl;
@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
 			channels[i]->removeListener(&listeners[i]);
 		}
 
-		//speaker.disconnect();
+		speaker.disconnect();
 		server.stop();
 		room->stop();
 		
@@ -167,7 +167,6 @@ int main(int argc, char *argv[]) {
 		cout << e.what() << endl;
 	}
 
-	getchar();
 	return 0;
 
 	
