@@ -91,7 +91,7 @@ std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string json) {
 			b_muted = false;
 		}
 
-		cout << "Target: " << i_id << " muted: " << b_muted << endl;
+		cout << "Target: " << i_id << " muted: " << s_muted << endl;
 
 		out.insert(std::pair<UINT64, BOOLEAN>(i_id, b_muted));
 	}
