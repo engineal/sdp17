@@ -8,10 +8,13 @@ class Beam {
 private:
 	std::vector<int> delays;
 	int calculate_delay_between_points(Coordinate coord1, Coordinate coord2);
-	BOOLEAN muted;
+	bool muted;
+	double volume_scalar;
 public:
-	BOOLEAN isMuted();
-	void setMuted(BOOLEAN);
+	bool isMuted();
+	void setMuted(bool mute);
+	double getVolumeScalar();
+	void updateAvgVolume(double avg_volume);
 	Beam(vector<VirtualSource*> sources);
 	~Beam();
 	int getDelay(int source);

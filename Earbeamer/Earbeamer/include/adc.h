@@ -11,6 +11,7 @@ private:
 	std::vector<Channel*> channels;
 	double rate;
 	bool running;
+	double center_avg;
 public:
 	ADC(std::vector<Channel*> channels, double rate);
 	~ADC();

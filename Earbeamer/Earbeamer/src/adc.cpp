@@ -7,13 +7,12 @@ using namespace std;
 
 #define DAQmxErrChk(functionCall) if(DAQmxFailed(functionCall)){ throw ADCException(); }
 
-#define CENTER_V 1.636
-
 int32 CVICALLBACK EveryNCallback(TaskHandle taskHandle, int32 everyNsamplesEventType, uInt32 nSamples, void *callbackData);
 int32 CVICALLBACK DoneCallback(TaskHandle taskHandle, int32 status, void *callbackData);
 
 ADC::ADC(vector<Channel*> channels, double rate) : channels(channels), rate(rate) {
 	tmp_data_size = 1024 * (int) channels.size();
+	center_avg = 1.65; // Default center if voltage source is 3.3V
 
 	DAQmxErrChk(DAQmxCreateTask("", &taskHandle));
 	for (vector<Channel*>::iterator itr = channels.begin(); itr != channels.end(); ++itr) {
@@ -57,11 +56,16 @@ void ADC::data_callback() {
 
 	DAQmxErrChk(DAQmxReadAnalogF64(taskHandle, 1024, 10.0, DAQmx_Val_GroupByChannel, tmp_data, tmp_data_size, &samples_per_channel, NULL));
 
+	double avg = 0.0;
+
 	if (samples_per_channel > 0) {
-		// Center audio
+		// Center audio using running average as voltage source may change
 		for (int i = 0; i < tmp_data_size; i++) {
-			tmp_data[i] -= CENTER_V;
+			avg += tmp_data[i];
+			tmp_data[i] -= center_avg;
 		}
+
+		center_avg = (center_avg + (avg / tmp_data_size)) / 2;
 
 		//separate channels
 		for (int i = 0; i < channels.size(); i++) {

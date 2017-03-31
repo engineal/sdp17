@@ -75,12 +75,12 @@ int main(int argc, char *argv[]) {
 	CameraSpacePoint left = CameraSpacePoint();
 	left.X = 0.7f;
 	left.Y = 0.0f;
-	left.Z = .08f;
+	left.Z = .06f;
 
 	CameraSpacePoint right = CameraSpacePoint();
 	right.X = -0.7f;
 	right.Y = 0.0f;
-	right.Z = 0.08f;
+	right.Z = 0.06f;
 
 	CoordinateSystem grid = CoordinateSystem(left, right);
 
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
 		time(&current);
 		
 		bool running = true;
-		while (difftime(current, start) < 60*10 && running) {
+		while (difftime(current, start) < 60*20 && running) {
 			for (int i = 0; i < 16; i++) {
 				channels[i]->waitForData();
 				vector<double> data = channels[i]->pop_buffer(&listeners[i]);
@@ -174,6 +174,8 @@ int main(int argc, char *argv[]) {
 	catch (exception& e) {
 		cout << e.what() << endl;
 	}
+
+	cout << "Done!" << endl;
 
 	getchar();
 	return 0;

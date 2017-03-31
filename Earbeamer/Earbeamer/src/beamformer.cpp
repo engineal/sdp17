@@ -147,13 +147,23 @@ vector<double> Beamformer::calculate_task() {
 */
 void Beamformer::process_beam(Beam& beam, vector<double>& output) {
 	size_t num_sources = sources.size();
+
+	double avg_volume = 0.0; // average of sum of sources over time
+
 	for (int i = 0; i < output.size(); i++) {
-		double avg = 0.0;
+		double sample = 0.0;
 		for (int j = 0; j < num_sources; j++) {
-			avg += sources[j]->getSample(i + beam.getDelay(j));
+			sample += sources[j]->getSample(i + beam.getDelay(j));
 		}
 
-		avg /= num_sources;
-		output[i] += avg;
+		avg_volume += abs(sample);
+
+		sample *= beam.getVolumeScalar();
+		output[i] += sample;
 	}
+
+	avg_volume /= output.size();
+
+	// Set beam average
+	beam.updateAvgVolume(avg_volume);
 }

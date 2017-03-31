@@ -5,6 +5,8 @@
 using namespace std;
 
 Beam::Beam(vector<VirtualSource*> sources) {
+	volume_scalar = 1.0 / sources.size();
+
 	for (vector<VirtualSource*>::iterator itr = sources.begin(); itr != sources.end(); ++itr) {
 		delays.push_back(0);
 	}
@@ -57,11 +59,28 @@ int Beam::calculate_delay_between_points(Coordinate coord1, Coordinate coord2) {
 /**
  *	Set the mute flag to the passed value
  */
-void Beam::setMuted(BOOLEAN mute)
+void Beam::setMuted(bool mute)
 {
 	muted = mute;
 }
 
-BOOLEAN Beam::isMuted() {
+bool Beam::isMuted() {
 	return muted;
+}
+
+double Beam::getVolumeScalar() {
+	return volume_scalar;
+}
+
+/*
+ * Update the volume scalar
+ */
+void Beam::updateAvgVolume(double avg_volume) {
+	double avg_target_volume = 0.1 / 22;
+	// Take average of current volume and target volume so volume change is smoother
+	if (avg_volume > 0.02) {
+		volume_scalar = (volume_scalar + (avg_target_volume / avg_volume)) / 2;
+	}
+
+	cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;
 }
