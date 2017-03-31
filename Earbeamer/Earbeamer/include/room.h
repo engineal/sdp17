@@ -37,6 +37,7 @@ public:
 	map<UINT64, Target*> getTargets();
 	map<UINT64, Target*>& getTargetReference();
 	void Room::DEBUG_GenerateTestTarget();
+	void Room::DEBUG_ShuffleTargets();
 
 	void waitForTargets();
 

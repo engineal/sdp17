@@ -214,6 +214,23 @@ void Room::DEBUG_GenerateTestTarget() {
 
 }
 
+void Room::DEBUG_ShuffleTargets() {
+
+	std::map<UINT64, Target*>::iterator itr;
+
+	srand(time(NULL));
+
+	for (itr = m_targets.begin(); itr != m_targets.end(); itr++)
+	{
+		Coordinate head(rand() % 5, rand() % 5);
+
+		itr->second->updatePosition(head);
+
+		Sleep(50);
+	}
+
+}
+
 void Room::waitForTargets() {
 
 	shared_lock<shared_mutex> lck(Room::target_mutex);
