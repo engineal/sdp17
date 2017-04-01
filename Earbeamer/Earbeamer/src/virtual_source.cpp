@@ -7,7 +7,7 @@ using namespace std;
 
 #define samples_sec 16000
 
-VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)) {
+VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type, double weight) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)), sample_weight(weight) {
 	channel->addListener(this);
 	//buffB.resize(BUFFER_LENGTH);
 }
@@ -42,10 +42,10 @@ void VirtualSource::readBuffer() {
 double VirtualSource::getSample(int index) {
 	size_t buffA_size = buffA.size();
 	if (index >= 0 && index < buffA_size) {
-		return buffA[index];
+		return sample_weight*buffA[index];
 	}
 	else if ((index - buffA_size) >= 0 && (index - buffA_size) < buffB.size()) {
-		return buffB[index - buffA_size];
+		return sample_weight*buffB[index - buffA_size];
 	}
 	else {
 		throw out_of_range("Attempt to access memory outside of buffers");

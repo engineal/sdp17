@@ -55,10 +55,10 @@ vector<VirtualSource*> createSources(vector<Channel*> channels) {
 
 	vector<VirtualSource*> sources;
 	for (vector<pair<double, Channel*>>::iterator itr = low_positions.begin(); itr != low_positions.end(); ++itr) {
-		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), LOW));
+		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), LOW, CHEBYSHEV_WEIGHTS_20DB[std::distance(low_positions.begin(), itr)]));
 	}
 	for (vector<pair<double, Channel*>>::iterator itr = high_positions.begin(); itr != high_positions.end(); ++itr) {
-		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), HIGH));
+		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), HIGH, CHEBYSHEV_WEIGHTS_20DB[std::distance(low_positions.begin(), itr)]));
 	}
 
 	return sources;

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+
+
 Beamformer::Beamformer(vector<VirtualSource*> sources) : sources(sources) {
 	running = false;
 }

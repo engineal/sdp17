@@ -20,6 +20,44 @@ int Beam::getDelay(int source) {
 	return delays[source];
 }
 
+/**
+*	Updating delays using planewave assumption
+*
+**/
+
+void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
+
+	Coordinate t_coord = target.getPosition();
+	double angle_incidence = atan(t_coord.y / t_coord.x);
+
+	//Determine whether the target is to the left or right of array (assume that target cannot be behind array)
+	//Determine which mic is hit first
+	double first_x;
+	if (angle_incidence >= 0) {
+		//Target to the left
+
+		first_x = 0.70;			//Probably shouldn't hardcode these values, but I doubt we'll change them now
+	}
+	else {
+		first_x = -0.70;
+	}
+
+	for (int i = 0; i < delays.size(); i++) {
+
+		Coordinate m_coord = sources[i]->getPosition();
+
+		double delay = abs(first_x - m_coord.x)*cos(angle_incidence);
+
+		delays[i] = (int)(delay + 0.5);		//Add 0.5 to roundup/down correctly (casting to int will truncate)
+	}
+
+}
+
+/**
+ *	Updating delays using spherical delay assumption
+ *
+ */
+/**
 void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 	int min_delay = BUFFER_LENGTH;
 	for (int i = 0; i < delays.size(); i++) {
@@ -43,6 +81,7 @@ void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 	}
 	//cout << endl;
 }
+*/
 
 /*
 * Calculate a delay for the source based on target's coordinates

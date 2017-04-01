@@ -4,6 +4,7 @@
 #include "virtual_source.h"
 #include "target.h"
 
+
 class Beam {
 private:
 	std::vector<int> delays;
