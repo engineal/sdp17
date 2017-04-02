@@ -168,5 +168,5 @@ void Beam::updateAvgVolume(double avg_volume) {
 		volume_scalar = (volume_scalar + (avg_target_volume / avg_volume)) / 2;
 	}
 
-	//cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;
+	cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;
 }
