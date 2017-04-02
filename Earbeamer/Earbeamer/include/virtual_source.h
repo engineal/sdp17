@@ -7,7 +7,6 @@
 #include "listener.h"
 
 
-
 class VirtualSource : public IListener {
 private:
 	Channel* channel;

@@ -152,6 +152,7 @@ void Beamformer::process_beam(Beam& beam, vector<double>& output) {
 
 	double avg_volume = 0.0; // average of sum of sources over time
 
+
 	for (int i = 0; i < output.size(); i++) {
 		double sample = 0.0;
 		for (int j = 0; j < num_sources; j++) {
