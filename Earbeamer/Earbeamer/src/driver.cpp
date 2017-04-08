@@ -28,32 +28,33 @@ bool getInput(char *c)
 	return false; // No keys were pressed
 }
 
+
 vector<VirtualSource*> createSources(vector<Channel*> channels) {
 	vector<pair<double, Channel*>> low_positions = {
-		pair<double, Channel*>(-.70, channels[0]),
-		pair<double, Channel*>(-.56, channels[1]),
-		pair<double, Channel*>(-.42, channels[2]),
-		pair<double, Channel*>(-.28, channels[4]),
-		pair<double, Channel*>(-.14, channels[6]),
+		pair<double, Channel*>(-0.43, channels[0]),
+		pair<double, Channel*>(-0.344, channels[1]),
+		pair<double, Channel*>(-0.258, channels[2]),
+		pair<double, Channel*>(-0.172, channels[4]),
+		pair<double, Channel*>(-0.086, channels[6]),
 		pair<double, Channel*>(0, channels[8]),
-		pair<double, Channel*>(.14, channels[10]),
-		pair<double, Channel*>(.28, channels[12]),
-		pair<double, Channel*>(.42, channels[13]),
-		pair<double, Channel*>(.56, channels[14]),
-		pair<double, Channel*>(.70, channels[15])
+		pair<double, Channel*>(0.086, channels[10]),
+		pair<double, Channel*>(0.172, channels[12]),
+		pair<double, Channel*>(0.258, channels[13]),
+		pair<double, Channel*>(0.344, channels[14]),
+		pair<double, Channel*>(.43, channels[15])
 	};
 	vector<pair<double, Channel*>> high_positions = {
-		pair<double, Channel*>(-.42, channels[2]),
-		pair<double, Channel*>(-.35, channels[3]),
-		pair<double, Channel*>(-.28, channels[4]),
-		pair<double, Channel*>(-.21, channels[5]),
-		pair<double, Channel*>(-.14, channels[6]),
-		pair<double, Channel*>(-.07, channels[7]),
+		pair<double, Channel*>(-.258, channels[2]),
+		pair<double, Channel*>(-.215, channels[3]),
+		pair<double, Channel*>(-.172, channels[4]),
+		pair<double, Channel*>(-.129, channels[5]),
+		pair<double, Channel*>(-.086, channels[6]),
+		pair<double, Channel*>(-.043, channels[7]),
 		pair<double, Channel*>(0, channels[8]),
-		pair<double, Channel*>(.07, channels[9]),
-		pair<double, Channel*>(.14, channels[10]),
-		pair<double, Channel*>(.21, channels[11]),
-		pair<double, Channel*>(.28, channels[12])
+		pair<double, Channel*>(.043, channels[9]),
+		pair<double, Channel*>(.086, channels[10]),
+		pair<double, Channel*>(.129, channels[11]),
+		pair<double, Channel*>(.172, channels[12])
 	};
 
 	vector<VirtualSource*> sources;

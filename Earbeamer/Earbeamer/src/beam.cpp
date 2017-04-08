@@ -64,7 +64,7 @@ void printMicDelays(vector<VirtualSource*> sources, std::vector<int> delays, dou
 
 void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 
-	double temp = 20; // in C
+	double temp = 21; // in C, 70 degrees farenheit
 	Coordinate t_coord = target.getPosition();
 	double angle_incidence = atan(t_coord.y / t_coord.x);
 	double v_sound = 331 + 0.6 * temp; // in m/s
@@ -76,10 +76,10 @@ void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 	if (angle_incidence >= 0) {
 		//Target to the left
 
-		first_x = 0.70;			//Probably shouldn't hardcode these values, but I doubt we'll change them now
+		first_x = 0.43;			//Probably shouldn't hardcode these values, but I doubt we'll change them now
 	}
 	else {
-		first_x = -0.70;
+		first_x = -0.43;
 	}
 
 
@@ -168,5 +168,5 @@ void Beam::updateAvgVolume(double avg_volume) {
 		volume_scalar = (volume_scalar + (avg_target_volume / avg_volume)) / 2;
 	}
 
-	cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;
+	//cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;
 }
