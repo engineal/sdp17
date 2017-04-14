@@ -76,11 +76,14 @@ double Beam::getVolumeScalar() {
  * Update the volume scalar
  */
 void Beam::updateAvgVolume(double avg_volume) {
-	double avg_target_volume = 0.1 / 22;
-	// Take average of current volume and target volume so volume change is smoother
+	// The target value of each mic divided by # of sources
+	double avg_target_volume = 0.1 / delays.size();
+
+	// if silence, don't update the scalar so that it resumes where it left off
 	if (avg_volume > 0.02) {
+		// Take average of current volume and target volume so volume change is smoother
 		volume_scalar = (volume_scalar + (avg_target_volume / avg_volume)) / 2;
 	}
 
-	cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;
+	//cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;
 }
