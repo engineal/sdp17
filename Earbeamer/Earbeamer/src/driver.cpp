@@ -15,6 +15,9 @@
 
 using namespace std;
 
+double CHEBYSHEV_WEIGHTS_20DB[11] = { 1.0000, 0.8450, 1.0949, 1.3036, 1.4422, 1.4907, 1.4422, 1.3036, 1.0949, 0.8450, 1.0000 };
+double UNIFORM_WEIGHTS[11] = { 1,1,1,1,1,1,1,1,1,1,1 };
+
 bool getInput(char *c)
 {
 	if (_kbhit())
@@ -55,10 +58,10 @@ vector<VirtualSource*> createSources(vector<Channel*> channels) {
 
 	vector<VirtualSource*> sources;
 	for (vector<pair<double, Channel*>>::iterator itr = low_positions.begin(); itr != low_positions.end(); ++itr) {
-		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), LOW));
+		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), LOW, CHEBYSHEV_WEIGHTS_20DB[std::distance(low_positions.begin(), itr)]));
 	}
 	for (vector<pair<double, Channel*>>::iterator itr = high_positions.begin(); itr != high_positions.end(); ++itr) {
-		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), HIGH));
+		sources.push_back(new VirtualSource(itr->second, Coordinate(itr->first, 0), HIGH, CHEBYSHEV_WEIGHTS_20DB[std::distance(high_positions.begin(), itr)]));
 	}
 
 	return sources;
