@@ -30,7 +30,7 @@ public:
 	friend ostream& operator<<(ostream& os, Target  targ)
 	{
 		Coordinate pos = targ.getPosition();
-		os << "{\"id\": " << targ.getTrackingId() << ',';
+		os << "{\"id\": " << "\"" << targ.getTrackingId() << "\"" << ',';
 		os << "\"x_coord\": " << pos.x << ',';
 		os << "\"y_coord\": " << pos.y << ',';
 		os << "\"muted\": ";

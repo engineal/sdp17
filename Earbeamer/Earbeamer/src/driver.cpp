@@ -77,14 +77,14 @@ int main(int argc, char *argv[]) {
 	vector<VirtualSource*> sources = createSources(channels);
 
 	CameraSpacePoint left = CameraSpacePoint();
-	left.X = 0.7f;
+	left.X = 0.43f;
 	left.Y = 0.0f;
-	left.Z = .06f;
+	left.Z = .115f;
 
 	CameraSpacePoint right = CameraSpacePoint();
-	right.X = -0.7f;
+	right.X = -0.43f;
 	right.Y = 0.0f;
-	right.Z = 0.06f;
+	right.Z = 0.115f;
 
 	CoordinateSystem grid = CoordinateSystem(left, right);
 

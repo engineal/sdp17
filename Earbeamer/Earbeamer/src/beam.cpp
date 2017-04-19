@@ -63,7 +63,7 @@ void printMicDelays(vector<VirtualSource*> sources, std::vector<int> delays, dou
 }
 
 void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
-
+	//cout << "Tracking Target" << target.getTrackingId() << " at position" << target.getPosition() << endl;
 	double temp = 21; // in C, 70 degrees farenheit
 	Coordinate t_coord = target.getPosition();
 	double angle_incidence = atan(t_coord.y / t_coord.x);

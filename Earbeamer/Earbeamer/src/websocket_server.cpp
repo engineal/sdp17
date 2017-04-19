@@ -69,7 +69,6 @@ void WebsocketServer::on_message(server *s, websocketpp::connection_hdl, message
 std::map<UINT64, BOOLEAN> WebsocketServer::parse_client_msg(std::string json) {
 
 	boost::regex r("{\"id\":[\n ]*([0-9]*)[^,]*?,[ \n]*\"muted\":[\n ]*([a-z]*)}", boost::regex::perl | boost::regex::icase);
-
 	boost::sregex_iterator beg = boost::sregex_iterator(json.begin(), json.end(), r);
 	boost::sregex_iterator end = boost::sregex_iterator();
 

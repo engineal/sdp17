@@ -40,7 +40,7 @@ void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 		map<Target*, Beam*>::iterator it = beams.find(itr->second);
 		if (it == beams.end()) {
 			// Target does not have beam, so add it
-			cout << "New target found" << endl;
+			cout << "New target found " << itr->second->getTrackingId() << endl;
 			Beam* beam = new Beam(sources);
 			beam->update_delays(*(itr->second), sources);
 			beam->setMuted(itr->second->isMuted());			//If target is muted, beam should be muted
@@ -162,6 +162,9 @@ void Beamformer::process_beam(Beam& beam, vector<double>& output) {
 		avg_volume += abs(sample);
 
 		sample *= beam.getVolumeScalar();
+		//cout << "Scalar " << beam.getVolumeScalar() << endl;
+		//sample *= (double) 1/22;
+		//cout << "Sample " << sample << endl;
 		output[i] += sample;
 	}
 
