@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Client</title>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+<style>
+
+  .unmuted {
+    background-color : green;
+  }
+
+  .muted {
+    background-color : red;
+  }
+
+
+</style>
+
+<h2>WebSocket Test</h2>
+<div id="container">
+  <ul id="people">
+  </ul>
+</div>
+<div id="output"></div>
+
+<script language="javascript" type="text/javascript">
+
+
+var wsUri = "ws://192.168.1.114:9002";
+var output;
+
+var visible_ids = [];
+
+function isTracked(id) {
+
+  for (var i = 0; i < visible_ids.length; i++){
+    if (!id.localeCompare(visible_ids[i])){
+      return true;
+    }
+  }
+
+  return false;
+
+}
+
+function init()
+{
+  output = document.getElementById("output");
+  testWebSocket();
+}
+
+function testWebSocket()
+{
+  websocket = new WebSocket(wsUri);
+  websocket.onopen = function(evt) { onOpen(evt) };
+  websocket.onclose = function(evt) { onClose(evt) };
+  websocket.onmessage = function(evt) { onMessage(evt) };
+  websocket.onerror = function(evt) { onError(evt) };
+}
+
+function onOpen(evt)
+{
+  writeToScreen("CONNECTED");
+}
+
+function onClose(evt)
+{
+  writeToScreen("DISCONNECTED");
+}
+
+
+
+function onMessage(evt)
+{
+  var payload = JSON.parse(evt.data);
+  var targets = payload.targets;
+
+  for (var i = 0; i < targets.length; i++) {
+    //If id is in payload, but not listed in visible ids, add to page
+    if (!isTracked(targets[i].id)) {
+      var list_item = '<li><button class="unmuted" id="' + targets[i].id + '">';
+      list_item += targets[i].id + '</button></li>'
+      $( "#people" ).append(list_item);
+      visible_ids.push(targets[i].id);
+    }
+    else {
+      var target = '#' + targets[i].id;
+      var classname = $(target).attr('class');
+
+      //If server unmuted the target, and the target is marked as muted, update
+      if (!targets[i].muted && !classname.localeCompare('muted')) {
+        $(target).addClass('unmuted').removeClass('muted');
+      }
+      //If server muted the target, and the target is marked as unmuted, update
+      else if (targets[i].muted && !classname.localeCompare('unmuted')) {
+        $(target).addClass('muted').removeClass('unmuted');
+      }
+    }
+  }
+
+  //Check if all ids listed on page are being tracked by server
+  //If id is missing from payload, delete from page.
+  for (var i = 0; i < visible_ids.length; i++) {
+    var id = '#' + visible_ids[i];
+
+    // If element exists
+    var tracked = false;
+    for (var j = 0; j < targets.length; j++) {
+      if (!targets[j].id.localeCompare(visible_ids[i])){
+        tracked = true;
+      }
+    }
+    if (!tracked) {
+      $(id).closest("li").remove();
+      visible_ids.splice(i, 1);
+    }
+  }
+  //writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+  //websocket.close();
+}
+
+//Add event delegation to handle button press
+$('#people').on("click", "button", function(event){
+  event.preventDefault();
+
+  //Based on class, send message to toggle mute status
+  var classname = $(this).attr('class');
+  var payload = '{"status": [{"id": ' + $(this).attr('id') + ',"muted": ';
+  if (!classname.localeCompare('muted')) {
+    payload += 'false}]}';
+  }
+  else {
+    payload += 'true}]}';
+  }
+
+  websocket.send(payload);
+  console.log(payload);
+
+});
+
+
+function onError(evt)
+{
+  writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function writeToScreen(message)
+{
+  var pre = document.createElement("p");
+  pre.style.wordWrap = "break-word";
+  pre.innerHTML = message;
+  output.appendChild(pre);
+}
+
+window.addEventListener("load", init, false);
+
+</script>
