@@ -62,31 +62,26 @@ void printMicDelays(vector<VirtualSource*> sources, std::vector<int> delays, dou
 
 }
 
-void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
+void Beam::update_plane_delays(Target target, vector<VirtualSource*> sources) {
 	//cout << "Tracking Target" << target.getTrackingId() << " at position" << target.getPosition() << endl;
 	double temp = 21; // in C, 70 degrees farenheit
 	Coordinate t_coord = target.getPosition();
 	double angle_incidence = atan(t_coord.y / t_coord.x);
+	//cout << "Target Angle: " << angle_incidence * 180 / 3.1415926535 << endl;
 	double v_sound = 331 + 0.6 * temp; // in m/s
 	
-
 	//Determine whether the target is to the left or right of array (assume that target cannot be behind array)
 	//Determine which mic is hit first
 	double first_x;
 	if (angle_incidence >= 0) {
 		//Target to the left
-
 		first_x = 0.43;			//Probably shouldn't hardcode these values, but I doubt we'll change them now
 	}
 	else {
 		first_x = -0.43;
 	}
 
-
 	for (int i = 0; i < delays.size(); i++) {
-
-
-
 		Coordinate m_coord = sources[i]->getPosition();
 
 		double distance = abs(first_x - m_coord.x)*cos(angle_incidence);
@@ -96,7 +91,6 @@ void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 	}
 
 	//printMicDelays(sources, delays, angle_incidence);
-
 }
 
 
@@ -104,8 +98,7 @@ void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
  *	Updating delays using spherical delay assumption
  *
  */
-/**
-void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
+void Beam::update_sphere_delays(Target target, vector<VirtualSource*> sources) {
 	int min_delay = BUFFER_LENGTH;
 	for (int i = 0; i < delays.size(); i++) {
 		delays[i] = calculate_delay_between_points(target.getPosition(), sources[i]->getPosition());
@@ -128,7 +121,6 @@ void Beam::update_delays(Target target, vector<VirtualSource*> sources) {
 	}
 	//cout << endl;
 }
-*/
 
 /*
 * Calculate a delay for the source based on target's coordinates
@@ -162,10 +154,10 @@ double Beam::getVolumeScalar() {
  * Update the volume scalar
  */
 void Beam::updateAvgVolume(double avg_volume) {
-	double avg_target_volume = 0.1 / 22;
+	double avg_target_volume = 0.1 / delays.size();
 	// Take average of current volume and target volume so volume change is smoother
 	if (avg_volume > 0.02) {
-		volume_scalar = (volume_scalar + (avg_target_volume / avg_volume)) / 2;
+		volume_scalar = 0.8*volume_scalar + 0.2*(avg_target_volume / avg_volume);
 	}
 
 	//cout << "avg_volume: " << avg_volume << ", scalar: " << volume_scalar << endl;

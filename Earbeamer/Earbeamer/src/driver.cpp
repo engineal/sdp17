@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include "websocket_server.h"// <--- Must be included before windows.h
 #include <windows.h>
@@ -79,12 +80,12 @@ int main(int argc, char *argv[]) {
 	CameraSpacePoint left = CameraSpacePoint();
 	left.X = 0.43f;
 	left.Y = 0.0f;
-	left.Z = .115f;
+	left.Z = .0762f;
 
 	CameraSpacePoint right = CameraSpacePoint();
 	right.X = -0.43f;
 	right.Y = 0.0f;
-	right.Z = 0.115f;
+	right.Z = 0.0762f;
 
 	CoordinateSystem grid = CoordinateSystem(left, right);
 

@@ -5,8 +5,6 @@
 
 using namespace std;
 
-#define samples_sec 16000
-
 VirtualSource::VirtualSource(Channel* channel, Coordinate coordinate, FilterType filter_type, double weight) : channel(channel), coord(coordinate), filter(FIRFilter(filter_type)), sample_weight(weight) {
 	channel->addListener(this);
 	//buffB.resize(BUFFER_LENGTH);

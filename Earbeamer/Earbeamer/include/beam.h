@@ -19,5 +19,6 @@ public:
 	Beam(vector<VirtualSource*> sources);
 	~Beam();
 	int getDelay(int source);
-	void update_delays(Target target, vector<VirtualSource*> sources);
+	void update_plane_delays(Target target, vector<VirtualSource*> sources);
+	void update_sphere_delays(Target target, vector<VirtualSource*> sources);
 };

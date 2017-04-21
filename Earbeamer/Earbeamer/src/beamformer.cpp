@@ -42,13 +42,13 @@ void Beamformer::updateTargets(map<UINT64, Target*> targets) {
 			// Target does not have beam, so add it
 			cout << "New target found " << itr->second->getTrackingId() << endl;
 			Beam* beam = new Beam(sources);
-			beam->update_delays(*(itr->second), sources);
+			beam->update_plane_delays(*(itr->second), sources);
 			beam->setMuted(itr->second->isMuted());			//If target is muted, beam should be muted
 			beams.insert(pair<Target*, Beam*>(itr->second, beam));
 		}
 		else {
 			// Target already has beam, so update it
-			it->second->update_delays(*(itr->second), sources);
+			it->second->update_plane_delays(*(itr->second), sources);
 			it->second->setMuted(itr->second->isMuted());
 		}
 	}
