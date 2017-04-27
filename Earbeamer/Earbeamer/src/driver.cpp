@@ -70,7 +70,7 @@ vector<VirtualSource*> createSources(vector<Channel*> channels) {
 }
 
 int main(int argc, char *argv[]) {
-
+																																																										
 	vector<Channel*> channels;
 	for (int i = 0; i < 16; i++) {
 		channels.push_back(new Channel("Dev1/ai" + to_string(i)));

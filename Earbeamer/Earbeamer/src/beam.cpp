@@ -154,7 +154,7 @@ double Beam::getVolumeScalar() {
  * Update the volume scalar
  */
 void Beam::updateAvgVolume(double avg_volume) {
-	double avg_target_volume = 0.1 / delays.size();
+	double avg_target_volume = 0.2 / delays.size();
 	// Take average of current volume and target volume so volume change is smoother
 	if (avg_volume > 0.02) {
 		volume_scalar = 0.8*volume_scalar + 0.2*(avg_target_volume / avg_volume);

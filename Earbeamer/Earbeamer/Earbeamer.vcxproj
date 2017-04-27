@@ -28,6 +28,7 @@
     <ClCompile Include="src\driver.cpp" />
     <ClCompile Include="src\FIRFilter.cpp" />
     <ClCompile Include="src\listener.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\outputdevice.cpp" />
     <ClCompile Include="src\virtual_source.cpp" />
     <ClCompile Include="src\room.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="include\target.h" />
     <ClInclude Include="include\wav-file.h" />
     <ClInclude Include="include\websocket_server.h" />
+    <ClInclude Include="src\verify.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="audiocheck.net_sin_1200Hz_-3dBFS_10s.wav" />
